@@ -14,8 +14,11 @@ class PoseDetector:
 
 
     def detectLandmarks(self, image):
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        # To improve performance, optionally mark the image as not writeable to pass by reference. 
+        image.flags.writeable = False
+        cv2.cvtColor(image, cv2.COLOR_BGR2RGB, image)
         results = self.pose.process(image)
-        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+        image.flags.writeable = True
+        cv2.cvtColor(image, cv2.COLOR_RGB2BGR, image)        
         return results
 

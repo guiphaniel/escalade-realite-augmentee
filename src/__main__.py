@@ -16,12 +16,8 @@ while cap.isOpened():
         print("Ignoring empty camera frame.")
         # If loading a video, use 'break' instead of 'continue'.
         continue
-
-    # To improve performance, optionally mark the image as not writeable to
-    # pass by reference.
-    image.flags.writeable = False
-    results = singlePoseDetector.detectLandmarks(image)
-    image.flags.writeable = True
+    
+    results = singlePoseDetector.detectLandmarks(image)    
 
     # Draw the pose annotation on the image.    
     mp_drawing.draw_landmarks(
