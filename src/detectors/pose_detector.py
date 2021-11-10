@@ -1,5 +1,6 @@
 import cv2
 import mediapipe as mp
+from mediapipe.framework.formats.landmark_pb2 import NormalizedLandmarkList
 
 class PoseDetector:
   
@@ -7,6 +8,7 @@ class PoseDetector:
     def __init__(self):
         self.mp_pose = mp.solutions.mediapipe.python.solutions.pose
         self.pose = self.mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)  
+        self.storedLandmarks = None
         
     # Deleting (Calling destructor)
     def __del__(self):
@@ -19,6 +21,11 @@ class PoseDetector:
         cv2.cvtColor(image, cv2.COLOR_BGR2RGB, image)
         results = self.pose.process(image)
         image.flags.writeable = True
-        cv2.cvtColor(image, cv2.COLOR_RGB2BGR, image)        
-        return results
+        cv2.cvtColor(image, cv2.COLOR_RGB2BGR, image)  
+        if results.pose_landmarks:
+            self.storedLandmarks = results.pose_landmarks
+        return self.storedLandmarks
+    
+    def getLandmarks(self):
+        return self.storedLandmarks
 

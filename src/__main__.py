@@ -17,12 +17,14 @@ while cap.isOpened():
         # If loading a video, use 'break' instead of 'continue'.
         continue
     
-    results = singlePoseDetector.detectLandmarks(image)    
+    results = singlePoseDetector.detectLandmarks(image)
 
+    if not results:
+        continue
     # Draw the pose annotation on the image.    
     mp_drawing.draw_landmarks(
         image,
-        results.pose_landmarks,
+        results,
         mp_pose.POSE_CONNECTIONS,
         landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
     # Flip the image horizontally for a selfie-view display.
