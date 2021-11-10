@@ -1,6 +1,5 @@
 import cv2
 import mediapipe as mp
-from mediapipe.framework.formats.landmark_pb2 import NormalizedLandmarkList
 
 class PoseDetector:
   
