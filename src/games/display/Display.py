@@ -1,26 +1,31 @@
 import threading
-import multiprocessing as mp
-class Display():
+import pygame
+
+from src.games.display.Button import Button
+
+
+class Display(threading.Thread):
 
     def __init__(self, width, height):
+        threading.Thread.__init__(self)
         self.width = width
         self.height = height
-        p = mp.Process(target=self.run)
-        print("run")
-        p.start()
 
     def run(self):
-        import pygame
+        threading.Thread.__init__(self)
+        print("run")
         pygame.init()
         pygame.display.set_caption("Escalade en Réalité Augmentée")
         pygame.display.set_mode((self.width, self.height))
         running=True
-
+        red = (255,0,0)
+        i=10.0
+        button = Button(pygame.display.get_surface(),i,i,50,20,red)
+        button.draw()
         while running:
-
             pygame.display.flip() #Met à jour l'écran
-
             for e in pygame.event.get():
                 if e.type==pygame.QUIT:
                     running=False
                     pygame.quit()
+                button.pressed(e)

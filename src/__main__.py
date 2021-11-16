@@ -1,19 +1,14 @@
-from time import sleep
-
 import cv2
 import mediapipe as mp
 import numpy as np
-
-
-from src.games.Hold import Hold
-from src.games.Player import Player
 from src.games.display.Display import Display
 
-print("test process")
-if __name__ == '__main__':
-    p1 = Display(500, 500)
-    p2 = Display(800, 800)
 
+def processMenu():
+    disp = Display(500,500)
+    disp.start()
+
+processMenu()
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
