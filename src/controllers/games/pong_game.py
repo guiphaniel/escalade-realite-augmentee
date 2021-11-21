@@ -1,0 +1,1 @@
+#TODO: classe fille de game, pour le pong. stocke une liste de joueurs

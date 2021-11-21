@@ -1,0 +1,1 @@
+#TODO: stocke les coordonnees de la prise

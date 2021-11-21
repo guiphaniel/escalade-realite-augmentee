@@ -1,0 +1,2 @@
+#TODO: gere l'interface graphique, et l'appel au differentes foncitons de detection, creation d'elements (communication avec la BD) et lancement de parties.
+# contient une instance de base de donnees, un jeu (design pattern strategy), le mur courant, la surface de jeu (4 coordonnees) et la matrice de transformation

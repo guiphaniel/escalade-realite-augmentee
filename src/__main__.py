@@ -1,6 +1,6 @@
 import cv2
 import mediapipe as mp
-from detectors import pose_detector
+from src.controllers.utils.detectors import pose_detector
 
 mp_drawing = mp.solutions.mediapipe.python.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.mediapipe.python.solutions.drawing_styles
