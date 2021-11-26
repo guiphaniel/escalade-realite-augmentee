@@ -1,7 +1,8 @@
 import threading
 import pygame
 
-from src.games.display.Button import Button
+from src.games.display.buttons.calibrationButton import calibrationButton
+from src.games.display.buttons.playButton import playButton
 
 
 class Display(threading.Thread):
@@ -17,16 +18,20 @@ class Display(threading.Thread):
         pygame.init()
         pygame.display.set_caption("Escalade en Réalité Augmentée")
         screen = pygame.display.set_mode((self.width, self.height))
-        running=True
-        red = (255,0,0)
-        i=10.0
-        button = Button(screen,i,i,50,20,red,"Calibration")
+        running = True
+        buttons = [playButton(screen, "assets/jouer.png", 200, 200),
+                   calibrationButton(screen, "assets/calibration.png", 200, 300)]
         while running:
-            screen.fill((0,0,0,0))
-            button.draw()
-            pygame.display.flip() #Met à jour l'écran
+            screen.fill((0, 0, 0, 0))
+            for b in buttons:
+                screen.blit(b.image, b.rect)
+            pygame.display.flip()  # Met à jour l'écran
             for e in pygame.event.get():
-                if e.type==pygame.QUIT:
-                    running=False
+                if e.type == pygame.QUIT:
+                    running = False
                     pygame.quit()
-                button.pressed(e)
+                if e.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = pygame.mouse.get_pos()
+                    for b in buttons:
+                        if b.rect.collidepoint(x, y):
+                            b.pressed()
