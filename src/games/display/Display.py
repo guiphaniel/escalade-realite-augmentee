@@ -16,13 +16,14 @@ class Display(threading.Thread):
         print("run")
         pygame.init()
         pygame.display.set_caption("Escalade en Réalité Augmentée")
-        pygame.display.set_mode((self.width, self.height))
+        screen = pygame.display.set_mode((self.width, self.height))
         running=True
         red = (255,0,0)
         i=10.0
-        button = Button(pygame.display.get_surface(),i,i,50,20,red)
-        button.draw()
+        button = Button(screen,i,i,50,20,red,"Calibration")
         while running:
+            screen.fill((0,0,0,0))
+            button.draw()
             pygame.display.flip() #Met à jour l'écran
             for e in pygame.event.get():
                 if e.type==pygame.QUIT:
