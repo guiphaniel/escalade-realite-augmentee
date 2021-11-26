@@ -1,0 +1,1 @@
+#TODO: stocke l'integralite des prises presentent sur la portion de mur, et les pistes associées
