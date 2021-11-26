@@ -1,10 +1,10 @@
-from src.games.display.buttons.Button import Button
+from src.view.utils.buttons.button import Button
 
 
-class playButton(Button):
+class calibrationButton(Button):
 
     def __init__(self, screen, pathImage, x, y):
         super().__init__(screen, pathImage, x, y)
 
     def pressed(self):
-        print("BOUTON PLAY PRESSED")
+        print("BOUTON CALIBRATION PRESSED")

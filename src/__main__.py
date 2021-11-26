@@ -1,7 +1,7 @@
 import cv2
 import mediapipe as mp
 import numpy as np
-from src.games.display.Display import Display
+from src.view.display import Display
 
 
 def processMenu():
