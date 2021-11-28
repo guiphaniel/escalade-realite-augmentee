@@ -1,11 +1,11 @@
 import threading
 import pygame
 
-from src.view.utils.buttons.calibrationButton import calibrationButton
-from src.view.utils.buttons.playButton import playButton
+from src.view.utils.buttons.calibration_button import calibrationButton
+from src.view.utils.buttons.play_button import playButton
 
 
-class Display(threading.Thread):
+class Manager(threading.Thread):
 
     def __init__(self, width, height):
         threading.Thread.__init__(self)
@@ -13,13 +13,12 @@ class Display(threading.Thread):
         self.height = height
 
     def run(self):
-        threading.Thread.__init__(self)
         pygame.init()
         pygame.display.set_caption("Escalade en Réalité Augmentée")
-        screen = pygame.display.set_mode((self.width, self.height))
+        screen = pygame.display.set_mode((960, 540))
         running = True
-        buttons = [playButton(screen, "view/images/jouer.png", 200, 200),
-                   calibrationButton(screen, "view/images/calibration.png", 200, 300)]
+        buttons = [playButton(screen, "view/images/jouer.png", 300, 200),
+                   calibrationButton(screen, "view/images/calibration.png", 300, 400)]
         while running:
             screen.fill((0, 0, 0, 0))
             for b in buttons:

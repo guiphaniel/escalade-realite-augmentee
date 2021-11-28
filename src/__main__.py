@@ -1,11 +1,11 @@
 import cv2
 import mediapipe as mp
 import numpy as np
-from src.view.display import Display
+from src.view.manager import Manager
 
 
 def processMenu():
-    disp = Display(500,500)
+    disp = Manager(500,500)
     disp.start()
 
 processMenu()
