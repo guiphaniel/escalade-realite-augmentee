@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
 
-class Game():
+class Game:
 
     @abstractmethod
     def __init__(self,screen):

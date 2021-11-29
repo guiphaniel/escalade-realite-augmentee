@@ -27,7 +27,7 @@ class OsuGame(Game):
             for t in targets:
                 t.draw()
                 x, y = pygame.mouse.get_pos()
-                if t.collide(x, y):
+                if t.collide(x,y):
                     targets.remove(t)
                     targetsDispawned.append(t)
                     t.ticks=pygame.time.get_ticks()
