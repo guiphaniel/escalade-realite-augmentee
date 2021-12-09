@@ -14,6 +14,9 @@ mp_pose = mp.solutions.mediapipe.python.solutions.pose
 
 wallCalibration = Transform()
 wallCalibration.startCalibration()
+
+
+
 # For webcam input:
 cap = cv2.VideoCapture(0)
 photo= cv2.imread("D:/Git/ptut/src/view/images/BlackScreen.png")
