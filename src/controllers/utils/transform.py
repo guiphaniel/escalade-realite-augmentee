@@ -1,14 +1,14 @@
 #TODO: generer (et retourner) une matrice de transformation a partir des 4 coordonnees passees en parametres
 import cv2
 import numpy as np
-
+import math
 from src.controllers.utils.detectors import surface_detector
 
 class Transform:
     
     def __init__(self):
 
-
+        self.dimCam=[1920,1080]
         self.projectiveMatrix = None
         self.coordonatesDivider = None
         self.sortedCornerPoints =[[0 for i in range(2)]for y in range(4)]    
@@ -21,35 +21,26 @@ class Transform:
         for i in range(4):
             for y in range(2):
                 self.tab[i][y]=tabCornerPoints[i][0][y]
-        while i<3:
-            if tabCornerPoints[i][0][0]>tabCornerPoints[i+1][0][0]:
-                temp=tabCornerPoints[i+1][0]
-                tabCornerPoints[i+1][0]=tabCornerPoints[i][0]
-                tabCornerPoints[i][0]=temp
-                i=0
-            else:
-                i+=1
-        if tabCornerPoints[0][0][1]>tabCornerPoints[1][0][1]:
-            self.sortedCornerPoints[0][0]=tabCornerPoints[1][0][0]
-            self.sortedCornerPoints[0][1]=tabCornerPoints[1][0][1]
-            self.sortedCornerPoints[2][0]=tabCornerPoints[0][0][0]
-            self.sortedCornerPoints[2][1]=tabCornerPoints[0][0][1]
-        else:
-            self.sortedCornerPoints[0][0]=tabCornerPoints[0][0][0]
-            self.sortedCornerPoints[0][1]=tabCornerPoints[0][0][1]
-            self.sortedCornerPoints[2][0]=tabCornerPoints[1][0][0]
-            self.sortedCornerPoints[2][1]=tabCornerPoints[1][0][1]
-        if tabCornerPoints[2][0][1]>tabCornerPoints[3][0][1]:
-            self.sortedCornerPoints[1][0]=tabCornerPoints[3][0][0]
-            self.sortedCornerPoints[1][1]=tabCornerPoints[3][0][1]
-            self.sortedCornerPoints[3][0]=tabCornerPoints[2][0][0]
-            self.sortedCornerPoints[3][1]=tabCornerPoints[2][0][1]
-        else:
-            self.sortedCornerPoints[1][0]=tabCornerPoints[2][0][0]
-            self.sortedCornerPoints[1][1]=tabCornerPoints[2][0][1]
-            self.sortedCornerPoints[3][0]=tabCornerPoints[3][0][0]
-            self.sortedCornerPoints[3][1]=tabCornerPoints[3][0][1]
-        return self.sortedCornerPoints
+        
+        self.sortedCornerPoints[0]= self.__findDistance([0,0])
+        self.sortedCornerPoints[1]=self.__findDistance([self.dimCam[0],0])
+        self.sortedCornerPoints[2]=self.__findDistance([0,self.dimCam[1]])
+        self.sortedCornerPoints[3]=self.__findDistance(self.dimCam)
+           
+        return self.tab
+
+    def __findDistance(self,cornerPoint):
+        minDist=9000
+        
+        for point in self.tab:
+            a=(point[0]-cornerPoint[0])**2
+            b=(point[1]-cornerPoint[1])**2
+            dist = math.sqrt(a+b)
+            if(minDist>dist):
+                minDist=dist
+                minPoint=point
+        return minPoint
+
 
     def startCalibration(self):
             tab=surface_detector.Surface.__findCornerPoints__(surface_detector.Surface,self)
@@ -58,7 +49,7 @@ class Transform:
             print(self.sortedCornerPoints)
             src_points = np.float32(self.sortedCornerPoints)
             #src_points = np.float32([[62,139],[575,126],[5,424],[634,424]])
-            dst_points = np.float32([[0,0], [640,0], [0,480], [640,480]])
+            dst_points = np.float32([[0,0], [1920,0], [0,1080], [1920,1080]])
             self.projectiveMatrix= cv2.getPerspectiveTransform(src_points, dst_points)
             print (self.projectiveMatrix)
             print("Calibration réussite") #trop fort

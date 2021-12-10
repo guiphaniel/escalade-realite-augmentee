@@ -17,6 +17,8 @@ class Surface:
         cap = cv2.VideoCapture(0)
         #_, frame = cap.read()
         frame= cv2.imread("D:/Git/ptut/src/view/images/test.jpg")
+        h, w,_ = frame.shape
+        transform.dimCam=[h,w]
         cap.release()
         sift = cv2.xfeatures2d.SIFT_create()
         kp_image, desc_image = sift.detectAndCompute(img, None)
@@ -37,6 +39,7 @@ class Surface:
         matches_mask = mask.ravel().tolist()
 
         h, w,_ = img.shape
+        
         pts = np.float32([[0, 0], [0, h], [w, h], [w, 0]]).reshape(-1, 1, 2)
         dst = cv2.perspectiveTransform(pts, matrix)
         print(dst[0])
