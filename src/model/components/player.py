@@ -4,14 +4,11 @@ import mediapipe as mp
 from mediapipe.framework.formats import landmark_pb2
 
 class Player:
-    #static variables
-    id = 0
-    
+
     # Initializing
-    def __init__(self, pseudo):        
-        self.id = Player.id
-        Player.id += 1
+    def __init__(self, pseudo = "no_name"):
         self.pseudo = pseudo
+
         
     def getId(self):
         return self.id
