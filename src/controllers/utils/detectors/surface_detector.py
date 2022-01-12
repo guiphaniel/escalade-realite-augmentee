@@ -7,16 +7,17 @@ class Surface:
 
 
     def __findCornerPoints__(self,transform):
-        
+        cap = cv2.VideoCapture(0)
         cv2.namedWindow('Calibration', cv2.WND_PROP_FULLSCREEN)
         cv2.setWindowProperty('Calibration',cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
-        img= cv2.imread("D:/Git/ptut/src/view/images/charucoboard.jpg")
+        img= cv2.imread("D:/Documents/Semestre3/PTUT/src/view/images/charucoboard.jpg")
         cv2.imshow('Calibration',img)
         cv2.waitKey(3000)
+        _, frame = cap.read()
         cv2.destroyWindow('Calibration')
-        cap = cv2.VideoCapture(0)
-        #_, frame = cap.read()
-        frame= cv2.imread("D:/Git/ptut/src/view/images/test.jpg")
+
+
+        #frame= cv2.imread("D:/Documents/Semestre3/PTUT/src/view/images/test.jpg")
         h, w,_ = frame.shape
         transform.dimCam=[h,w]
         cap.release()
@@ -39,9 +40,8 @@ class Surface:
         matches_mask = mask.ravel().tolist()
 
         h, w,_ = img.shape
-        
+
         pts = np.float32([[0, 0], [0, h], [w, h], [w, 0]]).reshape(-1, 1, 2)
         dst = cv2.perspectiveTransform(pts, matrix)
-        print(dst[0])
         return dst
 
