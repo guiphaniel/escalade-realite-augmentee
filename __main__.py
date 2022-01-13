@@ -19,7 +19,7 @@ wallCalibration.startCalibration()
 
 # For webcam input:
 cap = cv2.VideoCapture(0)
-photo= cv2.imread("D:/Documents/Semestre3/PTUT/src/view/images/BlackScreen.png")
+photo= cv2.imread("D:/Git/ptut/src/view/images/BlackScreen.png")
 singlePoseDetector = pose_detector.PoseDetector()
 
 while cap.isOpened():
