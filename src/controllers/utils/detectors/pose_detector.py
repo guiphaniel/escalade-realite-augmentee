@@ -2,8 +2,6 @@ import cv2
 import mediapipe as mp
 
 class PoseDetector:
-  
-    # Initializing
     def __init__(self):
         self.mp_pose = mp.solutions.mediapipe.python.solutions.pose
         self.pose = self.mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)  
