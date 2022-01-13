@@ -43,14 +43,14 @@ class Transform:
 
 
     def startCalibration(self):
-            
-            #print(tab)
-            #self.__sortCornerPoints__(tab)
-            #print(self.sortedCornerPoints)
-            #src_points = np.float32(self.sortedCornerPoints)
-            src_points = np.float32([[62,139],[575,126],[5,424],[634,424]])
+            tab =surface_detector.Surface.__findCornerPoints__(surface_detector.Surface,self)
+            print(tab)
+            self.__sortCornerPoints__(tab)
+            print(self.sortedCornerPoints)
+            src_points = np.float32(self.sortedCornerPoints)
+            #src_points = np.float32([[62,139],[575,126],[5,424],[634,424]])
             dst_points = np.float32([[0,0], [640,0], [0,480], [640,480]])
-            self.projectiveMatrix= surface_detector.Surface.__findCornerPoints__(surface_detector.Surface,self)
+            self.projectiveMatrix= cv2.getPerspectiveTransform(src_points, dst_points)
             print (self.projectiveMatrix)
             print("Calibration réussite") #trop fort
 

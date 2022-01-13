@@ -10,10 +10,12 @@ class Surface:
         MIN_MATCH_COUNT = 10
 
         cap = cv.VideoCapture(0)
+        _, img2 = cap.read()
         cv.namedWindow('Calibration', cv.WND_PROP_FULLSCREEN)
         cv.setWindowProperty('Calibration',cv.WND_PROP_FULLSCREEN,cv.WINDOW_FULLSCREEN)
         img1= cv.imread("D:/Git/ptut/src/view/images/charucoboard.jpg",0)
         cv.imshow('Calibration',img1)
+        _, img2 = cap.read()
         cv.waitKey(3000)
         _, img2 = cap.read()
         cv.destroyWindow('Calibration')
@@ -43,20 +45,20 @@ class Surface:
             src_pts = np.float32([ kp1[m.queryIdx].pt for m in good ]).reshape(-1,1,2)
             dst_pts = np.float32([ kp2[m.trainIdx].pt for m in good ]).reshape(-1,1,2)
             M, mask = cv.findHomography(src_pts, dst_pts, cv.RANSAC,5.0)
-            matchesMask = mask.ravel().tolist()
+            print(m)
             h,w = img1.shape
             pts = np.float32([ [0,0],[0,h-1],[w-1,h-1],[w-1,0] ]).reshape(-1,1,2)
             dst = cv.perspectiveTransform(pts,M)
             print("dst:")
             print(dst)
             img2 = cv.polylines(img2,[np.int32(dst)],True,255,3, cv.LINE_AA)
-            print(M)
+            
         else:
             print( "Not enough matches are found - {}/{}".format(len(good), MIN_MATCH_COUNT) )
             matchesMask = None
               
         
         print("fin homographie")
-        return M
+        return dst
 
     
