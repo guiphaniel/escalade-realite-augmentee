@@ -49,23 +49,18 @@ class Transform:
             print(self.sortedCornerPoints)
             src_points = np.float32(self.sortedCornerPoints)
             #src_points = np.float32([[62,139],[575,126],[5,424],[634,424]])
-            dst_points = np.float32([[0,0], [640,0], [0,480], [640,480]])
+            dst_points = np.float32([[0,0], [1920,0], [0,1080], [1920,1080]])
             self.projectiveMatrix= cv2.getPerspectiveTransform(src_points, dst_points)
             print (self.projectiveMatrix)
             print("Calibration réussite") #trop fort
 
     def getTransformateLandmarks(self, tabPoints):
         for point in tabPoints.landmark:
-            
-            point.x=point.x*640
-            point.y=point.y*480
-            self.coordonatesDivider = point.x*self.projectiveMatrix[2][0]+point.y*self.projectiveMatrix[2][1]+self.projectiveMatrix[2][2]
-            point.x= point.x*self.projectiveMatrix[0][0]+point.y*self.projectiveMatrix[0][1]+self.projectiveMatrix[0][2]
-            point.x= point.x/self.coordonatesDivider
-            point.y= point.x*self.projectiveMatrix[1][0]+point.y*self.projectiveMatrix[1][1]+self.projectiveMatrix[1][2]
-            point.y=point.y/self.coordonatesDivider
-            point.x=point.x/640
-            point.y=point.y/480
+            tmp = np.dot(self.projectiveMatrix, [[point.x*640], [point.y*480], [1]])
+            point.x = (tmp[0]/tmp[2])/1920
+            point.y = (tmp[1] / tmp[2]) / 1080
+
+
         return tabPoints
 
     

@@ -19,7 +19,7 @@ wallCalibration.startCalibration()
 
 # For webcam input:
 cap = cv2.VideoCapture(0)
-photo= cv2.imread("D:/Git/ptut/src/view/images/BlackScreen.png")
+photo= cv2.imread("D:/Documents/Semestre3/PTUT/src/view/images/BlackScreen.png")
 singlePoseDetector = pose_detector.PoseDetector()
 
 while cap.isOpened():
@@ -40,8 +40,8 @@ while cap.isOpened():
      
     mp_drawing.draw_landmarks(
         outImg,
-        results,
-        # transfoResults,
+        #results,
+        transfoResults,
         mp_pose.POSE_CONNECTIONS,
         landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
     
