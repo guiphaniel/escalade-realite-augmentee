@@ -25,13 +25,11 @@ class PathGame(Game):
 
         handles = path.handles.copy()
 
-
         while running:
             pygame.display.flip()
             self.manager.screen.fill((0, 0, 0, 0))
             pygame.draw.circle(self.manager.screen,(0,255,0),(1920,1080),50)
             if self.transfoResults:
-                print(self.transfoResults.landmark[15].x*1920)
                 for point in self.transfoResults.landmark:
                     pygame.draw.circle(self.manager.screen,(0,0,255),(point.x*1920,point.y*1080),10)
 
@@ -41,22 +39,29 @@ class PathGame(Game):
                 self.manager.screen.blit(text, text.get_rect(center = (path.handles[i].x, path.handles[i].y)))
 
             x, y = pygame.mouse.get_pos()
+            playerPosition = self.getPlayerPosition()
 
-            if math.sqrt((x - handles[0].x) ** 2 + (y - handles[0].y) ** 2) < radius:
-                handlesSucceeded.append(handles[0])
-                handles.remove(handles[0])
-                score += 1
-                print(score)
+            for position in playerPosition:
+                if position[0]<0 or position[1]<0:
+                    continue
+                if math.sqrt((position[0] - handles[0].x) ** 2 + (position[1] - handles[0].y) ** 2) < radius:
+                    handlesSucceeded.append(handles[0])
+                    handles.remove(handles[0])
+                    score += 1
+                    print(score)
+                    break
 
             for h in handlesSucceeded:
                 pygame.draw.circle(self.manager.screen,(0,255,0),(h.x,h.y),radius)
 
             if len(handles)==0:
+                self.closeCam()
                 running=False
 
             for e in pygame.event.get():
                 if e.type == pygame.QUIT:
                     running = False
+                    self.closeCam()
                     pygame.quit()
 
     def setupParcours(self,path,radius):

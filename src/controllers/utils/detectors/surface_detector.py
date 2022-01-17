@@ -15,16 +15,16 @@ class Surface:
 
         print (cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         print (cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        cv2.namedWindow('Calibration', cv2.WND_PROP_FULLSCREEN)
-        cv2.setWindowProperty('Calibration', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+        #cv2.namedWindow('Calibration', cv2.WND_PROP_FULLSCREEN)
+        #cv2.setWindowProperty('Calibration', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
         img1 = cv2.imread("D:/Git/ptut/src/view/images/charucoboard.jpg", 0)
-        cv2.imshow('Calibration', img1)
+        #cv2.imshow('Calibration', img1)
         cv2.waitKey(1000)
         validCapRead=False
         while(validCapRead==False):
             validCapRead, img2 = cap.read()
 
-        cv2.destroyWindow('Calibration')
+        #cv2.destroyWindow('Calibration')
 
         # img2= cv.imread("D:/Git/ptut/src/view/images/test.jpg")
 
