@@ -29,13 +29,16 @@ class PathGame(Game):
         while running:
             pygame.display.flip()
             self.manager.screen.fill((0, 0, 0, 0))
+            pygame.draw.circle(self.manager.screen,(0,255,0),(1920,1080),50)
+            if self.transfoResults:
+                print(self.transfoResults.landmark[15].x*1920)
+                for point in self.transfoResults.landmark:
+                    pygame.draw.circle(self.manager.screen,(0,0,255),(point.x*1920,point.y*1080),10)
 
             for i in range(0,len(path.handles)):
                 pygame.draw.circle(self.manager.screen,(255,0,0),(path.handles[i].x,path.handles[i].y),radius)
                 text = self.font.render(str(i+1), True, (255,255,255))
                 self.manager.screen.blit(text, text.get_rect(center = (path.handles[i].x, path.handles[i].y)))
-
-
 
             x, y = pygame.mouse.get_pos()
 
