@@ -3,8 +3,6 @@ import mediapipe as mp
 from src.controllers.utils.detectors import pose_detector
 from src.controllers.utils.transform import Transform
 from src.model.components.player import Player
-
-import cv2
 import mediapipe as mp
 import copy
 
@@ -18,8 +16,12 @@ wallCalibration.startCalibration()
 
 
 # For webcam input:
-cap = cv2.VideoCapture(0)
-photo= cv2.imread("D:/Documents/Semestre3/PTUT/src/view/images/BlackScreen.png")
+cap = cv2.VideoCapture(1)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH,1920)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT,1080)
+print (cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+print (cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+photo= cv2.imread("D:/Git/ptut/src/view/images/BlackScreen.png")
 singlePoseDetector = pose_detector.PoseDetector()
 
 while cap.isOpened():

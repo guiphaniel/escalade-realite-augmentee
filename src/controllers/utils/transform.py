@@ -56,7 +56,7 @@ class Transform:
 
     def getTransformateLandmarks(self, tabPoints):
         for point in tabPoints.landmark:
-            tmp = np.dot(self.projectiveMatrix, [[point.x*640], [point.y*480], [1]])
+            tmp = np.dot(self.projectiveMatrix, [[point.x*1920], [point.y*1080], [1]])
             point.x = (tmp[0]/tmp[2])/1920
             point.y = (tmp[1] / tmp[2]) / 1080
 
