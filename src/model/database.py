@@ -25,16 +25,48 @@ class Database(Singleton):
     def __del__(self):
         self.__closeConnection()
 
+    # TODO: convert to setWallForUser()
+    def addWall(self, wall):
+        # check
+        if wall.id:
+            self.logger.warning("wall hasn't been initialized", stack_info=True)
+            return
+
+        # insert
+        cur = self.con.cursor()
+        cur.execute("insert into walls values(null, :name)",
+                    {"name": wall.name})
+        wall.id = cur.lastrowid
+
+        # set default name
+        if not wall.name:
+            wall.name = "Mur " + str(wall.id)
+            cur.execute("update walls set name=:name where id=:id",
+                        {"name": wall.name, "id": wall.id})
+
+    # TODO: convert to updateWallForUser()
+    def updateWall(self, wall):
+        # check
+        if not wall.id:
+            self.logger.warning("wall hasn't been initialized", stack_info=True)
+            return
+
+        # update
+        cur = self.con.cursor()
+        cur.execute("update walls set name=:name where id=:id",
+                    {"name": wall.name, "id":wall.id})
+        wall.id = cur.lastrowid
+
     def setHandlesInWall(self, handles: [Handle], wall):
         if not wall.id:
             self.logger.warning("wall hasn't been initialized", stack_info=True)
             return
 
-        #remove all handles that were previously in the db and that are no longer needed
+        # remove all handles that were previously in the db and that are no longer needed
         handlesIds = [handle.id for handle in handles if handle.id]
         cur = self.con.cursor()
         cur.execute("select id from handles where wallId=:wallId",
-                                         {"wallId": wall.id})
+                    {"wallId": wall.id})
         DbHandlesIds = cur.fetchall()
 
         handlesToRemove = [id[0] for id in DbHandlesIds if id[0] not in handlesIds]
