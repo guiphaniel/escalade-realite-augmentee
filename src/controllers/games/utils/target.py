@@ -20,8 +20,8 @@ class Target(pygame.sprite.Sprite):
     def draw(self):
         self.screen.blit(self.image, self.rect)
 
-    def collide(self,x,y):
-        if math.sqrt((x - self.center[0]) ** 2 + (y - self.center[1]) ** 2)<=self.radius:
+    def collide(self,polygon):
+        if polygon.colliderect(self.rect):
             self.image=pygame.transform.scale(pygame.image.load("controllers/games/sprites/success.png"),(50,50))
             return True
         return False

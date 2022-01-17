@@ -25,26 +25,23 @@ class PathGame(Game):
 
         handles = path.handles.copy()
 
+
         while running:
             pygame.display.flip()
             self.manager.screen.fill((0, 0, 0, 0))
-            pygame.draw.circle(self.manager.screen,(0,255,0),(1920,1080),50)
             if self.transfoResults:
                 for point in self.transfoResults.landmark:
                     pygame.draw.circle(self.manager.screen,(0,0,255),(point.x*1920,point.y*1080),10)
 
             for i in range(0,len(path.handles)):
-                pygame.draw.circle(self.manager.screen,(255,0,0),(path.handles[i].x,path.handles[i].y),radius)
+                pygame.draw.circle(self.manager.screen, (255, 0, 0), (path.handles[i].x, path.handles[i].y), radius)
                 text = self.font.render(str(i+1), True, (255,255,255))
                 self.manager.screen.blit(text, text.get_rect(center = (path.handles[i].x, path.handles[i].y)))
 
-            x, y = pygame.mouse.get_pos()
             playerPosition = self.getPlayerPosition()
 
             for position in playerPosition:
-                if position[0]<0 or position[1]<0:
-                    continue
-                if math.sqrt((position[0] - handles[0].x) ** 2 + (position[1] - handles[0].y) ** 2) < radius:
+                if position.colliderect(pygame.Rect(handles[0].x-radius,handles[0].y-radius,radius,radius)):
                     handlesSucceeded.append(handles[0])
                     handles.remove(handles[0])
                     score += 1

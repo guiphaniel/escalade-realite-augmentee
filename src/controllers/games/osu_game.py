@@ -26,18 +26,22 @@ class OsuGame(Game):
 
             for t in targets:
                 t.draw()
-                x, y = pygame.mouse.get_pos()
-                if t.collide(x,y):
+                if t.ticks + 5000 - pygame.time.get_ticks() <= 0:
                     targets.remove(t)
                     targetsDispawned.append(t)
-                    t.ticks=pygame.time.get_ticks()
-                    score+=1
-                    print(score)
-                elif t.ticks + 5000 - pygame.time.get_ticks() <=0:
-                    targets.remove(t)
-                    targetsDispawned.append(t)
-                    t.ticks=pygame.time.get_ticks()
+                    t.ticks = pygame.time.get_ticks()
                     t.failed()
+
+            positionPlayer = self.getPlayerPosition()
+
+            for position in positionPlayer:
+                for t in targets:
+                    if t.collide(position):
+                        targets.remove(t)
+                        targetsDispawned.append(t)
+                        t.ticks = pygame.time.get_ticks()
+                        score += 1
+                        print(score)
 
             for t in targetsDispawned:
                 t.draw()
@@ -45,6 +49,11 @@ class OsuGame(Game):
                     targetsDispawned.remove(t)
 
             for e in pygame.event.get():
+                if e.type == pygame.KEYDOWN:
+                    if e.key == pygame.K_ESCAPE:
+                        self.closeCam()
+                        running = False
                 if e.type == pygame.QUIT:
-                    running = False
+                    self.closeCam()
+                    running=False
                     pygame.quit()
