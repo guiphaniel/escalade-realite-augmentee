@@ -6,8 +6,8 @@ from src.controllers.games.utils.target import Target
 
 class OsuGame(Game):
 
-    def __init__(self, screen):
-        super().__init__(screen)
+    def __init__(self, manager):
+        super().__init__(manager)
 
     def execute(self):
         running = True
@@ -18,9 +18,9 @@ class OsuGame(Game):
         targetsDispawned = []
         while running:
             pygame.display.flip()
-            self.screen.fill((0, 0, 0, 0))
+            self.manager.screen.fill((0, 0, 0, 0))
             if (initTimeTarget + waitTimeTarget - pygame.time.get_ticks()) <= 0:
-                targets.append(Target(self.screen))
+                targets.append(Target(self.manager.screen))
                 initTimeTarget = pygame.time.get_ticks()
                 waitTimeTarget = random.randint(2000, 4000)
 

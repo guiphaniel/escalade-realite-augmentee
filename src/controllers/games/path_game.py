@@ -28,12 +28,12 @@ class PathGame(Game):
 
         while running:
             pygame.display.flip()
-            self.screen.fill((0, 0, 0, 0))
+            self.manager.screen.fill((0, 0, 0, 0))
 
             for i in range(0,len(path.handles)):
-                pygame.draw.circle(self.screen,(255,0,0),(path.handles[i].x,path.handles[i].y),radius)
+                pygame.draw.circle(self.manager.screen,(255,0,0),(path.handles[i].x,path.handles[i].y),radius)
                 text = self.font.render(str(i+1), True, (255,255,255))
-                self.screen.blit(text, text.get_rect(center = (path.handles[i].x, path.handles[i].y)))
+                self.manager.screen.blit(text, text.get_rect(center = (path.handles[i].x, path.handles[i].y)))
 
 
 
@@ -46,7 +46,7 @@ class PathGame(Game):
                 print(score)
 
             for h in handlesSucceeded:
-                pygame.draw.circle(self.screen,(0,255,0),(h.x,h.y),radius)
+                pygame.draw.circle(self.manager.screen,(0,255,0),(h.x,h.y),radius)
 
             if len(handles)==0:
                 running=False
@@ -60,11 +60,11 @@ class PathGame(Game):
         setup = True
         while setup:
             pygame.display.flip()
-            self.screen.fill((0, 0, 0, 0))
+            self.manager.screen.fill((0, 0, 0, 0))
             for i in range(0, len(path.handles)):
-                pygame.draw.circle(self.screen, (255, 0, 0), (path.handles[i].x, path.handles[i].y), radius)
+                pygame.draw.circle(self.manager.screen, (255, 0, 0), (path.handles[i].x, path.handles[i].y), radius)
                 text = self.font.render(str(i + 1), True, (255, 255, 255))
-                self.screen.blit(text, text.get_rect(center=(path.handles[i].x, path.handles[i].y)))
+                self.manager.screen.blit(text, text.get_rect(center=(path.handles[i].x, path.handles[i].y)))
             for e in pygame.event.get():
                 if e.type == pygame.MOUSEBUTTONDOWN:
                     x, y = pygame.mouse.get_pos()
