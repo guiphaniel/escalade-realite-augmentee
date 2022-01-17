@@ -7,6 +7,7 @@ class Player:
 
     # Initializing
     def __init__(self, pseudo = "no_name"):
+        self.id = None
         self.pseudo = pseudo
 
         
