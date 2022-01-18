@@ -1,10 +1,11 @@
 import threading
 import pygame
 import ctypes
-from src.view.utils.buttons.calibration_button import calibrationButton
+from src.view.utils.buttons.calibration_button import CalibrationButton
 from src.view.utils.buttons.osu_button import OsuButton
 from src.view.utils.buttons.parcours_button import ParcoursButton
-from src.view.utils.buttons.play_button import playButton
+from src.view.utils.buttons.play_button import PlayButton
+from src.view.utils.buttons.return_button import ReturnButton
 
 
 class Manager(threading.Thread):
@@ -15,6 +16,7 @@ class Manager(threading.Thread):
         self.height = height
         self.wallCalibration=None
         self.screen = None
+        self.gameMenu = False
 
     def run(self):
         ctypes.windll.user32.SetProcessDPIAware()
@@ -24,8 +26,8 @@ class Manager(threading.Thread):
 
         running = True
         background = pygame.image.load("view/images/background.png")
-        buttons = [playButton(self, "view/images/jouer.png", 300, 700),
-                   calibrationButton(self, "view/images/calibration.png", 300, 400)]
+        buttons = [PlayButton(self, "view/images/jouer.png", 300, 700),
+                   CalibrationButton(self, "view/images/calibration.png", 300, 400)]
         while running:
             self.screen.blit(background,(0,0))
             for b in buttons:
@@ -45,10 +47,11 @@ class Manager(threading.Thread):
         background = pygame.image.load("view/images/background.png")
 
         buttons = [OsuButton(self,"view/images/osu.png",300,400),
-                   ParcoursButton(self,"view/images/parcours.png",300,700)]
+                   ParcoursButton(self,"view/images/parcours.png",300,700),
+                   ReturnButton(self,"view/images/retour.png",1551,919)]
 
-        running = True
-        while running:
+        self.gameMenu = True
+        while self.gameMenu:
             self.screen.blit(background, (0, 0))
             for b in buttons:
                 self.screen.blit(b.image, b.rect)
@@ -56,12 +59,13 @@ class Manager(threading.Thread):
             for e in pygame.event.get():
                 if e.type == pygame.KEYDOWN:
                     if e.key == pygame.K_ESCAPE:
-                        running = False
+                        self.gameMenu = False
                 if e.type == pygame.QUIT:
-                    running = False
+                    self.gameMenu = False
                     pygame.quit()
                 if e.type == pygame.MOUSEBUTTONDOWN:
                     x, y = pygame.mouse.get_pos()
                     for b in buttons:
                         if b.rect.collidepoint(x, y):
                             b.pressed()
+

@@ -4,7 +4,7 @@ from src.controllers.utils.transform import Transform
 from src.view.utils.buttons.button import Button
 
 
-class calibrationButton(Button):
+class CalibrationButton(Button):
 
     def __init__(self, manager, pathImage, x, y):
         super().__init__(manager, pathImage, x, y)

@@ -25,7 +25,7 @@ class Game:
 
     def startCam(self):
         # For webcam input:
-        self.cap = cv2.VideoCapture(1,cv2.CAP_DSHOW)
+        self.cap = cv2.VideoCapture(1)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
         singlePoseDetector = pose_detector.PoseDetector()
