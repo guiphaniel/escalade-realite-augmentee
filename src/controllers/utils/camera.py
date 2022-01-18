@@ -1,9 +1,17 @@
-from src.Singleton import Singleton
+import cv2
 
 
-class Camera(Singleton):
-    def __init__(self):
-        self.cap = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+class Singleton(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+class Camera(metaclass=Singleton):
+    def __init__(self, camId: int):
+        self.cap = cv2.VideoCapture(camId, cv2.CAP_DSHOW)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
@@ -12,5 +20,3 @@ class Camera(Singleton):
 
     def read(self):
         return self.cap.read()
-
-
