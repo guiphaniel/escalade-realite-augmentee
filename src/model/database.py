@@ -77,7 +77,7 @@ class Database(Singleton):
         # add/update new/changed handles
         for handle in handles:
             if not handle.id:
-                self.__addHandleToWall(handle, wall)
+                self.__addHandleInWall(handle, wall)
             else:
                 self.__updateHandleInWall(handle, wall)
 
