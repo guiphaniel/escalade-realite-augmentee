@@ -1,6 +1,6 @@
-# TODO: communique avec la base de donnees. Recupere toutes les donnees au lancement,
-# et enregistre quand necessaire (scores en fin de partie, creation de nouveaux murs, parcours, joueurs...)
-# contient une liste de murs
+#TODO: gestion des joueurs + historique des parties
+
+# assumes that other devs won't put a handle in a path that is not in the same wall than path is
 # /!\ est un singloton
 import logging
 import sqlite3
@@ -24,8 +24,26 @@ class Database(Singleton):
     def __del__(self):
         self.__closeConnection()
 
-    # TODO: convert to setWallForUser()
-    def addWall(self, wall):
+    def setWalls(self, walls):
+        # remove all walls that were previously in the db and that are no longer needed
+        wallsIds = [wall.id for wall in walls if wall.id]
+        cur = self.con.cursor()
+        cur.execute("select id from walls")
+        DbWallsIds = cur.fetchall()
+
+        wallsToRemove = [id[0] for id in DbWallsIds if id[0] not in wallsIds]
+
+        for id in wallsToRemove:
+            cur.execute("delete from walls where id=:id", {"id": id})
+
+        # add/update new/changed walls
+        for wall in walls:
+            if not wall.id:
+                self.__addWall(wall)
+            else:
+                self.__updateWall(wall)
+
+    def __addWall(self, wall):
         # check
         if wall.id:
             self.logger.warning("wall hasn't been initialized", stack_info=True)
@@ -43,8 +61,7 @@ class Database(Singleton):
             cur.execute("update walls set name=:name where id=:id",
                         {"name": wall.name, "id": wall.id})
 
-    # TODO: convert to updateWallForUser()
-    def updateWall(self, wall):
+    def __updateWall(self, wall):
         # check
         if not wall.id:
             self.logger.warning("wall hasn't been initialized", stack_info=True)
@@ -54,7 +71,6 @@ class Database(Singleton):
         cur = self.con.cursor()
         cur.execute("update walls set name=:name where id=:id",
                     {"name": wall.name, "id":wall.id})
-        wall.id = cur.lastrowid
 
     def getWalls(self):
         cur = self.con.cursor()
@@ -123,7 +139,7 @@ class Database(Singleton):
         cur = self.con.cursor()
         cur.execute("update handles set x=:x, y=:y where id=:id", {"x": handle.x, "y": handle.y, "id": handle.id})
 
-    def setPathInWall(self, paths: [Path], wall):
+    def setPathsInWall(self, paths: [Path], wall):
         if not wall.id:
             self.logger.warning("wall hasn't been initialized", stack_info=True)
             return
@@ -182,7 +198,7 @@ class Database(Singleton):
 
         return paths
 
-    def setHandleInPath(self, handles: [Handle], path: Path):
+    def setHandlesInPath(self, handles: [Handle], path: Path):
         # if the path doesn't exist yet, warning
         if not path.id:
             self.logger.warning("path hasn't been initialized", stack_info=True)
