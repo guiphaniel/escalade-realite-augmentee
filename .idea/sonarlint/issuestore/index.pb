@@ -9,3 +9,7 @@ N
 src/model/components/player.py,9\6\96cea7edcb06a4d5d109c899cb77773d325c4e67
 ?
 src/__main__.py,d\6\d6201257858676308810923ea42452f32ae0109e
+N
+src/model/components/handle.py,6\8\688798207b590c3724d2fd7b12cff0e7ef35f565
+T
+$src/view/utils/buttons/osu_button.py,4\9\4969b1cd1ca65152702d4d71c2f3ef77eb970309

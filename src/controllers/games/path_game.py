@@ -25,7 +25,6 @@ class PathGame(Game):
 
         handles = path.handles.copy()
 
-
         while running:
             pygame.display.flip()
             self.manager.screen.fill((0, 0, 0, 0))
@@ -38,7 +37,7 @@ class PathGame(Game):
             playerPosition = self.getPlayerPosition()
 
             for position in playerPosition:
-                if position.colliderect(pygame.Rect(handles[0].x-radius,handles[0].y-radius,radius,radius)):
+                if position.colliderect(pygame.Rect(handles[0].x-radius,handles[0].y-radius,radius*2,radius*2)):
                     handlesSucceeded.append(handles[0])
                     handles.remove(handles[0])
                     score += 1

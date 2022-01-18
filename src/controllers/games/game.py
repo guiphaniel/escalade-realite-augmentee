@@ -25,7 +25,7 @@ class Game:
 
     def startCam(self):
         # For webcam input:
-        self.cap = cv2.VideoCapture(1)
+        self.cap = cv2.VideoCapture(1, cv2.CAP_DSHOW)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
         singlePoseDetector = pose_detector.PoseDetector()
@@ -53,8 +53,8 @@ class Game:
         if not self.transfoResults:
             return []
         landmark = self.transfoResults.landmark
-        playerPosition =  [pygame.draw.polygon(self.manager.screen,(0,0,255),((landmark[15].x * 1920,landmark[15].y * 1080),(landmark[17].x * 1920,landmark[17].y * 1080),(landmark[19].x * 1920,landmark[19].y * 1080))),
-                           pygame.draw.polygon(self.manager.screen,(0,0,255),((landmark[16].x * 1920,landmark[16].y * 1080),(landmark[18].x * 1920,landmark[18].y * 1080),(landmark[20].x * 1920,landmark[20].y * 1080))),
-                           pygame.draw.polygon(self.manager.screen,(0,0,255),((landmark[27].x * 1920,landmark[27].y * 1080),(landmark[29].x * 1920,landmark[29].y * 1080),(landmark[31].x * 1920,landmark[31].y * 1080))),
-                           pygame.draw.polygon(self.manager.screen,(0,0,255),((landmark[28].x * 1920,landmark[28].y * 1080),(landmark[30].x * 1920,landmark[30].y * 1080),(landmark[20].x * 1920,landmark[30].y * 1080)))]
+        playerPosition = [pygame.draw.polygon(self.manager.screen,(0,0,255),((landmark[15].x * 1920,landmark[15].y * 1080),(landmark[17].x * 1920,landmark[17].y * 1080),(landmark[19].x * 1920,landmark[19].y * 1080))),
+                          pygame.draw.polygon(self.manager.screen,(0,0,255),((landmark[16].x * 1920,landmark[16].y * 1080),(landmark[18].x * 1920,landmark[18].y * 1080),(landmark[20].x * 1920,landmark[20].y * 1080))),
+                          pygame.draw.polygon(self.manager.screen,(0,0,255),((landmark[27].x * 1920,landmark[27].y * 1080),(landmark[29].x * 1920,landmark[29].y * 1080),(landmark[31].x * 1920,landmark[31].y * 1080))),
+                          pygame.draw.polygon(self.manager.screen,(0,0,255),((landmark[28].x * 1920,landmark[28].y * 1080),(landmark[30].x * 1920,landmark[30].y * 1080),(landmark[20].x * 1920,landmark[30].y * 1080)))]
         return playerPosition
