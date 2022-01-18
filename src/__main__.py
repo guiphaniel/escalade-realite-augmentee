@@ -7,7 +7,5 @@ def processMenu():
     disp.start()
 
 processMenu()
-
 database = Database()
 database.insert("string", "value")
-
