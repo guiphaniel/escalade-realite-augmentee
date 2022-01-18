@@ -7,11 +7,8 @@ from src.model.components.wall import Wall
 from src.model.database import Database
 #
 
-cam = Camera(0)
-
 while True:
-    print("ratio")
-    success, img = cam.read()
+    success, img = Camera(1).read()
     if not success:
         continue
 

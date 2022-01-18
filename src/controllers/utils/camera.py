@@ -9,9 +9,10 @@ class Singleton(type):
             cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
 
+
 class Camera(metaclass=Singleton):
     def __init__(self, camId: int):
-        self.cap = cv2.VideoCapture(camId, cv2.CAP_DSHOW)
+        self.cap = cv2.VideoCapture(camId)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
