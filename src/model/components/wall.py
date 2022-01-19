@@ -1,4 +1,3 @@
-# TODO: stocke l'integralite des prises presentent sur la portion de mur, et les pistes associées
 from src.model.components.handle import Handle
 from src.model import database
 
@@ -11,6 +10,15 @@ class Wall:
         self.__paths = None
         self.__handles = None
 
+    def getPaths(self):
+        if not self.__paths:
+            self.__paths = database.Database().getPathsInWall(self)
+
+        return self.__paths
+
+    def setPaths(self, paths):
+        self.__paths = paths
+        database.Database().setPathsInWall(self.__paths, self)
 
     def getHandles(self):
         if not self.__handles:
