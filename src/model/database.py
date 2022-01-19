@@ -36,6 +36,10 @@ class Database(metaclass=Singleton):
         self.cur.execute("select id from handles")
         return [id[0] for id in self.cur.fetchall()]
 
+    def __getPlayersIdsInDb(self):
+        self.cur.execute("select id from players")
+        return [id[0] for id in self.cur.fetchall()]
+
     def setWalls(self, walls):
         DbWallsIds = self.__getWallsIdsInDb()
 
@@ -259,6 +263,54 @@ class Database(metaclass=Singleton):
             handles.append(handle)
 
         return handles
+
+    def setPlayers(self, players):
+        DbPlayersIds = self.__getPlayersIdsInDb()
+
+        # add/update new/changed players
+        for player in players:
+            if player.id not in DbPlayersIds:
+                self.__addPlayer(player)
+            else:
+                self.__updatePlayer(player)
+
+        # remove all players that were previously in the db and that are no longer needed
+        playersIds = [player.id for player in players if player.id]
+
+        playersToRemove = [id for id in DbPlayersIds if id not in playersIds]
+
+        for id in playersToRemove:
+            self.cur.execute("delete from players where id=:id", {"id": id})
+
+    def __addPlayer(self, player):
+        # insert
+        self.cur.execute("insert into players values(null, :pseudo)",
+                    {"pseudo": player.pseudo})
+        player.id = self.cur.lastrowid
+
+        # set default pseudo
+        if not player.pseudo:
+            player.pseudo = "Joueur " + str(player.id)
+            self.cur.execute("update players set pseudo=:pseudo where id=:id",
+                        {"pseudo": player.pseudo, "id": player.id})
+
+    def __updatePlayer(self, player):
+        # update
+        self.cur.execute("update players set pseudo=:pseudo where id=:id",
+                    {"pseudo": player.pseudo, "id":player.id})
+
+    def getPlayers(self):
+        self.cur.execute("select * from players")
+
+        result = self.cur.fetchall()
+
+        players = []
+        for p in result:
+            player = src.model.components.player.Player(p[1])
+            player.id = p[0]
+            players.append(player)
+
+        return players
 
     def __closeConnection(self):
         self.con.close()
