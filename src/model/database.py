@@ -1,7 +1,7 @@
 #TODO: gestion des joueurs + historique des parties
 
 # assumes that other devs won't put a handle in a path that is not in the same wall than path is
-# /!\ est un singloton
+# /!\ est un singleton
 import logging
 import sqlite3
 
@@ -13,7 +13,7 @@ from src.model.components.handle import Handle
 from src.model.components.path import Path
 
 
-class Database(Singleton):
+class Database(metaclass=Singleton):
     def __init__(self):
         self.logger = logging.getLogger('log')
         try:
@@ -21,62 +21,62 @@ class Database(Singleton):
         except Error as e:
             print(e)
 
+        self.cur = self.con.cursor()
+
     def __del__(self):
         self.__closeConnection()
 
+    def __getWallsIdsInDb(self):
+        self.cur.execute("select id from walls")
+        return [id[0] for id in self.cur.fetchall()]
+
+    def __getPathsIdsInDb(self):
+        self.cur.execute("select id from paths")
+        return [id[0] for id in self.cur.fetchall()]
+
+    def __getHandlesIdsInDb(self):
+        self.cur.execute("select id from handles")
+        return [id[0] for id in self.cur.fetchall()]
+
     def setWalls(self, walls):
-        # remove all walls that were previously in the db and that are no longer needed
-        wallsIds = [wall.id for wall in walls if wall.id]
-        cur = self.con.cursor()
-        cur.execute("select id from walls")
-        DbWallsIds = cur.fetchall()
-
-        wallsToRemove = [id[0] for id in DbWallsIds if id[0] not in wallsIds]
-
-        for id in wallsToRemove:
-            cur.execute("delete from walls where id=:id", {"id": id})
+        DbWallsIds = self.__getWallsIdsInDb()
 
         # add/update new/changed walls
         for wall in walls:
-            if not wall.id:
+            if wall.id not in DbWallsIds:
                 self.__addWall(wall)
             else:
                 self.__updateWall(wall)
 
-    def __addWall(self, wall):
-        # check
-        if wall.id:
-            self.logger.warning("wall hasn't been initialized", stack_info=True)
-            return
+        # remove all walls that were previously in the db and that are no longer needed
+        wallsIds = [wall.id for wall in walls if wall.id]
 
+        wallsToRemove = [id for id in DbWallsIds if id not in wallsIds]
+
+        for id in wallsToRemove:
+            self.cur.execute("delete from walls where id=:id", {"id": id})
+
+    def __addWall(self, wall):
         # insert
-        cur = self.con.cursor()
-        cur.execute("insert into walls values(null, :name)",
+        self.cur.execute("insert into walls values(null, :name)",
                     {"name": wall.name})
-        wall.id = cur.lastrowid
+        wall.id = self.cur.lastrowid
 
         # set default name
         if not wall.name:
             wall.name = "Mur " + str(wall.id)
-            cur.execute("update walls set name=:name where id=:id",
+            self.cur.execute("update walls set name=:name where id=:id",
                         {"name": wall.name, "id": wall.id})
 
     def __updateWall(self, wall):
-        # check
-        if not wall.id:
-            self.logger.warning("wall hasn't been initialized", stack_info=True)
-            return
-
         # update
-        cur = self.con.cursor()
-        cur.execute("update walls set name=:name where id=:id",
+        self.cur.execute("update walls set name=:name where id=:id",
                     {"name": wall.name, "id":wall.id})
 
     def getWalls(self):
-        cur = self.con.cursor()
-        cur.execute("select * from walls")
+        self.cur.execute("select * from walls")
 
-        result = cur.fetchall()
+        result = self.cur.fetchall()
 
         walls = []
         for w in result:
@@ -86,40 +86,15 @@ class Database(Singleton):
 
         return walls
 
-    def setHandlesInWall(self, handles: [Handle], wall):
-        if not wall.id:
-            self.logger.warning("wall hasn't been initialized", stack_info=True)
-            return
-
-        # remove all handles that were previously in the db and that are no longer needed
-        handlesIds = [handle.id for handle in handles if handle.id]
-        cur = self.con.cursor()
-        cur.execute("select id from handles where wallId=:wallId",
-                    {"wallId": wall.id})
-        DbHandlesIds = cur.fetchall()
-
-        handlesToRemove = [id[0] for id in DbHandlesIds if id[0] not in handlesIds]
-
-        for id in handlesToRemove:
-            cur.execute("delete from handles where id=:id", {"id": id})
-
-        # add/update new/changed handles
-        for handle in handles:
-            if not handle.id:
-                self.__addHandleInWall(handle, wall)
-            else:
-                self.__updateHandleInWall(handle, wall)
-
     def getHandlesInWall(self, wall):
         # if the wall doesn't exist yet, warning
         if not wall.id:
             self.logger.warning("wall hasn't been initialized", stack_info=True)
 
-        cur = self.con.cursor()
-        cur.execute("select * from handles where wallId=:wallId",
+        self.cur.execute("select * from handles where wallId=:wallId",
                     {"wallId": wall.id})
 
-        result = cur.fetchall()
+        result = self.cur.fetchall()
 
         handles = []
         for h in result:
@@ -129,66 +104,82 @@ class Database(Singleton):
 
         return handles
 
-    def __addHandleInWall(self, handle: Handle, wall):
-        cur = self.con.cursor()
-        cur.execute("insert into handles values(null, :x, :y, :wallId)",
-                    {"x": handle.x, "y": handle.y, "wallId": wall.id})
-        handle.id = cur.lastrowid
-
-    def __updateHandleInWall(self, handle):
-        cur = self.con.cursor()
-        cur.execute("update handles set x=:x, y=:y where id=:id", {"x": handle.x, "y": handle.y, "id": handle.id})
-
-    def setPathsInWall(self, paths: [Path], wall):
-        if not wall.id:
+    def setHandlesInWall(self, handles: [Handle], wall):
+        if wall.id not in self.__getWallsIdsInDb():
             self.logger.warning("wall hasn't been initialized", stack_info=True)
             return
 
+        handlesIdsInDb = self.__getHandlesIdsInDb()
+
+        # add/update new/changed handles
+        for handle in handles:
+            if handle.id not in handlesIdsInDb:
+                self.__addHandleInWall(handle, wall)
+            else:
+                self.__updateHandleInWall(handle, wall)
+
+        # remove all handles that were previously in the db and that are no longer needed
+        handlesIds = [handle.id for handle in handles]
+
+        handlesToRemove = [id for id in handlesIdsInDb if id not in handlesIds]
+
+        for id in handlesToRemove:
+            self.cur.execute("delete from handles where id=:id", {"id": id})
+
+    def __addHandleInWall(self, handle: Handle, wall):
+        self.cur.execute("insert into handles values(null, :x, :y, :wallId)",
+                    {"x": handle.x, "y": handle.y, "wallId": wall.id})
+        handle.id = self.cur.lastrowid
+
+    def __updateHandleInWall(self, handle):
+        self.cur.execute("update handles set x=:x, y=:y where id=:id", {"x": handle.x, "y": handle.y, "id": handle.id})
+
+    def setPathsInWall(self, paths: [Path], wall):
+        if wall.id not in self.__getWallsIdsInDb():
+            self.logger.warning("wall hasn't been initialized", stack_info=True)
+            return
+
+        pathsIdsInDb = self.__getPathsIdsInDb()
+
         # remove all paths that were previously in the db and that are no longer needed
         pathsIds = [path.id for path in paths if path.id]
-        cur = self.con.cursor()
-        cur.execute("select id from paths where wallId=:wallId",
-                    {"wallId": wall.id})
-        DbPathsIds = cur.fetchall()
 
-        pathsToRemove = [id[0] for id in DbPathsIds if id[0] not in pathsIds]
+        pathsToRemove = [id for id in pathsIdsInDb if id not in pathsIds]
 
         for id in pathsToRemove:
-            cur.execute("delete from paths where id=:id", {"id": id})
+            self.cur.execute("delete from paths where id=:id", {"id": id})
+            self.cur.execute("delete from pathsHandles where pathId=:pathId", {"pathId": id}) #must do that because on delete cascade doesn't work with python
 
         # add/update new/changed paths
         for path in paths:
-            if not path.id:
+            if path.id not in pathsIdsInDb:
                 self.__addPathInWall(path, wall)
             else:
                 self.__updatePathInWall(path, wall)
 
     def __addPathInWall(self, path: Path, wall):
-        cur = self.con.cursor()
-        cur.execute("insert into paths values(null, :name, :wallId)",
+        self.cur.execute("insert into paths values(null, :name, :wallId)",
                     {"name": path.name, "wallId": wall.id})
-        path.id = cur.lastrowid
+        path.id = self.cur.lastrowid
 
         # set default name
         if not path.name:
             path.name = "Parcours " + str(path.id)
-            cur.execute("update paths set name=:name where id=:id",
+            self.cur.execute("update paths set name=:name where id=:id",
                         {"name": path.name, "id": path.id})
 
     def __updatePathInWall(self, path):
-        cur = self.con.cursor()
-        cur.execute("update paths set name=:name where id=:id", {"name": path.name})
+        self.cur.execute("update paths set name=:name where id=:id", {"name": path.name})
 
     def getPathInWall(self, wall):
         # if the wall doesn't exist yet, warning
-        if not wall.id:
+        if wall.id not in self.__getWallsIdsInDb():
             self.logger.warning("wall hasn't been initialized", stack_info=True)
 
-        cur = self.con.cursor()
-        cur.execute("select id, name from paths where wallId=:wallId",
+        self.cur.execute("select id, name from paths where wallId=:wallId",
                     {"wallId": wall.id})
 
-        result = cur.fetchall()
+        result = self.cur.fetchall()
 
         paths = []
         for p in result:
@@ -198,73 +189,69 @@ class Database(Singleton):
 
         return paths
 
+    #TODO: corriger bug: table pathsHanldes non remplie
     def setHandlesInPath(self, handles: [Handle], path: Path):
+        handlesIds = [handle.id for handle in handles]
+
         # if the path doesn't exist yet, warning
-        if not path.id:
+        if path.id not in self.__getPathsIdsInDb():
             self.logger.warning("path hasn't been initialized", stack_info=True)
             return
 
-        # initialize cursor
-        cur = self.con.cursor()
+        self.cur.execute("select handleId from pathsHandles where pathId=:pathId",
+                    {"pathId": path.id})
+        handlesIdsInDb = [id[0] for id in self.cur.fetchall()]
 
         # add handle to wall in db if it does not exist yet (random point)
         for handle in handles:
-            if not handle.id:
+            if handle.id not in self.__getHandlesIdsInDb():
                 # get wall id of the path
-                cur.execute("select wallId from paths where id=:id",
+                self.cur.execute("select wallId from paths where id=:id",
                             {"id": path.id})
-                wall = wall.Wall()
-                wall.id = cur.fetchone()[0]
+                wall = src.model.components.wall.Wall()
+                wall.id = self.cur.fetchone()[0]
 
                 self.__addHandleInWall(handle, wall)
 
-        # remove all handles from path that were previously in the db and that are no longer needed
-        handlesIds = [handle.id for handle in handles]
-        cur = self.con.cursor()
-        cur.execute("select handleId from pathsHandles where pathId=:pathId",
-                    {"pathId": path.id})
-        DbHandlesIds = [id[0] for id in cur.fetchall()]
-
-        handlesToRemove = [id for id in DbHandlesIds if id not in handlesIds]
-
-        for id in handlesToRemove:
-            cur.execute("delete from pathsHandles where pathId=:pathId and handleId=:handleId", {"pathId": path.id, "handleId": id})
-
         # add new handles to path
-        handlesToAdd = [id for id in handlesIds if id not in DbHandlesIds]
+        handlesToAdd = [id for id in handlesIds if id not in handlesIdsInDb]
         rank = 0
         for handle in handlesToAdd:
             self.__addHandleInPath(handle, path, rank)
             rank = rank + 1
 
         # update changed handles in path
-        handlesToUpdate = [id for id in DbHandlesIds if id in handlesIds]
+        handlesToUpdate = [handle for handle in handles if handle.id in handlesIdsInDb]
         rank = 0
         for handle in handlesToUpdate:
             self.__updateHandleInPath(handle, path, rank)
             rank = rank + 1
 
+        # remove all handles from path that were previously in the db and that are no longer needed
+        handlesToRemove = [id for id in handlesIdsInDb if id not in handlesIds]
+
+        for id in handlesToRemove:
+            self.cur.execute("delete from pathsHandles where pathId=:pathId and handleId=:handleId",
+                             {"pathId": path.id, "handleId": id})
+
     def __addHandleInPath(self, handleId, path, rank: int):
-        cur = self.con.cursor()
-        cur.execute("insert into pathsHandles values(:pathId, :handleId, :rank)",
+        self.cur.execute("insert into pathsHandles values(:pathId, :handleId, :rank)",
                     {"pathId": path.id, "handleId": handleId, "rank": rank})
 
     def __updateHandleInPath(self, handle: Handle, path: Path, rank):
-        cur = self.con.cursor()
-        cur.execute("update handles set x=:x, y=:y where id=:id", {"x": handle.x, "y": handle.y, "id": handle.id})
-        cur.execute("update pathsHandles set rank=:rank where pathId=:pathId and handleId=:HandleId",
-                    {"rank": rank, "pathId": path.id})
+        self.cur.execute("update handles set x=:x, y=:y where id=:id", {"x": handle.x, "y": handle.y, "id": handle.id})
+        self.cur.execute("update pathsHandles set rank=:rank where pathId=:pathId and handleId=:handleId",
+                    {"rank": rank, "pathId": path.id, "handleId": handle.id})
 
     def getHandlesInPath(self, path):
-        if not path.id:
+        if path.id not in self.__getPathsIdsInDb():
             self.logger.warning("path hasn't been initialized", stack_info=True)
             return
 
-        cur = self.con.cursor()
-        cur.execute("select handleId, x, y from pathsHandles as ph inner join handles as h on h.id = ph.handleId where pathId = :pathId order by rank",
+        self.cur.execute("select handleId, x, y from pathsHandles as ph inner join handles as h on h.id = ph.handleId where pathId = :pathId order by rank",
                     {"pathId": path.id})
 
-        result = cur.fetchall()
+        result = self.cur.fetchall()
 
         handles = []
         for h in result:
