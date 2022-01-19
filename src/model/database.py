@@ -9,8 +9,6 @@ from absl.app import Error
 
 import src
 from src.Singleton import Singleton
-from src.model.components.handle import Handle
-from src.model.components.path import Path
 
 
 class Database(metaclass=Singleton):
@@ -104,7 +102,7 @@ class Database(metaclass=Singleton):
 
         return handles
 
-    def setHandlesInWall(self, handles: [Handle], wall):
+    def setHandlesInWall(self, handles, wall):
         if wall.id not in self.__getWallsIdsInDb():
             self.logger.warning("wall hasn't been initialized", stack_info=True)
             return
@@ -126,7 +124,7 @@ class Database(metaclass=Singleton):
         for id in handlesToRemove:
             self.cur.execute("delete from handles where id=:id", {"id": id})
 
-    def __addHandleInWall(self, handle: Handle, wall):
+    def __addHandleInWall(self, handle, wall):
         self.cur.execute("insert into handles values(null, :x, :y, :wallId)",
                     {"x": handle.x, "y": handle.y, "wallId": wall.id})
         handle.id = self.cur.lastrowid
@@ -134,7 +132,7 @@ class Database(metaclass=Singleton):
     def __updateHandleInWall(self, handle):
         self.cur.execute("update handles set x=:x, y=:y where id=:id", {"x": handle.x, "y": handle.y, "id": handle.id})
 
-    def setPathsInWall(self, paths: [Path], wall):
+    def setPathsInWall(self, paths, wall):
         if wall.id not in self.__getWallsIdsInDb():
             self.logger.warning("wall hasn't been initialized", stack_info=True)
             return
@@ -157,7 +155,7 @@ class Database(metaclass=Singleton):
             else:
                 self.__updatePathInWall(path, wall)
 
-    def __addPathInWall(self, path: Path, wall):
+    def __addPathInWall(self, path, wall):
         self.cur.execute("insert into paths values(null, :name, :wallId)",
                     {"name": path.name, "wallId": wall.id})
         path.id = self.cur.lastrowid
@@ -189,7 +187,7 @@ class Database(metaclass=Singleton):
 
         return paths
 
-    def setHandlesInPath(self, handles: [Handle], path: Path):
+    def setHandlesInPath(self, handles, path):
         # if the path doesn't exist yet, warning
         if path.id not in self.__getPathsIdsInDb():
             self.logger.warning("path hasn't been initialized", stack_info=True)
@@ -239,7 +237,7 @@ class Database(metaclass=Singleton):
         self.cur.execute("insert into pathsHandles values(:pathId, :handleId, :rank)",
                     {"pathId": path.id, "handleId": handleId, "rank": rank})
 
-    def __updateHandleInPath(self, handle: Handle, path: Path, rank):
+    def __updateHandleInPath(self, handle, path, rank):
         self.cur.execute("update handles set x=:x, y=:y where id=:id", {"x": handle.x, "y": handle.y, "id": handle.id})
         self.cur.execute("update pathsHandles set rank=:rank where pathId=:pathId and handleId=:handleId",
                     {"rank": rank, "pathId": path.id, "handleId": handle.id})
