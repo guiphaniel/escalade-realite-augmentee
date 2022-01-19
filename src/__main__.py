@@ -14,6 +14,4 @@ def processMenu():
 
 processMenu()
 
-database = Database()
-database.insert("string", "value")
 
