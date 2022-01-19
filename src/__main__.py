@@ -5,18 +5,15 @@ from src.model.components.handle import Handle
 from src.model.components.path import Path
 from src.model.components.wall import Wall
 from src.model.database import Database
-#
+from src.model.database import Database
+from src.view.manager import Manager
 
-while True:
-    success, img = Camera(1).read()
-    if not success:
-        continue
+def processMenu():
+    disp = Manager(1920,1080)
+    disp.start()
 
-    cv2.imshow('camera', img)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+processMenu()
 
-cv2.destroyAllWindows()
-
-
+database = Database()
+database.insert("string", "value")
 
