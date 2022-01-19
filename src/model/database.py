@@ -96,7 +96,7 @@ class Database(metaclass=Singleton):
 
         handles = []
         for h in result:
-            handle = Handle(h[1], h[2])
+            handle = src.model.components.handle.Handle(h[1], h[2])
             handle.id = h[0]
             handles.append(handle)
 
@@ -181,7 +181,7 @@ class Database(metaclass=Singleton):
 
         paths = []
         for p in result:
-            path = Path(p[1])
+            path = src.model.components.path.Path(p[1])
             path.id = p[0]
             paths.append(path)
 
@@ -254,7 +254,7 @@ class Database(metaclass=Singleton):
 
         handles = []
         for h in result:
-            handle = Handle(h[1], h[2])
+            handle = src.model.components.handle.Handle(h[1], h[2])
             handle.id = h[0]
             handles.append(handle)
 
