@@ -2,6 +2,7 @@ import threading
 import pygame
 import ctypes
 from src.view.utils.buttons.calibration_button import CalibrationButton
+from src.view.utils.buttons.handle_detection_button import HandleDetectorButton
 from src.view.utils.buttons.osu_button import OsuButton
 from src.view.utils.buttons.parcours_button import ParcoursButton
 from src.view.utils.buttons.play_button import PlayButton
@@ -48,7 +49,9 @@ class Manager(threading.Thread):
 
         buttons = [OsuButton(self,"view/images/osu.png",300,400),
                    ParcoursButton(self,"view/images/parcours.png",300,700),
-                   ReturnButton(self,"view/images/retour.png",1551,919)]
+                   ReturnButton(self,"view/images/retour.png",1551,919),
+                   HandleDetectorButton(self,"view/images/retour.png", 900,500)
+                   ]
 
         self.gameMenu = True
         while self.gameMenu:

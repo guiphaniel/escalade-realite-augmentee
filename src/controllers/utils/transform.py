@@ -58,3 +58,15 @@ class Transform:
             point.x = (tmp[0] / tmp[2]) / 1920
             point.y = (tmp[1] / tmp[2]) / 1080
         return tabPoints
+    def getTransformateKeypoints(self, tabKeyPoints):
+        a = []
+
+        for image in tabKeyPoints:
+            for point in image:
+                tmp = np.dot(self.projectiveMatrix, [[point.pt[0] * 1920], [point.pt[1] * 1080], [1]])
+                a.append((tmp[0] / tmp[2]) / 1920)
+                a.append((tmp[1] / tmp[2]) / 1080)
+                monTuple = (a[0][0], a[1][0]);
+                point.pt = monTuple
+
+        return tabKeyPoints

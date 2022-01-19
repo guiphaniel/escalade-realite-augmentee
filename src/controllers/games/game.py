@@ -6,6 +6,7 @@ import mediapipe as mp
 import cv2
 import pygame.draw
 
+from src.controllers.utils.camera import Camera
 from src.controllers.utils.detectors import pose_detector
 
 
@@ -15,6 +16,7 @@ class Game:
     @abstractmethod
     def __init__(self,manager):
         self.manager=manager
+        self.continueGame=False
         self.transfoResults=None
         self.cap=None
         th = threading.Thread(target=self.startCam)
@@ -26,12 +28,11 @@ class Game:
 
     def startCam(self):
         # For webcam input:
-        self.cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
-        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+        self.cap = Camera(1)
+        self.continueGame=True
         singlePoseDetector = pose_detector.PoseDetector()
 
-        while self.cap.isOpened():
+        while self.continueGame:
             success, image = self.cap.read()
             if not success:
                 print("Ignoring empty camera frame.")
@@ -48,7 +49,7 @@ class Game:
         del singlePoseDetector
 
     def closeCam(self):
-        self.cap.release()
+        self.continueGame=False
 
     def getPlayerPosition(self):
         if not self.transfoResults:
