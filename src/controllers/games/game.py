@@ -52,11 +52,22 @@ class Game:
         self.continueGame=False
 
     def getPlayerPosition(self):
-        if not self.transfoResults:
-            return []
-        landmark = self.transfoResults.landmark
-        playerPosition = [pygame.draw.polygon(self.manager.screen,(0,0,255),((landmark[15].x * 1920,landmark[15].y * 1080),(landmark[17].x * 1920,landmark[17].y * 1080),(landmark[19].x * 1920,landmark[19].y * 1080))),
-                          pygame.draw.polygon(self.manager.screen,(0,0,255),((landmark[16].x * 1920,landmark[16].y * 1080),(landmark[18].x * 1920,landmark[18].y * 1080),(landmark[20].x * 1920,landmark[20].y * 1080))),
-                          pygame.draw.polygon(self.manager.screen,(0,0,255),((landmark[27].x * 1920,landmark[27].y * 1080),(landmark[29].x * 1920,landmark[29].y * 1080),(landmark[31].x * 1920,landmark[31].y * 1080))),
-                          pygame.draw.polygon(self.manager.screen,(0,0,255),((landmark[28].x * 1920,landmark[28].y * 1080),(landmark[30].x * 1920,landmark[30].y * 1080),(landmark[32].x * 1920,landmark[32].y * 1080)))]
-        return playerPosition
+        if self.transfoResults:
+            landmark = self.transfoResults.landmark
+            playerPosition = [pygame.draw.polygon(self.manager.screen, (0, 0, 255), (
+            (landmark[15].x * 1920, landmark[15].y * 1080), (landmark[17].x * 1920, landmark[17].y * 1080),
+            (landmark[19].x * 1920, landmark[19].y * 1080))),
+                              pygame.draw.polygon(self.manager.screen, (0, 0, 255), (
+                              (landmark[16].x * 1920, landmark[16].y * 1080),
+                              (landmark[18].x * 1920, landmark[18].y * 1080),
+                              (landmark[20].x * 1920, landmark[20].y * 1080))),
+                              pygame.draw.polygon(self.manager.screen, (0, 0, 255), (
+                              (landmark[27].x * 1920, landmark[27].y * 1080),
+                              (landmark[29].x * 1920, landmark[29].y * 1080),
+                              (landmark[31].x * 1920, landmark[31].y * 1080))),
+                              pygame.draw.polygon(self.manager.screen, (0, 0, 255), (
+                              (landmark[28].x * 1920, landmark[28].y * 1080),
+                              (landmark[30].x * 1920, landmark[30].y * 1080),
+                              (landmark[32].x * 1920, landmark[32].y * 1080)))]
+            return playerPosition
+        return []

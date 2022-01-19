@@ -20,14 +20,14 @@ class Ball(pygame.sprite.Sprite):
         if self.rect.y <= 0 :
             self.vector[1] = abs(self.vector[1])
 
-        elif self.rect.y >= self.area.height:
+        elif self.rect.y + self.rect.height>= self.area.height:
             self.vector[1] = abs(self.vector[1])*-1
 
     def collideGoal(self):
         if self.rect.x <= 0 :
             self.vector[0] = abs(self.vector[0])
 
-        elif self.rect.x >= self.area.width:
+        elif self.rect.x +self.rect.width>= self.area.width:
             self.vector[0] = abs(self.vector[0])*-1
         #if self.rect.x<=0 or self.rect.x>=self.area.width:
             #self.spawn()

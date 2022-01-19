@@ -6,6 +6,7 @@ from src.view.utils.buttons.handle_detection_button import HandleDetectorButton
 from src.view.utils.buttons.osu_button import OsuButton
 from src.view.utils.buttons.parcours_button import ParcoursButton
 from src.view.utils.buttons.play_button import PlayButton
+from src.view.utils.buttons.pong_button import PongButton
 from src.view.utils.buttons.return_button import ReturnButton
 
 
@@ -49,8 +50,9 @@ class Manager(threading.Thread):
 
         buttons = [OsuButton(self,"view/images/osu.png",300,400),
                    ParcoursButton(self,"view/images/parcours.png",300,700),
+                   PongButton(self,"view/images/pong.png",300,100),
                    ReturnButton(self,"view/images/retour.png",1551,919),
-                   HandleDetectorButton(self,"view/images/retour.png", 900,500)
+                   HandleDetectorButton(self,"view/images/detection.png", 900,550)
                    ]
 
         self.gameMenu = True
