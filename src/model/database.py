@@ -189,14 +189,15 @@ class Database(metaclass=Singleton):
 
         return paths
 
-    #TODO: corriger bug: table pathsHanldes non remplie
     def setHandlesInPath(self, handles: [Handle], path: Path):
-        handlesIds = [handle.id for handle in handles]
-
         # if the path doesn't exist yet, warning
         if path.id not in self.__getPathsIdsInDb():
             self.logger.warning("path hasn't been initialized", stack_info=True)
             return
+
+        # TODO: verifier que les wallid des prises sont bien egaux au wallid du path, sinon, error
+
+        handlesIds = [handle.id for handle in handles]
 
         self.cur.execute("select handleId from pathsHandles where pathId=:pathId",
                     {"pathId": path.id})
