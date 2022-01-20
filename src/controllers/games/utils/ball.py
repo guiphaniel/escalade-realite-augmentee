@@ -75,3 +75,9 @@ class Ball(pygame.sprite.Sprite):
         while(pygame.time.get_ticks()<time+500):
             pass
         self.intangible = False
+
+    def goalLeft(self):
+        return self.rect.x <= 0
+
+    def goalRight(self):
+        return self.rect.x +self.rect.width>= self.area.width
