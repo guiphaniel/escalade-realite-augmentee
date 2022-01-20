@@ -16,6 +16,7 @@ class Database(metaclass=Singleton):
         self.logger = logging.getLogger('log')
         try:
             self.con = sqlite3.connect("database.db", isolation_level=None)
+            self.con.execute("PRAGMA foreign_keys = ON")
         except Error as e:
             print(e)
 
@@ -30,6 +31,13 @@ class Database(metaclass=Singleton):
 
     def __getPathsIdsInDb(self):
         self.cur.execute("select id from paths")
+        return [id[0] for id in self.cur.fetchall()]
+
+    def __getPathsIdsInWall(self, wall):
+        if not wall:
+            self.cur.execute("select id from paths where wallId is null")
+        else:
+            self.cur.execute("select id from paths where wallId = :wallId", {"wallId":wall.id})
         return [id[0] for id in self.cur.fetchall()]
 
     def __getHandlesIdsInDb(self):
@@ -137,27 +145,49 @@ class Database(metaclass=Singleton):
         self.cur.execute("update handles set x=:x, y=:y where id=:id", {"x": handle.x, "y": handle.y, "id": handle.id})
 
     def setPathsInWall(self, paths, wall):
-        if wall.id not in self.__getWallsIdsInDb():
+        # for paths that are not in a wall (free path)
+        if not wall:
+            pathsIdsInDb = self.__getPathsIdsInWall(None)
+
+            # remove all paths that were previously in the db and that are no longer needed
+            pathsIds = [path.id for path in paths if path.id]
+
+            pathsToRemove = [id for id in pathsIdsInDb if id not in pathsIds]
+
+            for id in pathsToRemove:
+                self.cur.execute("delete from paths where id=:id", {"id": id})
+
+            # add/update new/changed paths
+            dummyWall = src.model.components.wall.Wall()  # create dummy wall with id = None
+            for path in paths:
+                if path.id not in pathsIdsInDb:
+                    self.__addPathInWall(path, dummyWall)
+                else:
+                    self.__updatePathInWall(path, dummyWall)
+
+        # check if wall exists
+        elif wall.id not in self.__getWallsIdsInDb():
             self.logger.warning("wall hasn't been initialized", stack_info=True)
             return
 
-        pathsIdsInDb = self.__getPathsIdsInDb()
+        # for paths that are in a wall (wall path)
+        else:
+            pathsIdsInDb = self.__getPathsIdsInWall(wall)
 
-        # remove all paths that were previously in the db and that are no longer needed
-        pathsIds = [path.id for path in paths if path.id]
+            # remove all paths that were previously in the db and that are no longer needed
+            pathsIds = [path.id for path in paths if path.id]
 
-        pathsToRemove = [id for id in pathsIdsInDb if id not in pathsIds]
+            pathsToRemove = [id for id in pathsIdsInDb if id not in pathsIds]
 
-        for id in pathsToRemove:
-            self.cur.execute("delete from paths where id=:id", {"id": id})
-            self.cur.execute("delete from pathsHandles where pathId=:pathId", {"pathId": id}) #must do that because on delete cascade doesn't work with python
+            for id in pathsToRemove:
+                self.cur.execute("delete from paths where id=:id", {"id": id})
 
-        # add/update new/changed paths
-        for path in paths:
-            if path.id not in pathsIdsInDb:
-                self.__addPathInWall(path, wall)
-            else:
-                self.__updatePathInWall(path, wall)
+            # add/update new/changed paths
+            for path in paths:
+                if path.id not in pathsIdsInDb:
+                    self.__addPathInWall(path, wall)
+                else:
+                    self.__updatePathInWall(path, wall)
 
     def __addPathInWall(self, path, wall):
         self.cur.execute("insert into paths values(null, :name, :wallId)",
@@ -174,8 +204,11 @@ class Database(metaclass=Singleton):
         self.cur.execute("update paths set name=:name where id=:id", {"name": path.name})
 
     def getPathInWall(self, wall):
+        # free paths
+        if not wall:
+            self.cur.execute("select id, name from paths where wallId is null")
         # if the wall doesn't exist yet, warning
-        if wall.id not in self.__getWallsIdsInDb():
+        elif wall.id not in self.__getWallsIdsInDb():
             self.logger.warning("wall hasn't been initialized", stack_info=True)
 
         self.cur.execute("select id, name from paths where wallId=:wallId",
@@ -205,18 +238,21 @@ class Database(metaclass=Singleton):
                     {"pathId": path.id})
         handlesIdsInDb = [id[0] for id in self.cur.fetchall()]
 
-        # add handle to wall in db if it does not exist yet (random point)
+        # remove all handles from path that were previously in the db and that are no longer needed
+        handlesToRemove = [id for id in handlesIdsInDb if id not in handlesIds]
+
+        for id in handlesToRemove:
+            self.cur.execute("delete from pathsHandles where pathId=:pathId and handleId=:handleId",
+                             {"pathId": path.id, "handleId": id})
+
+        # add handle in db if it does not exist yet (free path)
         for handle in handles:
             if handle.id not in self.__getHandlesIdsInDb():
-                # get wall id of the path
-                self.cur.execute("select wallId from paths where id=:id",
-                            {"id": path.id})
-                wall = src.model.components.wall.Wall()
-                wall.id = self.cur.fetchone()[0]
-
+                wall = src.model.components.wall.Wall() #dummy wall
                 self.__addHandleInWall(handle, wall)
 
         # add new handles to path
+        handlesIds = [handle.id for handle in handles]
         handlesToAdd = [id for id in handlesIds if id not in handlesIdsInDb]
         rank = 0
         for handle in handlesToAdd:
@@ -229,13 +265,6 @@ class Database(metaclass=Singleton):
         for handle in handlesToUpdate:
             self.__updateHandleInPath(handle, path, rank)
             rank = rank + 1
-
-        # remove all handles from path that were previously in the db and that are no longer needed
-        handlesToRemove = [id for id in handlesIdsInDb if id not in handlesIds]
-
-        for id in handlesToRemove:
-            self.cur.execute("delete from pathsHandles where pathId=:pathId and handleId=:handleId",
-                             {"pathId": path.id, "handleId": id})
 
     def __addHandleInPath(self, handleId, path, rank: int):
         self.cur.execute("insert into pathsHandles values(:pathId, :handleId, :rank)",
