@@ -341,5 +341,12 @@ class Database(metaclass=Singleton):
 
         return players
 
+    def saveScore(self, path, player, gameId, score):
+        # if the wall doesn't exist yet, warning
+        if not player.id:
+            self.logger.warning("player hasn't been initialized", stack_info=True)
+
+        self.cur.execute("insert into history values(:pathId, :playerId, :game, :score, strftime('%s', 'now'))", {path.id if path else "null", player.id, gameId, score})
+
     def __closeConnection(self):
         self.con.close()
