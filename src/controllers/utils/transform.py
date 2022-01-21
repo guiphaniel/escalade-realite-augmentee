@@ -53,10 +53,15 @@ class Transform:
         print("Calibration rÃ©ussite")  # trop fort
 
     def getTransformateLandmarks(self, tabPoints):
-        for point in tabPoints.landmark:
-            tmp = np.dot(self.projectiveMatrix, [[point.x * 1920], [point.y * 1080], [1]])
-            point.x = (tmp[0] / tmp[2]) / 1920
-            point.y = (tmp[1] / tmp[2]) / 1080
+
+        for i in [15,16,17,18,19,20,21,22,27,28,29,30,31,32]:
+            tmp = np.dot(self.projectiveMatrix, [[tabPoints.landmark[i].x * 1920], [tabPoints.landmark[i].y * 1080], [1]])
+            tabPoints.landmark[i].x = (tmp[0] / tmp[2]) / 1920
+            tabPoints.landmark[i].y = (tmp[1] / tmp[2]) / 1080
+        #for point in tabPoints.landmark:
+        #    tmp = np.dot(self.projectiveMatrix, [[point.x * 1920], [point.y * 1080], [1]])
+        #    point.x = (tmp[0] / tmp[2]) / 1920
+        #    point.y = (tmp[1] / tmp[2]) / 1080
         return tabPoints
     def getTransformateKeypoints(self, tabKeyPoints):
         a = []

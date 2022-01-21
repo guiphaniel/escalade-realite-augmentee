@@ -9,7 +9,7 @@ from src.model.components.path import Path
 class PathGame(Game):
 
     def __init__(self, screen):
-        super().__init__(screen)
+        super().__init__(screen,1)
         self.font=pygame.font.SysFont(None, 24)
 
     def execute(self):
@@ -55,7 +55,7 @@ class PathGame(Game):
                 if e.type == pygame.QUIT:
                     running = False
                     self.closeCam()
-                    pygame.quit()
+                    self.manager.running = False
 
     def setupParcours(self,path,radius):
         setup = True
@@ -75,4 +75,4 @@ class PathGame(Game):
                         setup = False
                 if e.type == pygame.QUIT:
                     setup = False
-                    pygame.quit()
+                    self.manager.running = False
