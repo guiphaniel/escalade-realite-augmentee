@@ -20,7 +20,6 @@ class PoseDetector:
         cv2.cvtColor(image, cv2.COLOR_BGR2RGB, image)
         results = self.pose.process(image)
         image.flags.writeable = True
-        cv2.cvtColor(image, cv2.COLOR_RGB2BGR, image)
         if results.pose_landmarks:
             self.storedLandmarks = results.pose_landmarks
         return self.storedLandmarks
