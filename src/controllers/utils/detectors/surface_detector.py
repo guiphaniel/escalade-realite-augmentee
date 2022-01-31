@@ -18,7 +18,7 @@ class Surface:
         validCapRead=False
 
         while(validCapRead==False):
-            validCapRead, img2 = Camera(1).read()
+            validCapRead, img2 = Camera().read()
         print("camera calibration valide")
         #cv2.destroyWindow('Calibration')
 

@@ -35,7 +35,7 @@ class Game:
 
     def startSingleMediaPipe(self):
         # For webcam input:
-        self.cap = Camera(1)
+        self.cap = Camera()
         self.continueGame=True
         singlePoseDetector = pose_detector.PoseDetector()
 
@@ -57,7 +57,7 @@ class Game:
 
     def startMultiMediaPipe(self):
         # For webcam input:
-        self.cap = Camera(1)
+        self.cap = Camera()
         self.continueGame=True
         self.transfoResults=[None,None]
         rightPoseDetector = pose_detector.PoseDetector()
