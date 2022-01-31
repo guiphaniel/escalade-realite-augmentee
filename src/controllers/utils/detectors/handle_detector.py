@@ -13,7 +13,7 @@ class Handle_Detector:
         self.tabKeyPoints = []
         
     def startHandleDetector(self, manager):
-        self.cap = Camera(1)
+        self.cap = Camera()
 
         success = False
         while (success == False):

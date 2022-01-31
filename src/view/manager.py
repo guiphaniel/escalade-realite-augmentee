@@ -51,7 +51,7 @@ class Manager(threading.Thread):
                    ParcoursButton(self,"view/images/parcours.png",300,700),
                    PongButton(self,"view/images/pong.png",300,100),
                    ReturnButton(self,"view/images/retour.png",1551,919),
-                   HandleDetectorButton(self,"view/images/detection.png", 900,550)
+                   #HandleDetectorButton(self,"view/images/detection.png", 900,550)
                    ]
 
         self.gameMenu = True

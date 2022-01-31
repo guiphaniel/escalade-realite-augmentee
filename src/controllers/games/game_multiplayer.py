@@ -36,10 +36,10 @@ class GameMultiPlayer:
             if self.image is None:
                 continue
             left = self.image.copy()
-            cv2.rectangle(left, (self.multiMediapipeWidth + 100, 0), (1920, 1080), (0, 0, 0), -1)
-            resultsleft = leftPoseDetector.detectLandmarks(left)
-            if resultsleft:
-                self.transfoResults[0] = self.manager.wallCalibration.getTransformateLandmarks(resultsleft)
+            cv2.rectangle(left, (self.multiMediapipeWidth-100, 0), (1920, 1080), (0, 0, 0), -1)
+            resultleft = leftPoseDetector.detectLandmarks(left)
+            if resultleft:
+                self.transfoResults[0] = self.manager.wallCalibration.getTransformateLandmarks(resultleft)
         del leftPoseDetector
 
     def startResultRight(self):
@@ -48,7 +48,7 @@ class GameMultiPlayer:
             if self.image is None:
                 continue
             right = self.image.copy()
-            cv2.rectangle(right, (0, 0), (self.multiMediapipeWidth - 100, 1080), (0, 0, 0), -1)
+            cv2.rectangle(right, (0, 0), (self.multiMediapipeWidth + 100, 1080), (0, 0, 0), -1)
             resultsright = rightPoseDetector.detectLandmarks(right)
             if resultsright:
                 self.transfoResults[0] = self.manager.wallCalibration.getTransformateLandmarks(resultsright)
