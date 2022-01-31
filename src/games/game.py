@@ -4,6 +4,7 @@ import cv2
 import pygame.draw
 
 import src
+from src.controllers.switch_frame_controller import SwitchFrameController
 from src.utils.camera import Camera
 from src.utils.detectors import pose_detector
 from src.utils.transform import Transform
@@ -73,4 +74,4 @@ class Game(KeyboardListener):
     def onKeyboardEvent(self, e):
         if e.key == pygame.K_ESCAPE or e.type == pygame.QUIT:
             self.closeCam()
-            self.win.currentFrame = src.view.frames.games_frame.GamesFrame()
+            SwitchFrameController().control(frame=src.view.frames.games_frame.GamesFrame())
