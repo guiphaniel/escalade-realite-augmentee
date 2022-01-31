@@ -5,7 +5,10 @@ import src
 
 
 class AbstractFrame:
-    def __init__(self, bgColor, bgImage):
+    def __init__(self, bgColor = (50, 50, 50), bgImage = None):
+        #remove all listeners that were previously handled by the manager, so they won't get triggered anymore
+        src.view.window.Window().eventManager.removeAllListeners()
+
         self.bgColor = bgColor
         if bgImage:
             self.bgImage = pygame.image.load(bgImage)

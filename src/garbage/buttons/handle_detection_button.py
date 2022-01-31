@@ -1,8 +1,7 @@
 import pygame.display
 
-from src.controllers.utils.detectors.handle_detector import Handle_Detector
-from src.controllers.utils.transform import Transform
-from src.view.utils.buttons.button import Button
+from src.utils.detectors.handle_detector import Handle_Detector
+from src.garbage.buttons.button import Button
 
 
 class HandleDetectorButton(Button):

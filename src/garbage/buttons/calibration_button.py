@@ -1,7 +1,7 @@
 import pygame.display
 
-from src.controllers.utils.transform import Transform
-from src.view.utils.buttons.button import Button
+from src.utils.transform import Transform
+from src.garbage.buttons.button import Button
 
 
 class CalibrationButton(Button):

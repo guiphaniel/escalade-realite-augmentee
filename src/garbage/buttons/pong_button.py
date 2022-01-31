@@ -1,5 +1,5 @@
-from src.controllers.games.pong_game import PongGame
-from src.view.utils.buttons.button import Button
+from src.games import PongGame
+from src.garbage.buttons.button import Button
 
 
 class PongButton(Button):

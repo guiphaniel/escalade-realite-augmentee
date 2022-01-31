@@ -1,4 +1,4 @@
-from src.view.utils.buttons.button import Button
+from src.garbage.buttons.button import Button
 
 
 class ReturnButton(Button):

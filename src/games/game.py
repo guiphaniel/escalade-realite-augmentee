@@ -1,24 +1,25 @@
-import copy
-import os
 import threading
 from abc import abstractmethod
-import mediapipe as mp
 import cv2
 import pygame.draw
 
-from src.controllers.utils.camera import Camera
-from src.controllers.utils.detectors import pose_detector
+import src
+from src.utils.camera import Camera
+from src.utils.detectors import pose_detector
+from src.utils.transform import Transform
+from src.view.events.event_manager import EventManager
+from src.view.events.keyboard_listener import KeyboardListener
 
 
-
-class Game:
+class Game(KeyboardListener):
 
     @abstractmethod
-    def __init__(self,manager):
-        self.manager=manager
+    def __init__(self):
+        self.win = src.view.window.Window().win
         self.continueGame=False
         self.transfoResults=None
         self.cap=None
+        EventManager().addKeyboardListener(self)
         th = threading.Thread(target=self.startCam)
         th.start()
 
@@ -28,7 +29,7 @@ class Game:
 
     def startCam(self):
         # For webcam input:
-        self.cap = Camera(1)
+        self.cap = Camera()
         self.continueGame=True
         singlePoseDetector = pose_detector.PoseDetector()
 
@@ -43,7 +44,7 @@ class Game:
             if not results:
                 continue
 
-            self.transfoResults = self.manager.wallCalibration.getTransformateLandmarks(results)
+            self.transfoResults = Transform().getTransformateLandmarks(results)
             if cv2.waitKey(5) & 0xFF == 27:
                 break
         del singlePoseDetector
@@ -68,3 +69,8 @@ class Game:
                 playerPosition.append(pygame.draw.polygon(self.manager.screen, (0, 0, 255), ((landmark[28].x * 1920, landmark[28].y * 1080), (landmark[30].x * 1920, landmark[30].y * 1080),(landmark[32].x * 1920, landmark[32].y * 1080))))
             return playerPosition
         return []
+
+    def onKeyboardEvent(self, e):
+        if e.key == pygame.K_ESCAPE or e.type == pygame.QUIT:
+            self.closeCam()
+            self.win.currentFrame = src.view.frames.games_frame.GamesFrame()

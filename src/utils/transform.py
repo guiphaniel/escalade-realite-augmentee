@@ -2,13 +2,15 @@
 import cv2
 import numpy as np
 import math
-from src.controllers.utils.detectors import surface_detector
+
+from src.utils.camera import Camera
+from src.utils.detectors import surface_detector
 
 
 class Transform:
 
     def __init__(self):
-
+        self.cam = Camera()
         self.dimCam = [1920, 1080]
         self.projectiveMatrix = None
         self.coordonatesDivider = None
@@ -41,22 +43,26 @@ class Transform:
         return minPoint
 
     def startCalibration(self):
-        tab = surface_detector.Surface.__findCornerPoints__(surface_detector.Surface, self)
+        success, tab = surface_detector.Surface.__findCornerPoints__(surface_detector.Surface, self)
+        if not success:
+            print("Calibration failed")
+            return False
         print(tab)
         self.__sortCornerPoints__(tab)
         print(self.sortedCornerPoints)
         src_points = np.float32(self.sortedCornerPoints)
         # src_points = np.float32([[62,139],[575,126],[5,424],[634,424]])
-        dst_points = np.float32([[0, 0], [1920, 0], [0, 1080], [1920, 1080]])
+        dst_points = np.float32([[0, 0], [self.cam.w, 0], [0, self.cam.h], [self.cam.w, self.cam.h]])
         self.projectiveMatrix = cv2.getPerspectiveTransform(src_points, dst_points)
         print(self.projectiveMatrix)
-        print("Calibration rÃ©ussite")  # trop fort
+        print("Calibration reussie")  # trop fort
+        return True
 
     def getTransformateLandmarks(self, tabPoints):
         for point in tabPoints.landmark:
-            tmp = np.dot(self.projectiveMatrix, [[point.x * 1920], [point.y * 1080], [1]])
-            point.x = (tmp[0] / tmp[2]) / 1920
-            point.y = (tmp[1] / tmp[2]) / 1080
+            tmp = np.dot(self.projectiveMatrix, [[point.x * self.cam.w], [point.y * self.cam.h], [1]])
+            point.x = (tmp[0] / tmp[2]) / self.cam.w
+            point.y = (tmp[1] / tmp[2]) / self.cam.h
         return tabPoints
     def getTransformateKeypoints(self, tabKeyPoints):
         a = []

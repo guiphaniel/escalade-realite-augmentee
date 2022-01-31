@@ -1,13 +1,15 @@
 import random
 import pygame
-from src.controllers.games.game import Game
-from src.controllers.games.utils.target import Target
+from src.games.game import Game
+from src.games.utils.target import Target
+from src.view.events.event_manager import EventManager
+from src.view.listeners.action_listener import ActionListener
 
 
 class OsuGame(Game):
 
-    def __init__(self, manager):
-        super().__init__(manager)
+    def __init__(self):
+        super().__init__()
 
     def execute(self):
         running = True
@@ -17,10 +19,9 @@ class OsuGame(Game):
         targets = []
         targetsDispawned = []
         while running:
-            pygame.display.flip()
-            self.manager.screen.fill((0, 0, 0, 0))
+            self.win.fill((0, 0, 0, 0))
             if (initTimeTarget + waitTimeTarget - pygame.time.get_ticks()) <= 0:
-                targets.append(Target(self.manager.screen))
+                targets.append(Target())
                 initTimeTarget = pygame.time.get_ticks()
                 waitTimeTarget = random.randint(2000, 4000)
 
@@ -48,12 +49,5 @@ class OsuGame(Game):
                 if t.ticks + 2000 - pygame.time.get_ticks() <=0:
                     targetsDispawned.remove(t)
 
-            for e in pygame.event.get():
-                if e.type == pygame.KEYDOWN:
-                    if e.key == pygame.K_ESCAPE:
-                        self.closeCam()
-                        running = False
-                if e.type == pygame.QUIT:
-                    self.closeCam()
-                    running=False
-                    pygame.quit()
+            pygame.display.flip()
+            #TODO: add listeners to exit game on ESC pressed (running = false, et redirection vers game menu)

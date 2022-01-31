@@ -1,8 +1,6 @@
-from unittest import result
 import cv2
-import numpy as np
 
-from src.controllers.utils.camera import Camera
+from src.utils.camera import Camera
 
 
 class Handle_Detector:
@@ -13,7 +11,7 @@ class Handle_Detector:
         self.tabKeyPoints = []
         
     def startHandleDetector(self, manager):
-        self.cap = Camera(1)
+        self.cap = Camera()
 
         success = False
         while (success == False):

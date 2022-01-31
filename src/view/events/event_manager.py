@@ -34,5 +34,6 @@ class EventManager(metaclass=Singleton):
     def removeMouseListener(self, l):
         self.mouseListeners.remove(l)
 
-    def stop(self):
-        self.keepRunning = False
+    def removeAllListeners(self):
+        self.keyboardListeners.clear()
+        self.mouseListeners.clear()

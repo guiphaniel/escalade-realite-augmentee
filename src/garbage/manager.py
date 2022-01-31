@@ -1,13 +1,13 @@
 import threading
 import pygame
 import ctypes
-from src.view.utils.buttons.calibration_button import CalibrationButton
-from src.view.utils.buttons.handle_detection_button import HandleDetectorButton
-from src.view.utils.buttons.osu_button import OsuButton
-from src.view.utils.buttons.parcours_button import ParcoursButton
-from src.view.utils.buttons.play_button import PlayButton
-from src.view.utils.buttons.pong_button import PongButton
-from src.view.utils.buttons.return_button import ReturnButton
+from src.garbage.buttons import CalibrationButton
+from src.garbage.buttons import HandleDetectorButton
+from src.garbage.buttons import OsuButton
+from src.garbage.buttons import ParcoursButton
+from src.garbage.buttons.play_button import PlayButton
+from src.garbage.buttons import PongButton
+from src.garbage.buttons.return_button import ReturnButton
 
 
 class Manager(threading.Thread):

@@ -1,29 +1,20 @@
 
 import cv2
 import numpy as np
-from matplotlib import pyplot as plt
 
-from src.controllers.utils.camera import Camera
+from src.utils.camera import Camera
 
 
 class Surface:
 
     def __findCornerPoints__(self, transform):
-        MIN_MATCH_COUNT = 10
-        #cv2.namedWindow('Calibration', cv2.WND_PROP_FULLSCREEN)
-        #cv2.setWindowProperty('Calibration', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-        img1 = cv2.imread("D:/Git/ptut/src/view/images/charucoboard.jpg", 0)
-        #cv2.imshow('Calibration', img1)
+        MIN_MATCH_COUNT = 20
+        img1 = cv2.imread("view/images/charucoboard.jpg", 0)
         cv2.waitKey(1000)
         validCapRead=False
 
         while(validCapRead==False):
-            validCapRead, img2 = Camera(1).read()
-        print("camera calibration valide")
-        #cv2.destroyWindow('Calibration')
-
-        # img2= cv.imread("D:/Git/ptut/src/view/images/test.jpg")
-
+            validCapRead, img2 = Camera().read()
 
         # Initiate SIFT detector
         sift = cv2.SIFT_create()
@@ -51,10 +42,9 @@ class Surface:
             print("dst:")
             print(dst)
             img2 = cv2.polylines(img2, [np.int32(dst)], True, 255, 3, cv2.LINE_AA)
-
         else:
             print("Not enough matches are found - {}/{}".format(len(good), MIN_MATCH_COUNT))
-            matchesMask = None
+            return False, None
 
         print("fin homographie")
-        return dst
+        return True, dst
