@@ -50,4 +50,3 @@ class OsuGame(Game):
                     targetsDispawned.remove(t)
 
             pygame.display.flip()
-            #TODO: add listeners to exit game on ESC pressed (running = false, et redirection vers game menu)
