@@ -74,7 +74,7 @@ class Transform(metaclass=Singleton):
                 tmp = np.dot(self.projectiveMatrix, [[point.pt[0] * 1920], [point.pt[1] * 1080], [1]])
                 a.append((tmp[0] / tmp[2]) / 1920)
                 a.append((tmp[1] / tmp[2]) / 1080)
-                monTuple = (a[0][0], a[1][0]);
+                monTuple = (a[0][0], a[1][0])
                 point.pt = monTuple
 
         return tabKeyPoints

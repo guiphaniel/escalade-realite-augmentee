@@ -6,7 +6,7 @@ from src.model.components.path import Path
 class PathGame(Game):
 
     def __init__(self, screen):
-        super().__init__(screen)
+        super().__init__(screen,1)
         self.font=pygame.font.SysFont(None, 24)
 
     def execute(self):
@@ -18,18 +18,18 @@ class PathGame(Game):
 
         radius = 25
 
-        self.setupParcours(path,radius)
+        self.setupParcours(path)
 
-        handles = path.handles.copy()
+        handles = path.getHandles().copy()
 
         while running:
             pygame.display.flip()
             self.manager.screen.fill((0, 0, 0, 0))
 
-            for i in range(0,len(path.handles)):
-                pygame.draw.circle(self.manager.screen, (255, 0, 0), (path.handles[i].x, path.handles[i].y), radius)
+            for i in range(0,len(path.getHandles())):
+                pygame.draw.circle(self.manager.screen, (255, 0, 0), (path.getHandles()[i].x, path.getHandles()[i].y), path.getHandles()[i].radius)
                 text = self.font.render(str(i+1), True, (255,255,255))
-                self.manager.screen.blit(text, text.get_rect(center = (path.handles[i].x, path.handles[i].y)))
+                self.manager.screen.blit(text, text.get_rect(center = (path.getHandles()[i].x, path.getHandles()[i].y)))
 
             playerPosition = self.getPlayerPosition()
 
@@ -52,24 +52,26 @@ class PathGame(Game):
                 if e.type == pygame.QUIT:
                     running = False
                     self.closeCam()
-                    pygame.quit()
+                    self.manager.running = False
 
-    def setupParcours(self,path,radius):
+    def setupParcours(self,path):
         setup = True
+        handles = []
         while setup:
             pygame.display.flip()
             self.manager.screen.fill((0, 0, 0, 0))
-            for i in range(0, len(path.handles)):
-                pygame.draw.circle(self.manager.screen, (255, 0, 0), (path.handles[i].x, path.handles[i].y), radius)
+            for i in range(0, len(handles)):
+                pygame.draw.circle(self.manager.screen, (255, 0, 0), (handles[i].x, handles[i].y), handles[i].radius)
                 text = self.font.render(str(i + 1), True, (255, 255, 255))
-                self.manager.screen.blit(text, text.get_rect(center=(path.handles[i].x, path.handles[i].y)))
+                self.manager.screen.blit(text, text.get_rect(center=(handles[i].x, handles[i].y)))
             for e in pygame.event.get():
                 if e.type == pygame.MOUSEBUTTONDOWN:
                     x, y = pygame.mouse.get_pos()
-                    path.handles.append(Handle(x, y))
+                    handles.append(Handle(x, y))
                 if e.type == pygame.KEYDOWN:
                     if e.key == pygame.K_RETURN:
+                        path.setHandles(handles)
                         setup = False
                 if e.type == pygame.QUIT:
                     setup = False
-                    pygame.quit()
+                    self.manager.running = False

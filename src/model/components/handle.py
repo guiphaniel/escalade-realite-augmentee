@@ -3,3 +3,4 @@ class Handle:
         self.id = None
         self.x = x
         self.y = y
+        self.radius = 20
