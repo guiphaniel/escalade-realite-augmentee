@@ -2,10 +2,13 @@ from src.model.components.handle import Handle
 from src.model.components.path import Path
 from src.model.components.wall import Wall
 from src.model.database import Database
+from src.view.manager import Manager
+def processMenu():
+    disp = Manager(1280,720)
+    disp.start()
 
-walls = Database().getWalls()
-print(walls)
-print(Database().getPathInWall(walls[0]))
+processMenu()
+
 
 # database = Database()
 # handle1 = Handle(5, 6)
