@@ -1,25 +1,28 @@
-import threading
-
 import pygame
 
 from src.Singleton import Singleton
-from src.view.utils.events.event_manager import EventManager
-from src.view.utils.frames.home_frame import HomeFrame
+from src.view.events.event_manager import EventManager
+from src.view.frames.home_frame import HomeFrame
 
 
 class Window(metaclass=Singleton):
     def __init__(self):
         pygame.init()
-        self.win = pygame.display.set_mode((200, 200))
+        pygame.display.set_caption("Escalade en Réalité Augmentée")
+        self.win = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN, 32)
+        self.eventManager = EventManager()
+        #self.win = pygame.display.set_mode((400, 400))
 
     def __del__(self):
-        EventManager().stop()
         pygame.quit()
 
     def run(self):
-        self.currentFrame = HomeFrame(bgImage="view/images/background.png")
+        homeFrame = HomeFrame()
+        homeFrame.playButton.active = False
+        homeFrame.repaintAll()
+        self.currentFrame = homeFrame
         while self.isVisible:
-            EventManager().catchEvent()
+            self.eventManager.catchEvent()
             self.currentFrame.execute()
 
     def setVisible(self, isVisible):
