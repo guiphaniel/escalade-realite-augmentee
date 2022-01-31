@@ -1,17 +1,17 @@
 import math
 import random
 import pygame
-from src.controllers.games.game import Game
+
+from src.controllers.games.game_multiplayer import GameMultiPlayer
 from src.controllers.games.utils.ball import Ball
 
-
-class PongGame(Game):
+class PongGame(GameMultiPlayer):
 
     def __init__(self, screen):
         super().__init__(screen,2)
 
     def execute(self):
-        running = True
+        self.running = True
         initTimeTarget = pygame.time.get_ticks()
         scorePlayer1 = 0
         scorePlayer2 = 0
@@ -19,7 +19,7 @@ class PongGame(Game):
 
         ball = Ball(self.manager)
 
-        while running:
+        while self.running:
             pygame.display.flip()
             self.manager.screen.fill((0, 0, 0, 0))
 
@@ -51,6 +51,5 @@ class PongGame(Game):
 
             for e in pygame.event.get():
                 if e.type == pygame.QUIT:
-                    running = False
                     self.closeCam()
                     self.manager.running = False
