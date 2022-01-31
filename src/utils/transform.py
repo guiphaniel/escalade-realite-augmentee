@@ -2,12 +2,14 @@
 import cv2
 import numpy as np
 import math
+from src.Singleton import Singleton
 
 from src.utils.camera import Camera
 from src.utils.detectors import surface_detector
+from src.utils.detectors.surface_detector import Surface
 
 
-class Transform:
+class Transform(metaclass=Singleton):
 
     def __init__(self):
         self.cam = Camera()
@@ -43,7 +45,7 @@ class Transform:
         return minPoint
 
     def startCalibration(self):
-        success, tab = surface_detector.Surface.__findCornerPoints__(surface_detector.Surface, self)
+        success, tab = Surface().findCornerPoints()
         if not success:
             print("Calibration failed")
             return False

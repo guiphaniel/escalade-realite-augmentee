@@ -7,7 +7,7 @@ from src.utils.camera import Camera
 
 class Surface:
 
-    def __findCornerPoints__(self, transform):
+    def findCornerPoints(self):
         MIN_MATCH_COUNT = 20
         img1 = cv2.imread("view/images/charucoboard.jpg", 0)
         cv2.waitKey(1000)
