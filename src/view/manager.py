@@ -19,6 +19,8 @@ class Manager(threading.Thread):
         self.wallCalibration=None
         self.screen = None
         self.gameMenu = False
+        self.running = True
+        self.background = pygame.image.load("view/images/background.png")
 
     def run(self):
         ctypes.windll.user32.SetProcessDPIAware()
@@ -26,38 +28,35 @@ class Manager(threading.Thread):
         pygame.display.set_caption("Escalade en Réalité Augmentée")
         self.screen = pygame.display.set_mode((1920, 1080),pygame.FULLSCREEN,32)
 
-        running = True
-        background = pygame.image.load("view/images/background.png")
         buttons = [PlayButton(self, "view/images/jouer.png", 300, 700),
                    CalibrationButton(self, "view/images/calibration.png", 300, 400)]
-        while running:
-            self.screen.blit(background,(0,0))
+        while self.running:
+            self.screen.blit(self.background,(0,0))
             for b in buttons:
                 self.screen.blit(b.image, b.rect)
             pygame.display.flip()  # Met à jour l'écran
             for e in pygame.event.get():
                 if e.type == pygame.QUIT:
-                    running = False
-                    pygame.quit()
+                    self.running = False
                 if e.type == pygame.MOUSEBUTTONDOWN:
                     x, y = pygame.mouse.get_pos()
                     for b in buttons:
                         if b.rect.collidepoint(x, y):
                             b.pressed()
+        pygame.quit()
 
     def startMenuGame(self):
-        background = pygame.image.load("view/images/background.png")
 
         buttons = [OsuButton(self,"view/images/osu.png",300,400),
                    ParcoursButton(self,"view/images/parcours.png",300,700),
                    PongButton(self,"view/images/pong.png",300,100),
                    ReturnButton(self,"view/images/retour.png",1551,919),
-                   HandleDetectorButton(self,"view/images/detection.png", 900,550)
+                   #HandleDetectorButton(self,"view/images/detection.png", 900,550)
                    ]
 
         self.gameMenu = True
         while self.gameMenu:
-            self.screen.blit(background, (0, 0))
+            self.screen.blit(self.background, (0, 0))
             for b in buttons:
                 self.screen.blit(b.image, b.rect)
             pygame.display.flip()  # Met à jour l'écran
@@ -67,7 +66,7 @@ class Manager(threading.Thread):
                         self.gameMenu = False
                 if e.type == pygame.QUIT:
                     self.gameMenu = False
-                    pygame.quit()
+                    self.running= False
                 if e.type == pygame.MOUSEBUTTONDOWN:
                     x, y = pygame.mouse.get_pos()
                     for b in buttons:

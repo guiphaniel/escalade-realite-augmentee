@@ -8,7 +8,7 @@ from src.controllers.games.utils.ball import Ball
 class PongGame(Game):
 
     def __init__(self, screen):
-        super().__init__(screen)
+        super().__init__(screen,2)
 
     def execute(self):
         running = True
@@ -25,11 +25,13 @@ class PongGame(Game):
 
             pygame.draw.rect(self.manager.screen,(238,130,238),pygame.Rect(self.manager.screen.get_rect().centerx - 1,0,3,self.manager.screen.get_rect().height))
 
-            playerPosition = self.getPlayerPosition()
+            playerPositionMutliple = self.getMultiplePlayerPosition()
 
             ball.collideGoal()
             ball.collideBorder()
-            for position in playerPosition:
+            for position in playerPositionMutliple[0]:
+                ball.collidePlayer(position)
+            for position in playerPositionMutliple[1]:
                 ball.collidePlayer(position)
             ball.update()
             ball.draw()
@@ -51,4 +53,4 @@ class PongGame(Game):
                 if e.type == pygame.QUIT:
                     running = False
                     self.closeCam()
-                    pygame.quit()
+                    self.manager.running = False

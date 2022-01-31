@@ -7,7 +7,7 @@ from src.controllers.games.utils.target import Target
 class OsuGame(Game):
 
     def __init__(self, manager):
-        super().__init__(manager)
+        super().__init__(manager,1)
 
     def execute(self):
         running = True
@@ -56,4 +56,4 @@ class OsuGame(Game):
                 if e.type == pygame.QUIT:
                     self.closeCam()
                     running=False
-                    pygame.quit()
+                    self.manager.running = False

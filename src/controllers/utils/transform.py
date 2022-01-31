@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import math
 from src.controllers.utils.detectors import surface_detector
+from src.controllers.utils.camera import Camera
 
 
 class Transform:
@@ -47,16 +48,18 @@ class Transform:
         print(self.sortedCornerPoints)
         src_points = np.float32(self.sortedCornerPoints)
         # src_points = np.float32([[62,139],[575,126],[5,424],[634,424]])
-        dst_points = np.float32([[0, 0], [1920, 0], [0, 1080], [1920, 1080]])
+        dst_points = np.float32([[0, 0], [Camera().w, 0], [0, Camera().h], [Camera().w, Camera().h]])
         self.projectiveMatrix = cv2.getPerspectiveTransform(src_points, dst_points)
         print(self.projectiveMatrix)
         print("Calibration rÃ©ussite")  # trop fort
 
     def getTransformateLandmarks(self, tabPoints):
-        for point in tabPoints.landmark:
-            tmp = np.dot(self.projectiveMatrix, [[point.x * 1920], [point.y * 1080], [1]])
-            point.x = (tmp[0] / tmp[2]) / 1920
-            point.y = (tmp[1] / tmp[2]) / 1080
+
+        for i in [15,16,17,18,19,20,21,22,27,28,29,30,31,32]:
+            tmp = np.dot(self.projectiveMatrix, [[tabPoints.landmark[i].x * Camera().w], [tabPoints.landmark[i].y * Camera().h], [1]])
+            tabPoints.landmark[i].x = (tmp[0] / tmp[2]) / Camera().w
+            tabPoints.landmark[i].y = (tmp[1] / tmp[2]) / Camera().h
+
         return tabPoints
     def getTransformateKeypoints(self, tabKeyPoints):
         a = []
@@ -66,7 +69,7 @@ class Transform:
                 tmp = np.dot(self.projectiveMatrix, [[point.pt[0] * 1920], [point.pt[1] * 1080], [1]])
                 a.append((tmp[0] / tmp[2]) / 1920)
                 a.append((tmp[1] / tmp[2]) / 1080)
-                monTuple = (a[0][0], a[1][0]);
+                monTuple = (a[0][0], a[1][0])
                 point.pt = monTuple
 
         return tabKeyPoints

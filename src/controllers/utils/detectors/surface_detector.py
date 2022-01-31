@@ -18,7 +18,7 @@ class Surface:
         validCapRead=False
 
         while(validCapRead==False):
-            validCapRead, img2 = Camera(1).read()
+            validCapRead, img2 = Camera().read()
         print("camera calibration valide")
         #cv2.destroyWindow('Calibration')
 
@@ -47,6 +47,7 @@ class Surface:
             print(M)
             h, w = img1.shape
             pts = np.float32([[0, 0], [0, h - 1], [w - 1, h - 1], [w - 1, 0]]).reshape(-1, 1, 2)
+
             dst = cv2.perspectiveTransform(pts, M)
             print("dst:")
             print(dst)
