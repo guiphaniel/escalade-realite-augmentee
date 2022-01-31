@@ -7,7 +7,7 @@ from src.model.components.path import Path
 class PathGame(GameSinglePlayer):
 
     def __init__(self, screen):
-        super().__init__(screen,1)
+        super().__init__(screen)
         self.font=pygame.font.SysFont(None, 24)
 
     def execute(self):

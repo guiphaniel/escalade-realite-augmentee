@@ -15,7 +15,7 @@ from src.controllers.utils.detectors import pose_detector
 class GameSinglePlayer:
 
     @abstractmethod
-    def __init__(self,manager,nbMediaPipe):
+    def __init__(self,manager):
         self.manager=manager
         self.transfoResults=None
         self.cap=None

@@ -8,7 +8,7 @@ from src.controllers.games.utils.target import Target
 class OsuGame(GameSinglePlayer):
 
     def __init__(self, manager):
-        super().__init__(manager,1)
+        super().__init__(manager)
 
     def execute(self):
         self.running = True

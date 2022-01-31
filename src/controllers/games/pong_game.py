@@ -8,7 +8,7 @@ from src.controllers.games.utils.ball import Ball
 class PongGame(GameMultiPlayer):
 
     def __init__(self, screen):
-        super().__init__(screen,2)
+        super().__init__(screen)
 
     def execute(self):
         self.running = True
