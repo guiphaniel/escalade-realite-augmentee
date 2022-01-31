@@ -14,8 +14,10 @@ class TargetsFrame(AbstractFrame, ActionListener):
         self.returnButton.addActionListener(self)
         self.handlesDetectorButton.addActionListener(self)
 
+        self.targetGame = OsuGame()
+
     def execute(self):
-        OsuGame().execute()
+        self.targetGame.execute()
 
     #TODO: use controllers, having window imbedded
     def actionPerformed(self, src):
