@@ -4,7 +4,7 @@ from src.model.components.wall import Wall
 from src.model.database import Database
 from src.view.manager import Manager
 def processMenu():
-    disp = Manager(1280,720)
+    disp = Manager(1920,1080)
     disp.start()
 
 processMenu()
