@@ -16,8 +16,9 @@ from src.view.events.keyboard_listener import KeyboardListener
 class Game(KeyboardListener):
 
     @abstractmethod
-    def __init__(self,manager,nbMediaPipe):
+    def __init__(self,nbMediaPipe):
         self.win = src.view.window.Window().win
+        EventManager().addKeyboardListener(self)
         self.continueGame=False
         self.transfoResults=None
         self.cap=None
