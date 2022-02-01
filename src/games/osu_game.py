@@ -9,7 +9,7 @@ from src.view.listeners.action_listener import ActionListener
 class OsuGame(Game):
 
     def __init__(self):
-        super().__init__()
+        super().__init__(1)
         self.score = 0
         self.initTimeTarget = pygame.time.get_ticks()
         self.waitTimeTarget = random.randint(2000, 5000)
