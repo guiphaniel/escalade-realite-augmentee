@@ -64,8 +64,7 @@ class Game(KeyboardListener):
         self.transfoResults=[None,None]
         rightPoseDetector = pose_detector.PoseDetector()
         leftPoseDetector = pose_detector.PoseDetector()
-        print(np.linalg.inv(self.manager.wallCalibration.projectiveMatrix))
-        tmp = np.dot(np.linalg.inv(self.manager.wallCalibration.projectiveMatrix), [[1920//2], [0], [1]])
+        tmp = np.dot(np.linalg.inv(Transform().projectiveMatrix), [[1920//2], [0], [1]])
         self.multiMediapipeWidth = int((tmp[0] // tmp[2])[0])
 
         while self.continueGame:
@@ -80,12 +79,12 @@ class Game(KeyboardListener):
             cv2.rectangle(left, (self.multiMediapipeWidth + 100, 0), (1920, 1080), (0, 0, 0), -1)
             resultsleft = leftPoseDetector.detectLandmarks(left)
             if resultsleft:
-                self.transfoResults[0] = self.manager.wallCalibration.getTransformateLandmarks(resultsleft)
+                self.transfoResults[0] = Transform().getTransformateLandmarks(resultsleft)
 
             cv2.rectangle(right, (0, 0), (self.multiMediapipeWidth - 100, 1080), (0, 0, 0), -1)
             resultsright = rightPoseDetector.detectLandmarks(right)
             if resultsright:
-                self.transfoResults[1] = self.manager.wallCalibration.getTransformateLandmarks(resultsright)
+                self.transfoResults[1] = Transform().getTransformateLandmarks(resultsright)
             if cv2.waitKey(5) & 0xFF == 27:
                 break
         del rightPoseDetector
@@ -113,39 +112,39 @@ class Game(KeyboardListener):
             return playerPosition
         return []
 
-    def onKeyboardEvent(self, e):
-        if e.key == pygame.K_ESCAPE or e.type == pygame.QUIT:
-            self.closeCam()
-            SwitchFrameController().control(frame=src.view.frames.games_frame.GamesFrame())
-
     def getMultiplePlayerPosition(self):
         playerPosition = [[],[]]
         if self.transfoResults[0]:
             landmark = self.transfoResults[0].landmark
             if -100 <= landmark[15].x * 1920 <= 2100 and -100 <= landmark[15].y * 1080 <= 1200 and -100 <= landmark[17].x * 1920 <= 2100 and -100 <= landmark[17].y * 1080 <= 1200 and -100 <= landmark[19].x * 1920 <= 2100 and -100 <= landmark[19].y * 1080 <= 1200 and -100 <= landmark[21].x * 1920 <= 2100 and -100 <= landmark[21].y * 1080 <= 1200:
-                playerPosition[0].append(pygame.draw.polygon(self.manager.screen, (0, 0, 255), ((landmark[15].x * 1920, landmark[15].y * 1080), (landmark[17].x * 1920, landmark[17].y * 1080),(landmark[19].x * 1920, landmark[19].y * 1080), (landmark[21].x * 1920, landmark[21].y * 1080))))
+                playerPosition[0].append(pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[15].x * 1920, landmark[15].y * 1080), (landmark[17].x * 1920, landmark[17].y * 1080),(landmark[19].x * 1920, landmark[19].y * 1080), (landmark[21].x * 1920, landmark[21].y * 1080))))
 
             if -100 <= landmark[16].x * 1920 <= 2100 and -100 <= landmark[16].y * 1080 <= 1200 and -100 <= landmark[18].x * 1920 <= 2100 and -100 <= landmark[18].y * 1080 <= 1200 and -100 <= landmark[20].x * 1920 <= 2100 and -100 <= landmark[20].y * 1080 <= 1200 and -100 <= landmark[22].x * 1920 <= 2100 and -100 <= landmark[22].y * 1080 <= 1200:
-                playerPosition[0].append(pygame.draw.polygon(self.manager.screen, (0, 0, 255), ((landmark[16].x * 1920, landmark[16].y * 1080), (landmark[18].x * 1920, landmark[18].y * 1080),(landmark[20].x * 1920, landmark[20].y * 1080), (landmark[22].x * 1920, landmark[22].y * 1080))))
+                playerPosition[0].append(pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[16].x * 1920, landmark[16].y * 1080), (landmark[18].x * 1920, landmark[18].y * 1080),(landmark[20].x * 1920, landmark[20].y * 1080), (landmark[22].x * 1920, landmark[22].y * 1080))))
 
             if -100 <= landmark[27].x * 1920 <= 2100 and -100 <= landmark[27].y * 1080 <= 1200 and -100 <= landmark[29].x * 1920 <= 2100 and -100 <= landmark[29].y * 1080 <= 1200 and -100 <= landmark[31].x * 1920 <= 2100 and -100 <= landmark[31].y * 1080 <= 1200:
-                playerPosition[0].append(pygame.draw.polygon(self.manager.screen, (0, 0, 255), ((landmark[27].x * 1920, landmark[27].y * 1080), (landmark[29].x * 1920, landmark[29].y * 1080),(landmark[31].x * 1920, landmark[31].y * 1080))))
+                playerPosition[0].append(pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[27].x * 1920, landmark[27].y * 1080), (landmark[29].x * 1920, landmark[29].y * 1080),(landmark[31].x * 1920, landmark[31].y * 1080))))
 
             if -100 <= landmark[28].x * 1920 <= 2100 and -100 <= landmark[28].y * 1080 <= 1200 and -100 <= landmark[30].x * 1920 <= 2100 and -100 <= landmark[30].y * 1080 <= 1200 and -100 <= landmark[32].x * 1920 <= 2100 and -100 <= landmark[32].y * 1080 <= 1200:
-                playerPosition[0].append(pygame.draw.polygon(self.manager.screen, (0, 0, 255), ((landmark[28].x * 1920, landmark[28].y * 1080), (landmark[30].x * 1920, landmark[30].y * 1080),(landmark[32].x * 1920, landmark[32].y * 1080))))
+                playerPosition[0].append(pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[28].x * 1920, landmark[28].y * 1080), (landmark[30].x * 1920, landmark[30].y * 1080),(landmark[32].x * 1920, landmark[32].y * 1080))))
 
         if self.transfoResults[1]:
             landmark = self.transfoResults[1].landmark
 
             if -100 <= landmark[15].x * 1920 <= 2100 and -100 <= landmark[15].y * 1080 <= 1200 and -100 <= landmark[17].x * 1920 <= 2100 and -100 <= landmark[17].y * 1080 <= 1200 and -100 <= landmark[19].x * 1920 <= 2100 and -100 <= landmark[19].y * 1080 <= 1200 and -100 <= landmark[21].x * 1920 <= 2100 and -100 <= landmark[21].y * 1080 <= 1200:
-                playerPosition[1].append(pygame.draw.polygon(self.manager.screen, (0, 0, 255), ((landmark[15].x * 1920 , landmark[15].y * 1080), (landmark[17].x * 1920 , landmark[17].y * 1080),(landmark[19].x * 1920 , landmark[19].y * 1080), (landmark[21].x * 1920 , landmark[21].y * 1080))))
+                playerPosition[1].append(pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[15].x * 1920 , landmark[15].y * 1080), (landmark[17].x * 1920 , landmark[17].y * 1080),(landmark[19].x * 1920 , landmark[19].y * 1080), (landmark[21].x * 1920 , landmark[21].y * 1080))))
 
             if -100 <= landmark[16].x * 1920 <= 2100 and -100 <= landmark[16].y * 1080 <= 1200 and -100 <= landmark[18].x * 1920 <= 2100 and -100 <= landmark[18].y * 1080 <= 1200 and -100 <= landmark[20].x * 1920 <= 2100 and -100 <= landmark[20].y * 1080 <= 1200 and -100 <= landmark[22].x * 1920 <= 2100 and -100 <= landmark[22].y * 1080 <= 1200:
-                playerPosition[1].append(pygame.draw.polygon(self.manager.screen, (0, 0, 255), ((landmark[16].x * 1920 , landmark[16].y * 1080), (landmark[18].x * 1920 , landmark[18].y * 1080),(landmark[20].x * 1920 , landmark[20].y * 1080), (landmark[22].x * 1920 , landmark[22].y * 1080))))
+                playerPosition[1].append(pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[16].x * 1920 , landmark[16].y * 1080), (landmark[18].x * 1920 , landmark[18].y * 1080),(landmark[20].x * 1920 , landmark[20].y * 1080), (landmark[22].x * 1920 , landmark[22].y * 1080))))
 
             if -100 <= landmark[27].x * 1920 <= 2100 and -100 <= landmark[27].y * 1080 <= 1200 and -100 <= landmark[29].x * 1920 <= 2100 and -100 <= landmark[29].y * 1080 <= 1200 and -100 <= landmark[31].x * 1920 <= 2100 and -100 <= landmark[31].y * 1080 <= 1200:
-                playerPosition[1].append(pygame.draw.polygon(self.manager.screen, (0, 0, 255), ((landmark[27].x * 1920 , landmark[27].y * 1080), (landmark[29].x * 1920 , landmark[29].y * 1080),(landmark[31].x * 1920 , landmark[31].y * 1080))))
+                playerPosition[1].append(pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[27].x * 1920 , landmark[27].y * 1080), (landmark[29].x * 1920 , landmark[29].y * 1080),(landmark[31].x * 1920 , landmark[31].y * 1080))))
 
             if -100 <= landmark[28].x * 1920 <= 2100 and -100 <= landmark[28].y * 1080 <= 1200 and -100 <= landmark[30].x * 1920 <= 2100 and -100 <= landmark[30].y * 1080 <= 1200 and -100 <= landmark[32].x * 1920 <= 2100 and -100 <= landmark[32].y * 1080 <= 1200:
-                playerPosition[1].append(pygame.draw.polygon(self.manager.screen, (0, 0, 255), ((landmark[28].x * 1920 , landmark[28].y * 1080), (landmark[30].x * 1920 , landmark[30].y * 1080),(landmark[32].x * 1920 , landmark[32].y * 1080))))
+                playerPosition[1].append(pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[28].x * 1920 , landmark[28].y * 1080), (landmark[30].x * 1920 , landmark[30].y * 1080),(landmark[32].x * 1920 , landmark[32].y * 1080))))
         return playerPosition
+
+    def onKeyboardEvent(self, e):
+        if e.key == pygame.K_ESCAPE or e.type == pygame.QUIT:
+            self.closeCam()
+            SwitchFrameController().control(frame=src.view.frames.games_frame.GamesFrame())
