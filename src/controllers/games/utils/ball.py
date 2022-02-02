@@ -3,14 +3,15 @@ import threading
 
 import pygame.image
 
+from src.view.items.item import Item
 
-class Ball(pygame.sprite.Sprite):
-    def __init__(self,manager):
-        pygame.sprite.Sprite.__init__(self)
-        self.manager = manager
+
+class Ball(Item):
+    def __init__(self):
+        Item.__init__(self)
         self.image= pygame.transform.scale(pygame.image.load("view/images/sprites/ball.png"),(50,50))
         self.rect = self.image.get_rect()
-        self.area = manager.screen.get_rect()
+        self.area = self.win.get_rect()
         self.vector = []
         self.velocity = None
         self.intangible = False
@@ -67,7 +68,7 @@ class Ball(pygame.sprite.Sprite):
             self.rect.y += math.ceil(math.sin(angle) * self.velocity)
 
     def draw(self):
-        self.manager.screen.blit(self.image, self.rect)
+        self.win.blit(self.image, self.rect)
 
     def startTimerIntangible(self):
         self.intangible = True

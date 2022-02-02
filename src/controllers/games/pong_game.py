@@ -7,50 +7,41 @@ from src.controllers.games.utils.ball import Ball
 
 class PongGame(Game):
 
-    def __init__(self, screen):
-        super().__init__(screen,2)
+    def __init__(self):
+        super().__init__(2)
+        self.scorePlayer1 = 0
+        self.scorePlayer2 = 0
+        self.font = pygame.font.SysFont(None, 128)
+
+        self.ball = Ball()
 
     def execute(self):
-        running = True
-        initTimeTarget = pygame.time.get_ticks()
-        scorePlayer1 = 0
-        scorePlayer2 = 0
-        font = pygame.font.SysFont(None, 128)
+        self.win.fill((0, 0, 0))
 
-        ball = Ball(self.manager)
+        pygame.draw.rect(self.win,(238,130,238),pygame.Rect(self.win.get_rect().centerx - 1,0,3,self.win.get_rect().height))
 
-        while running:
-            pygame.display.flip()
-            self.manager.screen.fill((0, 0, 0, 0))
+        playerPositionMutliple = self.getMultiplePlayerPosition()
 
-            pygame.draw.rect(self.manager.screen,(238,130,238),pygame.Rect(self.manager.screen.get_rect().centerx - 1,0,3,self.manager.screen.get_rect().height))
+        self.ball.collideGoal()
+        self.ball.collideBorder()
+        for position in playerPositionMutliple[0]:
+            self.ball.collidePlayer(position)
+        for position in playerPositionMutliple[1]:
+            self.ball.collidePlayer(position)
+        self.ball.update()
+        self.ball.draw()
 
-            playerPositionMutliple = self.getMultiplePlayerPosition()
+        if self.ball.goalRight():
+            self.scorePlayer1+=1
+            self.ball.spawn()
+        elif self.ball.goalLeft():
+            self.scorePlayer2+=1
+            self.ball.spawn()
 
-            ball.collideGoal()
-            ball.collideBorder()
-            for position in playerPositionMutliple[0]:
-                ball.collidePlayer(position)
-            for position in playerPositionMutliple[1]:
-                ball.collidePlayer(position)
-            ball.update()
-            ball.draw()
+        text = self.font.render(str(self.scorePlayer1), True, (255, 255, 255))
+        self.win.blit(text, text.get_rect(center=(self.win.get_rect().width/4, 50)))
 
-            if ball.goalRight():
-                scorePlayer1+=1
-                ball.spawn()
-            elif ball.goalLeft():
-                scorePlayer2+=1
-                ball.spawn()
+        text = self.font.render(str(self.scorePlayer2), True, (255, 255, 255))
+        self.win.blit(text, text.get_rect(center=((self.win.get_rect().width / 4)*3, 50)))
 
-            text = font.render(str(scorePlayer1), True, (255, 255, 255))
-            self.manager.screen.blit(text, text.get_rect(center=(self.manager.screen.get_rect().width/4, 50)))
-
-            text = font.render(str(scorePlayer2), True, (255, 255, 255))
-            self.manager.screen.blit(text, text.get_rect(center=((self.manager.screen.get_rect().width / 4)*3, 50)))
-
-            for e in pygame.event.get():
-                if e.type == pygame.QUIT:
-                    running = False
-                    self.closeCam()
-                    self.manager.running = False
+        pygame.display.flip()
