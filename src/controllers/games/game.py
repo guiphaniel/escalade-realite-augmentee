@@ -153,3 +153,6 @@ class Game(AbstractController, KeyboardListener):
         if e.key == pygame.K_ESCAPE or e.type == pygame.QUIT:
             self.closeCam()
             SwitchFrameController().execute(frame=src.view.frames.games_frame.GamesFrame())
+            return True
+
+        return False

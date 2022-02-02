@@ -73,7 +73,7 @@ class Button(Item, MouseListener):
 
     def onMouseEvent(self, e):
         if not self.active:
-            return
+            return False
 
         if e.type == pygame.MOUSEBUTTONDOWN:
             x, y = pygame.mouse.get_pos()
@@ -81,6 +81,9 @@ class Button(Item, MouseListener):
                                 self.w + self.padding * 2 + self.borderRadius * 2,
                                 self.h + self.padding * 2 + self.borderRadius * 2).collidepoint(x, y):
                 self.notifyAllActionListeners()
+                return True
+
+        return False
 
     def notifyAllActionListeners(self):
         for l in self.actionListeners:

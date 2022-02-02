@@ -15,12 +15,15 @@ class EventManager(metaclass=Singleton):
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 src.view.window.Window().setVisible(False)
+                return
             if e.type == pygame.KEYDOWN or e.type == pygame.KEYUP:
                 for l in self.keyboardListeners:
-                    l.onKeyboardEvent(e)
+                    if l.onKeyboardEvent(e):
+                        return
             if e.type == pygame.MOUSEBUTTONDOWN or e.type == pygame.MOUSEBUTTONUP:
                 for l in self.mouseListeners:
-                    l.onMouseEvent(e)
+                    if l.onMouseEvent(e):
+                        return
 
     def addKeyboardListener(self, l):
         self.keyboardListeners.append(l)
