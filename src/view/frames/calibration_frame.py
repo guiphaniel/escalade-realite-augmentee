@@ -12,9 +12,9 @@ class CalibrationFrame(AbstractFrame):
 
     def execute(self):
         if Transform().startCalibration():
-            SwitchFrameController().control(frame=src.view.frames.home_frame.HomeFrame())
+            SwitchFrameController().execute(frame=src.view.frames.home_frame.HomeFrame())
         else:
             homeFrame = src.view.frames.home_frame.HomeFrame()
             homeFrame.playButton.active = False
             homeFrame.repaintAll()
-            SwitchFrameController().control(frame=homeFrame)
+            SwitchFrameController().execute(frame=homeFrame)

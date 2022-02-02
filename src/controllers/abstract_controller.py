@@ -3,5 +3,5 @@ from abc import abstractmethod
 
 class AbstractController:
     @abstractmethod
-    def control(self, **kwargs):
+    def execute(self, **kwargs):
         pass

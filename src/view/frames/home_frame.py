@@ -24,6 +24,6 @@ class HomeFrame(AbstractFrame, ActionListener):
     # TODO: use controllers, having window imbedded
     def actionPerformed(self, source):
         if source == self.playButton:
-            SwitchFrameController().control(frame=src.view.frames.home_frame.GamesFrame())
+            SwitchFrameController().execute(frame=src.view.frames.home_frame.GamesFrame())
         elif source == self.calibrationButton:
-            SwitchFrameController().control(frame=src.view.frames.home_frame.CalibrationFrame())
+            SwitchFrameController().execute(frame=src.view.frames.home_frame.CalibrationFrame())
