@@ -5,6 +5,7 @@ import numpy as np
 import pygame.draw
 
 import src
+from src.controllers.abstract_controller import AbstractController
 from src.controllers.switch_frame_controller import SwitchFrameController
 from src.utils.camera import Camera
 from src.utils.detectors import pose_detector
@@ -13,7 +14,7 @@ from src.view.events.event_manager import EventManager
 from src.view.events.keyboard_listener import KeyboardListener
 
 
-class Game(KeyboardListener):
+class Game(AbstractController, KeyboardListener):
 
     @abstractmethod
     def __init__(self,nbMediaPipe):
@@ -144,7 +145,11 @@ class Game(KeyboardListener):
                 playerPosition[1].append(pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[28].x * 1920 , landmark[28].y * 1080), (landmark[30].x * 1920 , landmark[30].y * 1080),(landmark[32].x * 1920 , landmark[32].y * 1080))))
         return playerPosition
 
+    @abstractmethod
+    def execute(self, **kwargs):
+        pass
+
     def onKeyboardEvent(self, e):
         if e.key == pygame.K_ESCAPE or e.type == pygame.QUIT:
             self.closeCam()
-            SwitchFrameController().control(frame=src.view.frames.games_frame.GamesFrame())
+            SwitchFrameController().execute(frame=src.view.frames.games_frame.GamesFrame())
