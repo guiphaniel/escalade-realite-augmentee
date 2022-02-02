@@ -1,5 +1,5 @@
 import pygame
-from src.games.game import Game
+from src.controllers.games.game import Game
 from src.model.components.handle import Handle
 from src.model.components.path import Path
 

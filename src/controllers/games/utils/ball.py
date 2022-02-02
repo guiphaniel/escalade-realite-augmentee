@@ -8,7 +8,7 @@ class Ball(pygame.sprite.Sprite):
     def __init__(self,manager):
         pygame.sprite.Sprite.__init__(self)
         self.manager = manager
-        self.image= pygame.transform.scale(pygame.image.load("controllers/games/sprites/ball.png"),(50,50))
+        self.image= pygame.transform.scale(pygame.image.load("view/images/sprites/ball.png"),(50,50))
         self.rect = self.image.get_rect()
         self.area = manager.screen.get_rect()
         self.vector = []

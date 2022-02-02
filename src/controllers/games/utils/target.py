@@ -11,7 +11,7 @@ class Target(Item):
     def __init__(self):
         super().__init__()
         self.size = (50, 50)
-        self.sprite = pygame.transform.scale(pygame.image.load("games/sprites/target.png"), self.size)
+        self.sprite = pygame.transform.scale(pygame.image.load("view/images/sprites/target.png"), self.size)
         self.rect = self.sprite.get_rect()
         self.rect.x = random.randint(0, self.win.get_rect().width - self.rect.width)
         self.rect.y = random.randint(0, self.win.get_rect().height - self.rect.height)
@@ -24,9 +24,9 @@ class Target(Item):
 
     def collide(self, polygon):
         if polygon.colliderect(self.rect):
-            self.sprite = pygame.transform.scale(pygame.image.load("games/sprites/success.png"), self.size)
+            self.sprite = pygame.transform.scale(pygame.image.load("view/images/sprites/success.png"), self.size)
             return True
         return False
 
     def failed(self):
-        self.sprite = pygame.transform.scale(pygame.image.load("games/sprites/fail.png"), self.size)
+        self.sprite = pygame.transform.scale(pygame.image.load("view/images/sprites/fail.png"), self.size)

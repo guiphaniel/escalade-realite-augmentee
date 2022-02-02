@@ -1,9 +1,7 @@
 import random
 import pygame
-from src.games.game import Game
-from src.games.utils.target import Target
-from src.view.events.event_manager import EventManager
-from src.view.listeners.action_listener import ActionListener
+from src.controllers.games.game import Game
+from src.controllers.games.utils.target import Target
 
 
 class OsuGame(Game):
