@@ -3,7 +3,7 @@ import threading
 import pygame
 
 import src.view.window
-from src.Singleton import Singleton
+from src.utils.Singleton import Singleton
 
 
 class EventManager(metaclass=Singleton):

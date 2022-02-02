@@ -2,10 +2,9 @@
 import cv2
 import numpy as np
 import math
-from src.Singleton import Singleton
+from src.utils.Singleton import Singleton
 
 from src.utils.camera import Camera
-from src.utils.detectors import surface_detector
 from src.utils.detectors.surface_detector import Surface
 
 

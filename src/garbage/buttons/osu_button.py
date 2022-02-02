@@ -1,4 +1,4 @@
-from src.games.osu_game import OsuGame
+from src.controllers.games.osu_game import OsuGame
 from src.garbage.buttons.button import Button
 
 

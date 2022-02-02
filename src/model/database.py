@@ -8,7 +8,7 @@ import sqlite3
 from absl.app import Error
 
 import src
-from src.Singleton import Singleton
+from src.utils.Singleton import Singleton
 
 
 class Database(metaclass=Singleton):

@@ -1,6 +1,5 @@
-from src.games.osu_game import OsuGame
+from src.controllers.games.osu_game import OsuGame
 from src.view.frames.abstract_frame import AbstractFrame
-from src.view.items.button import Button
 from src.view.listeners.action_listener import ActionListener
 
 

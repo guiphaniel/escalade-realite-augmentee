@@ -1,4 +1,4 @@
-from src.games.path_game import PathGame
+from src.controllers.games.path_game import PathGame
 from src.garbage.buttons.button import Button
 
 

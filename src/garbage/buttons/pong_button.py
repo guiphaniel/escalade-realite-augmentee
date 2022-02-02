@@ -1,4 +1,4 @@
-from src.games import PongGame
+from src.controllers.games import PongGame
 from src.garbage.buttons.button import Button
 
 
