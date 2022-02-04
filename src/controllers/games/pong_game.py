@@ -22,16 +22,14 @@ class PongGame(GameMultiPlayer):
         while self.running:
             pygame.display.flip()
             self.manager.screen.fill((0, 0, 0, 0))
-
             pygame.draw.rect(self.manager.screen,(238,130,238),pygame.Rect(self.manager.screen.get_rect().centerx - 1,0,3,self.manager.screen.get_rect().height))
 
-            playerPositionMutliple = self.getMultiplePlayerPosition()
 
             ball.collideGoal()
             ball.collideBorder()
-            for position in playerPositionMutliple[0]:
+            for position in list(self.playersPosition[0].values()):
                 ball.collidePlayer(position)
-            for position in playerPositionMutliple[1]:
+            for position in list(self.playersPosition[1].values()):
                 ball.collidePlayer(position)
             ball.update()
             ball.draw()

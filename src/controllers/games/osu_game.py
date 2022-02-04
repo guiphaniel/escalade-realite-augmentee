@@ -33,9 +33,7 @@ class OsuGame(GameSinglePlayer):
                     t.ticks = pygame.time.get_ticks()
                     t.failed()
 
-            positionPlayer = self.getPlayerPosition()
-
-            for position in positionPlayer:
+            for position in list(self.playerPosition.values()):
                 for t in targets:
                     if t.collide(position):
                         targets.remove(t)

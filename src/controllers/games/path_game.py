@@ -6,8 +6,8 @@ from src.model.components.path import Path
 
 class PathGame(GameSinglePlayer):
 
-    def __init__(self, screen):
-        super().__init__(screen)
+    def __init__(self, manager):
+        super().__init__(manager)
         self.font=pygame.font.SysFont(None, 24)
 
     def execute(self):
@@ -32,9 +32,7 @@ class PathGame(GameSinglePlayer):
                 text = self.font.render(str(i+1), True, (255,255,255))
                 self.manager.screen.blit(text, text.get_rect(center = (path.getHandles()[i].x, path.getHandles()[i].y)))
 
-            playerPosition = self.getPlayerPosition()
-
-            for position in playerPosition:
+            for position in list(self.playerPosition.values()):
                 if position.colliderect(pygame.Rect(handles[0].x-radius,handles[0].y-radius,radius*2,radius*2)):
                     handlesSucceeded.append(handles[0])
                     handles.remove(handles[0])

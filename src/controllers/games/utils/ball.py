@@ -73,7 +73,7 @@ class Ball(pygame.sprite.Sprite):
         self.intangible = True
         time = pygame.time.get_ticks()
         while pygame.time.get_ticks() < time + 500:
-            pass
+            continue
         self.intangible = False
 
     def goalLeft(self):
