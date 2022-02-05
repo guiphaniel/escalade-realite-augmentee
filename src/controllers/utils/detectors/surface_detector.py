@@ -12,7 +12,7 @@ class Surface:
         MIN_MATCH_COUNT = 10
         #cv2.namedWindow('Calibration', cv2.WND_PROP_FULLSCREEN)
         #cv2.setWindowProperty('Calibration', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-        img1 = cv2.imread("D:/Git/ptut/src/view/images/charucoboard.jpg", 0)
+        img1 = cv2.imread("view/images/charucoboard.jpg", 0)
         #cv2.imshow('Calibration', img1)
         cv2.waitKey(1000)
         validCapRead=False
