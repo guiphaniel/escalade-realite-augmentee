@@ -10,6 +10,7 @@ class EventManager(metaclass=Singleton):
     def __init__(self):
         self.keyboardListeners = []
         self.mouseListeners = []
+        self.motionListeners = []
 
     def catchEvent(self):
         for e in pygame.event.get():
@@ -24,6 +25,10 @@ class EventManager(metaclass=Singleton):
                 for l in self.mouseListeners:
                     if l.onMouseEvent(e):
                         return
+            if e.type == pygame.MOUSEMOTION:
+                for l in self.motionListeners:
+                    if l.onMotionEvent(e):
+                        return
 
     def addKeyboardListener(self, l):
         self.keyboardListeners.append(l)
@@ -36,6 +41,12 @@ class EventManager(metaclass=Singleton):
 
     def removeMouseListener(self, l):
         self.mouseListeners.remove(l)
+
+    def addMotionListener(self, l):
+        self.motionListeners.append(l)
+
+    def removeMotionListener(self, l):
+        self.motionListeners.remove(l)
 
     def removeAllListeners(self):
         self.keyboardListeners.clear()
