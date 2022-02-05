@@ -78,7 +78,7 @@ class AbstractInternalFrame(Item, MouseListener, MotionListener):
                 self.held = True
                 return True
         elif e.type == pygame.MOUSEBUTTONUP:
-            if self.snappingRect.collidepoint(pygame.mouse.get_pos()):
+            if self.held:
                 self.held = False
                 return True
 

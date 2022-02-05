@@ -11,6 +11,9 @@ class EventManager(metaclass=Singleton):
         self.keyboardListeners = []
         self.mouseListeners = []
         self.motionListeners = []
+        # these variables are used not to overwhelm the manager with onMotionEvent calls (will wait deltaLastMotionEvent between each)
+        self.lastMotionEvent = pygame.time.get_ticks()
+        self.deltaLastMotionEvent = 17
 
     def catchEvent(self):
         for e in pygame.event.get():
@@ -26,9 +29,11 @@ class EventManager(metaclass=Singleton):
                     if l.onMouseEvent(e):
                         return
             if e.type == pygame.MOUSEMOTION:
-                for l in self.motionListeners:
-                    if l.onMotionEvent(e):
-                        return
+                if self.lastMotionEvent + self.deltaLastMotionEvent < pygame.time.get_ticks():
+                    for l in self.motionListeners:
+                        if l.onMotionEvent(e):
+                            self.lastMotionEvent = pygame.time.get_ticks()
+                            return
 
     def addKeyboardListener(self, l):
         self.keyboardListeners.append(l)
