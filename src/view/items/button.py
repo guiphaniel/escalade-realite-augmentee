@@ -16,7 +16,7 @@ class Button(Item, MouseListener):
         self.padding = 10
         self.borderWidth = 10
         self.borderRadius = 10
-        self.rect = pygame.rect.Rect(x, y, w, h)
+        self.rect = pygame.rect.Rect(x, y, w, h) #the rect is equivalent to the outer rect of the button (margin + borders included)
         self.__updateRect()
 
         self.setText(text)
