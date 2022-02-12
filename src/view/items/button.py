@@ -10,15 +10,10 @@ class Button(Item, MouseListener):
         Item.__init__(self)
         MouseListener.__init__(self)
 
-        # init textures
-        self.bgColor = (255, 255, 255)
-        self.borderColor = (0, 0, 0)
-        self.padding = 10
-        self.borderWidth = 10
-        self.borderRadius = 10
-        self.rect = pygame.rect.Rect(x, y, w, h) #the rect is equivalent to the outer rect of the button (margin + borders included)
-        self.__updateRect()
+        self.rect = pygame.rect.Rect(x, y, w, h)  # the rect is equivalent to the outer rect of the button (margin + borders included)
 
+        # init textures
+        self.setStyle()
         self.setText(text)
 
         # init events
@@ -36,7 +31,7 @@ class Button(Item, MouseListener):
         self.rect.h = rect.h
         self.__updateRect()
 
-    def setStyle(self, bgColor, borderColor, padding, borderWidth, borderRadius):
+    def setStyle(self, bgColor = (255, 255, 255), borderColor = (0, 0, 0), padding = 10, borderWidth = 10, borderRadius = 10):
         self.bgColor = bgColor
         self.borderColor = borderColor
         self.padding = padding
