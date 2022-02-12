@@ -9,6 +9,7 @@ class AbstractFrame:
         #remove all listeners that were previously handled by the manager, so they won't get triggered anymore
         src.view.window.Window().eventManager.removeAllListeners()
 
+        self.rect = pygame.rect.Rect(0,0,0,0)
         self.bgColor = bgColor
         if bgImage:
             self.bgImage = pygame.image.load(bgImage)

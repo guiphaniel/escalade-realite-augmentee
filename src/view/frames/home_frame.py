@@ -7,6 +7,7 @@ from src.view.frames.abstract_frame import AbstractFrame
 from src.view.frames.calibration_frame import CalibrationFrame
 from src.view.frames.games_frame import GamesFrame
 from src.view.internalframes.AbstractInternalFrame import AbstractInternalFrame
+from src.view.internalframes.handlesEditorInternalFrame import HandleEditorInternalFrame
 from src.view.items.button import Button
 from src.view.listeners.action_listener import ActionListener
 
@@ -14,11 +15,11 @@ from src.view.listeners.action_listener import ActionListener
 class HomeFrame(AbstractFrame, ActionListener):
     def __init__(self):
         AbstractFrame.__init__(self, bgImage="view/images/background.png")
-        self.calibrationButton = Button(300, 400, text="CALIBRATION")
+        self.calibrationButton = Button(self, 300, 400, text="CALIBRATION")
         self.add(self.calibrationButton)
-        self.playButton = Button(300, 700, text="JOUER")
+        self.playButton = Button(self, 300, 700, text="JOUER")
         self.add(self.playButton)
-        self.add(AbstractInternalFrame(self,pygame.Rect(10,10,30,30)))
+        self.add(HandleEditorInternalFrame(self, (10,10)))
 
         self.calibrationButton.addActionListener(self)
         self.playButton.addActionListener(self)
