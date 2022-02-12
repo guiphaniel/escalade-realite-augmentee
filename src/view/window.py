@@ -1,7 +1,7 @@
 import pygame
 
 from src.utils.Singleton import Singleton
-from src.view.events.event_manager import EventManager
+from src.utils.events.event_manager import EventManager
 from src.view.frames.home_frame import HomeFrame
 
 

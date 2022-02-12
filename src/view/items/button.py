@@ -1,6 +1,6 @@
 import pygame
 
-from src.view.events.mouse_listener import MouseListener
+from src.utils.events.mouse_listener import MouseListener
 from src.view.items.item import Item
 
 

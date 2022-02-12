@@ -2,8 +2,8 @@ from abc import abstractmethod
 
 import pygame
 import src
-from src.view.events.motion_listener import MotionListener
-from src.view.events.mouse_listener import MouseListener
+from src.utils.events.motion_listener import MotionListener
+from src.utils.events.mouse_listener import MouseListener
 from src.view.items.item import Item
 
 

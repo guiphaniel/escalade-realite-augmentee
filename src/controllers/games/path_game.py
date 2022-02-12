@@ -4,8 +4,8 @@ from src.controllers.switch_frame_controller import SwitchFrameController
 from src.model.components.handle import Handle
 from src.model.components.path import Path
 from src.model.database import Database
-from src.view.events.event_manager import EventManager
-from src.view.events.mouse_listener import MouseListener
+from src.utils.events.event_manager import EventManager
+from src.utils.events.mouse_listener import MouseListener
 
 #TODO: corriger le bug pour la création d'un parcours sans mur dans la BD -> faire une fenetre pour la creation, puis une fenetre pour le jeu
 class PathGame(Game, MouseListener):

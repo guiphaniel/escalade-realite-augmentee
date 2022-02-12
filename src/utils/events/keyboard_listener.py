@@ -1,13 +1,13 @@
 from abc import abstractmethod
 
-from src.view.events.event_manager import EventManager
+from src.utils.events.event_manager import EventManager
 
 
-class MouseListener:
+class KeyboardListener:
     def __init__(self):
-        EventManager().addMouseListener(self)
+        EventManager().addKeyboardListeners(self)
 
     #needs to return True if the event is caught (i.e. the element is concerned by the event)
     @abstractmethod
-    def onMouseEvent(self, e) -> bool:
+    def onKeyboardEvent(self, e) -> bool:
         pass

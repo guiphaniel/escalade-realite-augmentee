@@ -1,13 +1,13 @@
 from abc import abstractmethod
 
-from src.view.events.event_manager import EventManager
+from src.utils.events.event_manager import EventManager
 
 
-class KeyboardListener:
+class MotionListener:
     def __init__(self):
-        EventManager().addKeyboardListeners(self)
+        EventManager().addMotionListener(self)
 
     #needs to return True if the event is caught (i.e. the element is concerned by the event)
     @abstractmethod
-    def onKeyboardEvent(self, e) -> bool:
+    def onMotionEvent(self, e) -> bool:
         pass
