@@ -88,9 +88,7 @@ class Button(Item, MouseListener):
 
         if e.type == pygame.MOUSEBUTTONDOWN:
             x, y = pygame.mouse.get_pos()
-            if pygame.rect.Rect(self.rect.x - self.borderRadius, self.rect.y - self.borderRadius,
-                                self.rect.w + self.padding * 2 + self.borderRadius * 2,
-                                self.rect.h + self.padding * 2 + self.borderRadius * 2).collidepoint(x, y):
+            if self.rect.collidepoint(x, y):
                 self.notifyAllActionListeners()
                 return True
 
