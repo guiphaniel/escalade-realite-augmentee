@@ -10,6 +10,8 @@ class AbstractFrame:
         src.view.window.Window().eventManager.removeAllListeners()
 
         self.rect = pygame.rect.Rect(0,0,0,0)
+        self.padding = 0
+
         self.bgColor = bgColor
         if bgImage:
             self.bgImage = pygame.image.load(bgImage)
