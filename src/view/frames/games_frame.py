@@ -1,6 +1,11 @@
 import src
+from src.controllers.games.osu_game import OsuGame
+from src.controllers.games.path_game import PathGame
+from src.controllers.games.pong_game import PongGame
+from src.controllers.start_game_controller import StartGameController
 from src.controllers.switch_frame_controller import SwitchFrameController
 from src.view.frames.abstract_frame import AbstractFrame
+from src.view.frames.path_frame import PathFrame
 from src.view.frames.targets_frame import TargetsFrame
 from src.view.items.button import Button
 from src.view.listeners.action_listener import ActionListener
@@ -26,17 +31,17 @@ class GamesFrame(AbstractFrame, ActionListener):
         self.returnButton.addActionListener(self)
         self.handlesDetectorButton.addActionListener(self)
 
-    def execute(self):
-        pass
-
     #TODO: use controllers, having window imbedded
     def actionPerformed(self, source):
         if source == self.pongButton:
             SwitchFrameController().execute(frame=PongFrame())
+            StartGameController().execute(game=PongGame())
         elif source == self.targetButton:
             SwitchFrameController().execute(frame=TargetsFrame())
+            StartGameController().execute(game=OsuGame())
         elif source == self.pathButton:
             SwitchFrameController().execute(frame=PathFrame())
+            StartGameController().execute(game=PathGame())
         elif source == self.returnButton:
             from src.view.frames.home_frame import HomeFrame
             SwitchFrameController().execute(frame=HomeFrame())

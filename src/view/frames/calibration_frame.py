@@ -10,11 +10,3 @@ class CalibrationFrame(AbstractFrame):
     def __init__(self):
         AbstractFrame.__init__(self, bgImage="view/images/charucoboard.jpg")
 
-    def execute(self):
-        if Transform().startCalibration():
-            SwitchFrameController().execute(frame=src.view.frames.home_frame.HomeFrame())
-        else:
-            homeFrame = src.view.frames.home_frame.HomeFrame()
-            homeFrame.playButton.active = False
-            homeFrame.repaintAll()
-            SwitchFrameController().execute(frame=homeFrame)

@@ -1,8 +1,12 @@
+import pygame
+
 import src
+from src.controllers.start_calibration_controller import StartCalibrationController
 from src.controllers.switch_frame_controller import SwitchFrameController
 from src.view.frames.abstract_frame import AbstractFrame
 from src.view.frames.calibration_frame import CalibrationFrame
 from src.view.frames.games_frame import GamesFrame
+from src.view.internalframes.AbstractInternalFrame import AbstractInternalFrame
 from src.view.items.button import Button
 from src.view.listeners.action_listener import ActionListener
 
@@ -14,12 +18,10 @@ class HomeFrame(AbstractFrame, ActionListener):
         self.add(self.calibrationButton)
         self.playButton = Button(300, 700, text="JOUER")
         self.add(self.playButton)
+        self.add(AbstractInternalFrame(self,pygame.Rect(10,10,30,30)))
 
         self.calibrationButton.addActionListener(self)
         self.playButton.addActionListener(self)
-
-    def execute(self):
-        pass
 
     # TODO: use controllers, having window imbedded
     def actionPerformed(self, source):
@@ -27,3 +29,4 @@ class HomeFrame(AbstractFrame, ActionListener):
             SwitchFrameController().execute(frame=src.view.frames.home_frame.GamesFrame())
         elif source == self.calibrationButton:
             SwitchFrameController().execute(frame=src.view.frames.home_frame.CalibrationFrame())
+            StartCalibrationController().execute()

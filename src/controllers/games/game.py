@@ -20,7 +20,7 @@ class Game(AbstractController, KeyboardListener):
     def __init__(self,nbMediaPipe):
         self.win = src.view.window.Window().win
         EventManager().addKeyboardListener(self)
-        self.continueGame=False
+        self.continueGame=True
         self.transfoResults=None
         self.cap=None
         self.multiMediapipeWidth = None
@@ -91,9 +91,6 @@ class Game(AbstractController, KeyboardListener):
         del rightPoseDetector
         del leftPoseDetector
 
-    def closeCam(self):
-        self.continueGame=False
-
     def getPlayerPosition(self):
         playerPosition = []
         if self.transfoResults:
@@ -151,7 +148,7 @@ class Game(AbstractController, KeyboardListener):
 
     def onKeyboardEvent(self, e):
         if e.key == pygame.K_ESCAPE or e.type == pygame.QUIT:
-            self.closeCam()
+            self.continueGame=False
             SwitchFrameController().execute(frame=src.view.frames.games_frame.GamesFrame())
             return True
 

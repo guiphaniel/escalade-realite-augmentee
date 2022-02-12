@@ -5,8 +5,3 @@ from src.view.frames.abstract_frame import AbstractFrame
 class PongFrame(AbstractFrame):
     def __init__(self):
         AbstractFrame.__init__(self)
-
-        self.pongGame = PongGame()
-
-    def execute(self):
-        self.pongGame.execute()

@@ -23,7 +23,6 @@ class Window(metaclass=Singleton):
         self.currentFrame = homeFrame
         while self.isVisible:
             self.eventManager.catchEvent()
-            self.currentFrame.execute()
 
     def setVisible(self, isVisible):
         self.isVisible = isVisible

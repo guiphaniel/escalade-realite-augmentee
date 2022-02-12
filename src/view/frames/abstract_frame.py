@@ -17,10 +17,6 @@ class AbstractFrame:
         self.win = src.view.window.Window().win
         self.items = []
 
-    @abstractmethod
-    def execute(self):
-        pass
-
     def add(self, item):
         self.items.append(item)
 
