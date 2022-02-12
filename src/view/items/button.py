@@ -13,10 +13,15 @@ class Button(Item, MouseListener):
         self.rect = pygame.rect.Rect(x, y, w, h)  # the rect is equivalent to the outer rect of the button (margin + borders included)
 
         # init textures
-        self.padding = 0
-        self.borderWidth = 0
+        self.bgColor = (255, 255, 255)
+        self.borderColor = (0, 0, 0)
+        self.padding = 10
+        self.borderWidth = 10
+        self.borderRadius = 10
 
-        self.setStyle()
+        self.rect.w += self.padding * 2 + self.borderWidth * 2
+        self.rect.h += self.padding * 2 + self.borderWidth * 2
+
         self.setText(text)
 
         # init events
@@ -33,18 +38,25 @@ class Button(Item, MouseListener):
         self.rect.w = rect.w + self.padding * 2 + self.borderWidth * 2
         self.rect.h = rect.h + self.padding * 2 + self.borderWidth * 2
 
-    def setStyle(self, bgColor = (255, 255, 255), borderColor = (0, 0, 0), padding = 10, borderWidth = 10, borderRadius = 10):
-        self.rect.w -= self.padding * 2 + self.borderWidth * 2
-        self.rect.h -= self.padding * 2 + self.borderWidth * 2
+    def setStyle(self, bgColor = None, borderColor = None, padding = None, borderWidth = None, borderRadius = None):
+        if bgColor:
+            self.bgColor = bgColor
 
-        self.bgColor = bgColor
-        self.borderColor = borderColor
-        self.padding = padding
-        self.borderWidth = borderWidth
-        self.borderRadius = borderRadius
+        if borderColor:
+            self.borderColor = borderColor
 
-        self.rect.w += self.padding * 2 + self.borderWidth * 2
-        self.rect.h += self.padding * 2 + self.borderWidth * 2
+        if borderRadius:
+            self.borderRadius = borderRadius
+
+        if padding:
+            self.padding = padding
+            self.rect.w -= self.padding * 2 - padding * 2
+            self.rect.h -= self.padding * 2 - padding * 2
+
+        if borderWidth:
+            self.borderWidth = borderWidth
+            self.rect.w -= self.borderWidth * 2 - borderWidth * 2
+            self.rect.h -= self.borderWidth * 2 - borderWidth * 2
 
     def draw(self):
         pygame.draw.rect(self.win, self.borderColor, self.rect, 0, self.borderRadius)  # border
