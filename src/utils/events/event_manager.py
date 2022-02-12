@@ -1,5 +1,4 @@
-import threading
-
+from collections import deque
 import pygame
 
 import src.view.window
@@ -8,9 +7,9 @@ from src.utils.Singleton import Singleton
 
 class EventManager(metaclass=Singleton):
     def __init__(self):
-        self.keyboardListeners = []
-        self.mouseListeners = []
-        self.motionListeners = []
+        self.keyboardListeners = deque()
+        self.mouseListeners = deque()
+        self.motionListeners = deque()
         # these variables are used not to overwhelm the manager with onMotionEvent calls (will wait deltaLastMotionEvent between each)
         self.lastMotionEvent = pygame.time.get_ticks()
         self.deltaLastMotionEvent = 17
@@ -36,19 +35,19 @@ class EventManager(metaclass=Singleton):
                             return
 
     def addKeyboardListener(self, l):
-        self.keyboardListeners.append(l)
+        self.keyboardListeners.appendleft(l)
 
     def removeKeyboardListener(self, l):
         self.keyboardListeners.remove(l)
 
     def addMouseListener(self, l):
-        self.mouseListeners.append(l)
+        self.mouseListeners.appendleft(l)
 
     def removeMouseListener(self, l):
         self.mouseListeners.remove(l)
 
     def addMotionListener(self, l):
-        self.motionListeners.append(l)
+        self.motionListeners.appendleft(l)
 
     def removeMotionListener(self, l):
         self.motionListeners.remove(l)
