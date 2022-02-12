@@ -16,12 +16,9 @@ class Button(Item, MouseListener):
         self.padding = 10
         self.borderWidth = 10
         self.borderRadius = 10
-        self.x = x
-        self.y = y
-        self.w = w
-        self.h = h
-
+        self.rect = pygame.rect.Rect(x, y, w, h)
         self.__updateRect()
+
         self.setText(text)
 
         # init events
@@ -35,8 +32,8 @@ class Button(Item, MouseListener):
         font = pygame.font.SysFont(textFont, textSize)
         self.__textSurface = font.render(text, True, textColor)
         rect = self.__textSurface.get_rect()
-        self.w = rect.w
-        self.h = rect.h
+        self.rect.w = rect.w
+        self.rect.h = rect.h
         self.__updateRect()
 
     def setStyle(self, bgColor, borderColor, padding, borderWidth, borderRadius):
@@ -50,11 +47,11 @@ class Button(Item, MouseListener):
     def draw(self):
         pygame.draw.rect(self.win, self.borderColor, self.rect, 0, self.borderRadius)  # border
         pygame.draw.rect(self.win, self.bgColor,
-                         pygame.rect.Rect(self.x, self.y, self.w + self.padding * 2, self.h + self.padding * 2), 0,
+                         pygame.rect.Rect(self.rect.x + self.borderWidth, self.rect.y + self.borderWidth, self.rect.w - self.borderWidth * 2, self.rect.h - self.borderWidth * 2), 0,
                          self.borderRadius)  # inner
         if self.__textSurface:
             self.win.blit(self.__textSurface,
-                          pygame.rect.Rect(self.x + self.padding, self.y + self.padding, self.w, self.h))
+                          pygame.rect.Rect(self.rect.x + self.borderWidth + self.padding, self.rect.y + self.borderWidth + self.padding, self.rect.w - self.borderWidth * 2, self.rect.h - self.borderWidth * 2))
 
         if not self.active:
             s = pygame.Surface((self.rect.w - self.borderWidth*2, self.rect.h - self.borderWidth*2))  # the size of your rect
@@ -77,9 +74,9 @@ class Button(Item, MouseListener):
 
         if e.type == pygame.MOUSEBUTTONDOWN:
             x, y = pygame.mouse.get_pos()
-            if pygame.rect.Rect(self.x - self.borderRadius, self.y - self.borderRadius,
-                                self.w + self.padding * 2 + self.borderRadius * 2,
-                                self.h + self.padding * 2 + self.borderRadius * 2).collidepoint(x, y):
+            if pygame.rect.Rect(self.rect.x - self.borderRadius, self.rect.y - self.borderRadius,
+                                self.rect.w + self.padding * 2 + self.borderRadius * 2,
+                                self.rect.h + self.padding * 2 + self.borderRadius * 2).collidepoint(x, y):
                 self.notifyAllActionListeners()
                 return True
 
@@ -89,9 +86,9 @@ class Button(Item, MouseListener):
         for l in self.actionListeners:
             l.actionPerformed(self)
 
-    # updates the outer rect (hitbox)
+    # updates the outer rect (hitbox), taking into account padding and borders
     def __updateRect(self):
-        self.rect = pygame.rect.Rect(self.x - self.borderWidth, self.y - self.borderWidth,
-                                     self.w + self.padding * 2 + self.borderWidth * 2,
-                                     self.h + self.padding * 2 + self.borderWidth * 2)
+        self.rect = pygame.rect.Rect(self.rect.x - self.borderWidth, self.rect.y - self.borderWidth,
+                                     self.rect.w + self.padding * 2 + self.borderWidth * 2,
+                                     self.rect.h + self.padding * 2 + self.borderWidth * 2)
 
