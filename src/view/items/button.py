@@ -13,6 +13,9 @@ class Button(Item, MouseListener):
         self.rect = pygame.rect.Rect(x, y, w, h)  # the rect is equivalent to the outer rect of the button (margin + borders included)
 
         # init textures
+        self.padding = 0
+        self.borderWidth = 0
+
         self.setStyle()
         self.setText(text)
 
@@ -27,17 +30,21 @@ class Button(Item, MouseListener):
         font = pygame.font.SysFont(textFont, textSize)
         self.__textSurface = font.render(text, True, textColor)
         rect = self.__textSurface.get_rect()
-        self.rect.w = rect.w
-        self.rect.h = rect.h
-        self.__updateRect()
+        self.rect.w = rect.w + self.padding * 2 + self.borderWidth * 2
+        self.rect.h = rect.h + self.padding * 2 + self.borderWidth * 2
 
     def setStyle(self, bgColor = (255, 255, 255), borderColor = (0, 0, 0), padding = 10, borderWidth = 10, borderRadius = 10):
+        self.rect.w -= self.padding * 2 + self.borderWidth * 2
+        self.rect.h -= self.padding * 2 + self.borderWidth * 2
+
         self.bgColor = bgColor
         self.borderColor = borderColor
         self.padding = padding
         self.borderWidth = borderWidth
         self.borderRadius = borderRadius
-        self.__updateRect()
+
+        self.rect.w += self.padding * 2 + self.borderWidth * 2
+        self.rect.h += self.padding * 2 + self.borderWidth * 2
 
     def draw(self):
         pygame.draw.rect(self.win, self.borderColor, self.rect, 0, self.borderRadius)  # border
@@ -80,10 +87,4 @@ class Button(Item, MouseListener):
     def notifyAllActionListeners(self):
         for l in self.actionListeners:
             l.actionPerformed(self)
-
-    # updates the outer rect (hitbox), taking into account padding and borders
-    def __updateRect(self):
-        self.rect = pygame.rect.Rect(self.rect.x - self.borderWidth, self.rect.y - self.borderWidth,
-                                     self.rect.w + self.padding * 2 + self.borderWidth * 2,
-                                     self.rect.h + self.padding * 2 + self.borderWidth * 2)
 
