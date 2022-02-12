@@ -87,9 +87,14 @@ class AbstractInternalFrame(Item, MouseListener, MotionListener):
     def onMotionEvent(self, e) -> bool:
         if self.held:
             x, y = pygame.mouse.get_pos()
-            self.snappingRect = self.snappingRect.move(x - self.lastMousePosX, y - self.lastMousePosY)
-            self.rect = self.rect.move(x - self.lastMousePosX, y - self.lastMousePosY)
+            newX, newY = x - self.lastMousePosX, y - self.lastMousePosY
             self.lastMousePosX, self.lastMousePosY = x, y
+
+            self.snappingRect = self.snappingRect.move(newX, newY)
+            self.rect = self.rect.move(newX, newY)
+            for i in self.items:
+                i.move(newX, newY)
+
             self.parent.repaintAll()
             return True
 
