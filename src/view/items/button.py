@@ -10,7 +10,7 @@ class Button(Item, MouseListener):
         Item.__init__(self)
         MouseListener.__init__(self)
 
-        self.rect = pygame.rect.Rect(x + parent.rect.x, y + parent.rect.y, w, h)  # the rect is equivalent to the outer rect of the button (margin + borders included)
+        self.rect = pygame.rect.Rect(x + parent.rect.x + parent.padding, y + parent.rect.y + parent.padding, w, h)  # the rect is equivalent to the outer rect of the button (margin + borders included)
 
         # init textures
         self.bgColor = (255, 255, 255)
