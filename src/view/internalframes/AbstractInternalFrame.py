@@ -82,6 +82,24 @@ class AbstractInternalFrame(Item, MouseListener, MotionListener):
                 return True  # returns True as we want it to block underneath items to be triggered by the event manager
         elif e.type == pygame.MOUSEBUTTONUP:
             if self.held:
+                needsToBeRepainted = False
+                # make sure the frame doesn't exceed parent's borders
+                if self.rect.x < self.parent.rect.x:
+                    self.move(self.parent.rect.x - self.rect.x, 0)
+                    needsToBeRepainted = True
+                if self.rect.x + self.rect.w > self.parent.rect.w:
+                    self.move(self.parent.rect.w - (self.rect.x + self.rect.w), 0)
+                    needsToBeRepainted = True
+                if self.snappingRect.y < self.parent.rect.y:
+                    self.move(0, self.parent.rect.y - self.snappingRect.y)
+                    needsToBeRepainted = True
+                if self.rect.y + self.rect.h > self.parent.rect.h:
+                    self.move(0, self.parent.rect.h - (self.rect.y + self.rect.h))
+                    needsToBeRepainted = True
+
+                if needsToBeRepainted:
+                    self.parent.repaintAll()
+
                 self.held = False
                 return True
 
@@ -93,16 +111,19 @@ class AbstractInternalFrame(Item, MouseListener, MotionListener):
             newX, newY = x - self.lastMousePosX, y - self.lastMousePosY
             self.lastMousePosX, self.lastMousePosY = x, y
 
-            self.snappingRect = self.snappingRect.move(newX, newY)
-            self.rect = self.rect.move(newX, newY)
-            for i in self.items:
-                i.move(newX, newY)
+            self.move(newX, newY)
 
             self.parent.repaintAll()
             return True
 
         return False
-    
+
+    def move(self, x, y):
+        self.snappingRect = self.snappingRect.move(x, y)
+        self.rect = self.rect.move(x, y)
+        for i in self.items:
+            i.move(x, y)
+
     def shrinkToFit(self):
         maxX = 0
         maxY = 0
