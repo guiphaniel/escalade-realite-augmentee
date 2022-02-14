@@ -19,7 +19,6 @@ class HomeFrame(AbstractFrame, ActionListener):
         self.add(self.calibrationButton)
         self.playButton = Button(self, 300, 700, text="JOUER")
         self.add(self.playButton)
-        self.add(HandleEditorInternalFrame(self, (10,10)))
 
         self.calibrationButton.addActionListener(self)
         self.playButton.addActionListener(self)
