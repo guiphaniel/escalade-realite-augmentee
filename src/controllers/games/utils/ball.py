@@ -23,15 +23,6 @@ class Ball(pygame.sprite.Sprite):
         elif self.rect.y + self.rect.height >= self.area.height:
             self.vector[1] = abs(self.vector[1]) * -1
 
-    def collideGoal(self):
-        if self.rect.x <= 0:
-            self.vector[0] = abs(self.vector[0])
-
-        elif self.rect.x + self.rect.width >= self.area.width:
-            self.vector[0] = abs(self.vector[0]) * -1
-        # if self.rect.x<=0 or self.rect.x>=self.area.width:
-        # self.spawn()
-
     def collidePlayer(self, polygon):
         if not polygon.colliderect(self.rect) or self.intangible:
             return
@@ -44,27 +35,26 @@ class Ball(pygame.sprite.Sprite):
 
         th = threading.Thread(target=self.startTimerIntangible)
         th.start()
-        self.velocity += 0.0
 
     def spawn(self):
-        self.velocity = 1.0
+        self.velocity = 0.25
         self.vector = [0, 0]
         self.rect.x = self.area.width / 2 - self.rect.width / 2
         self.rect.y = self.area.height / 2 - self.rect.height / 2
 
-    def update(self):
+    def update(self,frames):
         if self.vector[0] == 0 and self.vector[1] == 0:
             return
         angle = math.acos(self.vector[0] / (math.sqrt(self.vector[0] ** 2 + self.vector[1] ** 2)))
 
         if self.vector[0] < 0:
-            self.rect.x += math.floor(math.cos(angle) * self.velocity)
+            self.rect.x += math.floor(math.cos(angle) * self.velocity * frames)
         else:
-            self.rect.x += math.ceil(math.cos(angle) * self.velocity)
+            self.rect.x += math.ceil(math.cos(angle) * self.velocity * frames)
         if self.vector[1] < 0:
-            self.rect.y += math.floor(math.sin(angle) * self.velocity * -1)
+            self.rect.y += math.floor(math.sin(angle) * self.velocity * -1 * frames)
         else:
-            self.rect.y += math.ceil(math.sin(angle) * self.velocity)
+            self.rect.y += math.ceil(math.sin(angle) * self.velocity * frames)
 
     def draw(self):
         self.manager.screen.blit(self.image, self.rect)
