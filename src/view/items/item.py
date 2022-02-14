@@ -12,6 +12,10 @@ class Item(pygame.sprite.Sprite):
         self.win = src.view.window.Window().win
         self.displayType = itemDisplayType.TOP_LEFT
 
+    @abstractmethod
+    def draw(self):
+        pass
+
     def move(self, x, y):
         self.rect.x += x
         self.rect.y += y
