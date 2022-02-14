@@ -1,17 +1,15 @@
-import copy
-import os
 import threading
 from abc import abstractmethod
 import mediapipe as mp
 import cv2
-import numpy as np
-import pygame.draw
 
 from src.controllers.games.game import Game
+from src.model.components.player import Player
 from src.utils.camera import Camera
 from src.utils.detectors import pose_detector
 from src.utils.transform import Transform
 
+mp_pose = mp.solutions.pose
 
 class GameSinglePlayer(Game):
 
@@ -23,7 +21,8 @@ class GameSinglePlayer(Game):
         self.multiMediapipeWidth = None
         self.image = None
         self.continueGame = False
-        self.playerPosition = {}
+        self.player = Player(parent)
+        self.parent.add(self.player)
         thMediapipe = threading.Thread(target=self.startSingleMediaPipe)
         thMediapipe.start()
         thPlayerPosition = threading.Thread(target=self.setPlayerPosition)
@@ -57,18 +56,22 @@ class GameSinglePlayer(Game):
                 break
         del singlePoseDetector
 
-    def closeCam(self):
-        self.continueGame=False
-
     def setPlayerPosition(self):
         while self.continueGame:
             if self.transfoResults:
-                landmark = self.transfoResults.landmark
-                for n in [15,16]:
-                    if -100<=landmark[n].x * 1920<=2100 and -100<=landmark[n].y * 1080<=1200 and -100<=landmark[n+2].x * 1920<=2100 and -100<=landmark[n+2].y * 1080<=1200 and -100<=landmark[n+4].x * 1920<=2100 and -100<=landmark[n+4].y * 1080<=1200 and -100<=landmark[n+6].x * 1920<=2100 and -100<=landmark[n+6].y * 1080<=1200 :
-                        self.playerPosition[n]=(pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[n].x * 1920, landmark[n].y * 1080), (landmark[n+2].x * 1920, landmark[n+2].y * 1080),(landmark[n+4].x * 1920, landmark[n+4].y * 1080),(landmark[n+6].x * 1920, landmark[n+6].y * 1080))))
+                landmarks = self.transfoResults.landmark
+                self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.LEFT_WRIST, 4)
+                self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.RIGHT_WRIST, 4)
+                self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.LEFT_ANKLE, 3)
+                self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.RIGHT_ANKLE, 3)
 
-                for n in [27,28]:
-                    if -100<=landmark[n].x * 1920<=2100 and -100<=landmark[n].y * 1080<=1200 and -100<=landmark[n+2].x * 1920<=2100 and -100<=landmark[n+2].y * 1080<=1200 and -100<=landmark[n+4].x * 1920<=2100 and -100<=landmark[n+4].y * 1080<=1200 :
-                        self.playerPosition[n]=(pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[n].x * 1920, landmark[n].y * 1080), (landmark[n+2].x * 1920, landmark[n+2].y * 1080),(landmark[n+4].x * 1920, landmark[n+4].y * 1080))))
-
+    def setPlayerLandmarks(self, landmarks, root, nbLandmarks):
+        valid = True
+        ids = range(0, nbLandmarks * 2 - 1, 2)
+        for i in ids:
+            if landmarks[root + i].visibility < 0.2:
+                valid = False
+        if valid:
+            self.player.mutexes[root].acquire()
+            self.player.landmarks[root] = [landmarks[root + i] for i in ids]
+            self.player.mutexes[root].release()
