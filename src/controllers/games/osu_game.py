@@ -6,8 +6,8 @@ from src.controllers.games.utils.target import Target
 
 class OsuGame(Game):
 
-    def __init__(self):
-        super().__init__(1)
+    def __init__(self, parent):
+        super().__init__(parent, 1)
         self.score = 0
         self.initTimeTarget = pygame.time.get_ticks()
         self.waitTimeTarget = random.randint(2000, 5000)
@@ -18,7 +18,7 @@ class OsuGame(Game):
         while self.continueGame:
             self.win.fill((0, 0, 0))
             if (self.initTimeTarget + self.waitTimeTarget - pygame.time.get_ticks()) <= 0:
-                self.targets.append(Target())
+                self.targets.append(Target(self.parent))
                 self.initTimeTarget = pygame.time.get_ticks()
                 self.waitTimeTarget = random.randint(2000, 4000)
 

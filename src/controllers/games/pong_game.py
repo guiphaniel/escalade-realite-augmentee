@@ -1,19 +1,21 @@
 import math
 import random
 import pygame
+from pygame.examples.playmus import Window
+
 from src.controllers.games.game import Game
 from src.controllers.games.utils.ball import Ball
 
 
 class PongGame(Game):
 
-    def __init__(self):
-        super().__init__(2)
+    def __init__(self, parent):
+        super().__init__(parent, 2)
         self.scorePlayer1 = 0
         self.scorePlayer2 = 0
         self.font = pygame.font.SysFont(None, 128)
 
-        self.ball = Ball()
+        self.ball = Ball(parent)
 
     def execute(self):
         while self.continueGame:

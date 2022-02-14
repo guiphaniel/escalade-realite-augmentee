@@ -10,8 +10,8 @@ from src.utils.events.mouse_listener import MouseListener
 #TODO: corriger le bug pour la création d'un parcours sans mur dans la BD -> faire une fenetre pour la creation, puis une fenetre pour le jeu
 class PathGame(Game, MouseListener):
 
-    def __init__(self):
-        super().__init__(1)
+    def __init__(self, parent):
+        super().__init__(parent, 1)
         EventManager().addMouseListener(self)
         self.font=pygame.font.SysFont(None, 24)
         self.score = 0

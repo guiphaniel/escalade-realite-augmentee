@@ -1,14 +1,15 @@
 from abc import abstractmethod
 
 import pygame
+from pygame.sprite import Sprite
 
 import src
 from src.view.items.item_display_type import itemDisplayType
 
 
-class Item(pygame.sprite.Sprite):
+class Item(Sprite):
     def __init__(self, parent, x, y, w, h):
-        super().__init__()
+        Sprite.__init__(self)
         self.parent = parent
         self.rect = pygame.rect.Rect(x + parent.rect.x + parent.padding, y + parent.rect.y + parent.padding, w, h)
         self.win = src.view.window.Window().win

@@ -7,11 +7,12 @@ from src.view.items.item import Item
 
 
 class Ball(Item):
-    def __init__(self):
-        Item.__init__(self)
-        self.image= pygame.transform.scale(pygame.image.load("view/images/sprites/ball.png"),(50,50))
-        self.rect = self.image.get_rect()
+    def __init__(self, parent):
+        Item.__init__(self, parent, 0, 0, 50, 50)
+        self.image= pygame.transform.scale(pygame.image.load("view/images/sprites/ball.png"), (self.rect.w, self.rect.h))
         self.area = self.win.get_rect()
+        self.rect.x = self.area.w/2 - self.rect.w/2
+        self.rect.y = self.area.h/2 - self.rect.h/2
         self.vector = []
         self.velocity = None
         self.intangible = False

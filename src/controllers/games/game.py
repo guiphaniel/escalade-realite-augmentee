@@ -17,7 +17,8 @@ from src.utils.events.keyboard_listener import KeyboardListener
 class Game(AbstractController, KeyboardListener):
 
     @abstractmethod
-    def __init__(self,nbMediaPipe):
+    def __init__(self, parent, nbMediaPipe):
+        self.parent = parent
         self.win = src.view.window.Window().win
         EventManager().addKeyboardListener(self)
         self.continueGame=True

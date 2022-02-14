@@ -34,14 +34,17 @@ class GamesFrame(AbstractFrame, ActionListener):
     #TODO: use controllers, having window imbedded
     def actionPerformed(self, source):
         if source == self.pongButton:
-            SwitchFrameController().execute(frame=PongFrame())
-            StartGameController().execute(game=PongGame())
+            pongFrame = PongFrame()
+            SwitchFrameController().execute(frame=pongFrame)
+            StartGameController().execute(game=PongGame(pongFrame))
         elif source == self.targetButton:
-            SwitchFrameController().execute(frame=TargetsFrame())
-            StartGameController().execute(game=OsuGame())
+            targetFrame = TargetsFrame()
+            SwitchFrameController().execute(frame=targetFrame)
+            StartGameController().execute(game=OsuGame(targetFrame))
         elif source == self.pathButton:
-            SwitchFrameController().execute(frame=PathFrame())
-            StartGameController().execute(game=PathGame())
+            pathFrame = PathFrame()
+            SwitchFrameController().execute(frame=pathFrame)
+            StartGameController().execute(game=PathGame(pathFrame))
         elif source == self.returnButton:
             from src.view.frames.home_frame import HomeFrame
             SwitchFrameController().execute(frame=HomeFrame())
