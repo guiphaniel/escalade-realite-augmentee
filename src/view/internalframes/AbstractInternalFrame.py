@@ -9,7 +9,7 @@ from src.view.items.item import Item
 
 class AbstractInternalFrame(Item, MouseListener, MotionListener):
     def __init__(self, parent, coordinates, bgColor = (50, 50, 50), bgImage = None):
-        Item.__init__(self)
+        Item.__init__(self, parent, coordinates[0], coordinates[1], 0, 0)
         MouseListener.__init__(self)
         MotionListener.__init__(self)
 
