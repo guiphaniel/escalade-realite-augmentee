@@ -1,22 +1,23 @@
 import random
 import pygame
-from src.controllers.games.game import Game
+
+from src.controllers.games.game_singleplayer import GameSinglePlayer
 from src.controllers.games.utils.target import Target
 
 
-class OsuGame(Game):
+class OsuGame(GameSinglePlayer):
 
     def __init__(self, manager):
-        super().__init__(manager,1)
+        super().__init__(manager)
 
     def execute(self):
-        running = True
+        self.running = True
         score = 0
         initTimeTarget = pygame.time.get_ticks()
         waitTimeTarget = random.randint(2000, 5000)
         targets = []
         targetsDispawned = []
-        while running:
+        while self.running:
             pygame.display.flip()
             self.manager.screen.fill((0, 0, 0, 0))
             if (initTimeTarget + waitTimeTarget - pygame.time.get_ticks()) <= 0:
@@ -32,9 +33,7 @@ class OsuGame(Game):
                     t.ticks = pygame.time.get_ticks()
                     t.failed()
 
-            positionPlayer = self.getPlayerPosition()
-
-            for position in positionPlayer:
+            for position in list(self.playerPosition.values()):
                 for t in targets:
                     if t.collide(position):
                         targets.remove(t)
@@ -52,8 +51,8 @@ class OsuGame(Game):
                 if e.type == pygame.KEYDOWN:
                     if e.key == pygame.K_ESCAPE:
                         self.closeCam()
-                        running = False
+                        self.running = False
                 if e.type == pygame.QUIT:
                     self.closeCam()
-                    running=False
+                    self.running=False
                     self.manager.running = False
