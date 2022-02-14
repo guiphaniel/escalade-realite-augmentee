@@ -7,7 +7,7 @@ from src.view.items.item import Item
 # TODO: rajouter la gestion d'une bgImage
 class Button(Item, MouseListener):
     def __init__(self, parent, x, y, w=40, h=20, text=None):
-        Item.__init__(self, parent, x, y, w, h)
+        Item.__init__(self, parent)
         MouseListener.__init__(self)
 
         # init textures
@@ -18,6 +18,7 @@ class Button(Item, MouseListener):
         self.borderRadius = 10
 
         # self.rect is equivalent to the outer rect of the button (margin + borders included)
+        self.rect = pygame.rect.Rect(x + parent.rect.x + parent.padding, y + parent.rect.y + parent.padding, w, h)
         self.rect.w += self.padding * 2 + self.borderWidth * 2
         self.rect.h += self.padding * 2 + self.borderWidth * 2
 
