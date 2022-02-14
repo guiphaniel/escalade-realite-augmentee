@@ -7,21 +7,22 @@ import cv2
 import numpy as np
 import pygame.draw
 
-from src.controllers.utils.camera import Camera
-from src.controllers.utils.detectors import pose_detector
+from src.controllers.games.game import Game
+from src.utils.camera import Camera
+from src.utils.detectors import pose_detector
+from src.utils.transform import Transform
 
 
-
-class GameSinglePlayer:
+class GameSinglePlayer(Game):
 
     @abstractmethod
-    def __init__(self,manager):
-        self.manager=manager
+    def __init__(self, parent):
+        super().__init__(parent)
         self.transfoResults=None
         self.cap=None
         self.multiMediapipeWidth = None
         self.image = None
-        self.running = False
+        self.continueGame = False
         self.playerPosition = {}
         thMediapipe = threading.Thread(target=self.startSingleMediaPipe)
         thMediapipe.start()
@@ -36,11 +37,11 @@ class GameSinglePlayer:
     def startSingleMediaPipe(self):
         # For webcam input:
         self.cap = Camera()
-        self.running=True
+        self.continueGame=True
 
         singlePoseDetector = pose_detector.PoseDetector()
 
-        while self.running:
+        while self.continueGame:
             success, image = self.cap.read()
             if not success:
                 print("Ignoring empty camera frame.")
@@ -51,23 +52,23 @@ class GameSinglePlayer:
             if not results:
                 continue
 
-            self.transfoResults = self.manager.wallCalibration.getTransformateLandmarks(results)
+            self.transfoResults = Transform().getTransformateLandmarks(results)
             if cv2.waitKey(5) & 0xFF == 27:
                 break
         del singlePoseDetector
 
     def closeCam(self):
-        self.running=False
+        self.continueGame=False
 
     def setPlayerPosition(self):
-        while self.running:
+        while self.continueGame:
             if self.transfoResults:
                 landmark = self.transfoResults.landmark
                 for n in [15,16]:
                     if -100<=landmark[n].x * 1920<=2100 and -100<=landmark[n].y * 1080<=1200 and -100<=landmark[n+2].x * 1920<=2100 and -100<=landmark[n+2].y * 1080<=1200 and -100<=landmark[n+4].x * 1920<=2100 and -100<=landmark[n+4].y * 1080<=1200 and -100<=landmark[n+6].x * 1920<=2100 and -100<=landmark[n+6].y * 1080<=1200 :
-                        self.playerPosition[n]=(pygame.draw.polygon(self.manager.screen, (0, 0, 255), ((landmark[n].x * 1920, landmark[n].y * 1080), (landmark[n+2].x * 1920, landmark[n+2].y * 1080),(landmark[n+4].x * 1920, landmark[n+4].y * 1080),(landmark[n+6].x * 1920, landmark[n+6].y * 1080))))
+                        self.playerPosition[n]=(pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[n].x * 1920, landmark[n].y * 1080), (landmark[n+2].x * 1920, landmark[n+2].y * 1080),(landmark[n+4].x * 1920, landmark[n+4].y * 1080),(landmark[n+6].x * 1920, landmark[n+6].y * 1080))))
 
                 for n in [27,28]:
                     if -100<=landmark[n].x * 1920<=2100 and -100<=landmark[n].y * 1080<=1200 and -100<=landmark[n+2].x * 1920<=2100 and -100<=landmark[n+2].y * 1080<=1200 and -100<=landmark[n+4].x * 1920<=2100 and -100<=landmark[n+4].y * 1080<=1200 :
-                        self.playerPosition[n]=(pygame.draw.polygon(self.manager.screen, (0, 0, 255), ((landmark[n].x * 1920, landmark[n].y * 1080), (landmark[n+2].x * 1920, landmark[n+2].y * 1080),(landmark[n+4].x * 1920, landmark[n+4].y * 1080))))
+                        self.playerPosition[n]=(pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[n].x * 1920, landmark[n].y * 1080), (landmark[n+2].x * 1920, landmark[n+2].y * 1080),(landmark[n+4].x * 1920, landmark[n+4].y * 1080))))
 

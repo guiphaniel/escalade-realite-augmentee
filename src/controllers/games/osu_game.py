@@ -8,7 +8,7 @@ from src.controllers.games.utils.target import Target
 class OsuGame(GameSinglePlayer):
 
     def __init__(self, parent):
-        super().__init__(parent, 1)
+        super().__init__(parent)
         self.score = 0
         self.initTimeTarget = pygame.time.get_ticks()
         self.waitTimeTarget = random.randint(2000, 5000)
@@ -31,9 +31,7 @@ class OsuGame(GameSinglePlayer):
                     t.ticks = pygame.time.get_ticks()
                     t.failed()
 
-            positionPlayer = self.getPlayerPosition()
-
-            for position in positionPlayer:
+            for position in list(self.playerPosition.values()):
                 for t in self.targets:
                     if t.collide(position):
                         self.targets.remove(t)
