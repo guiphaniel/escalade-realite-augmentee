@@ -25,7 +25,10 @@ class Surface:
         index_params = dict(algorithm=FLANN_INDEX_KDTREE, trees=5)
         search_params = dict(checks=50)
         flann = cv2.FlannBasedMatcher(index_params, search_params)
-        matches = flann.knnMatch(des1, des2, k=2)
+        try:
+            matches = flann.knnMatch(des1, des2, k=2)
+        except:
+            matches=[]
         # store all the good matches as per Lowe's ratio test.
         good = []
         for m, n in matches:
