@@ -1,10 +1,11 @@
 import random
 import pygame
-from src.controllers.games.game import Game
+
+from src.controllers.games.game_singleplayer import GameSinglePlayer
 from src.controllers.games.utils.target import Target
 
 
-class OsuGame(Game):
+class OsuGame(GameSinglePlayer):
 
     def __init__(self, parent):
         super().__init__(parent, 1)
