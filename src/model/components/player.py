@@ -41,14 +41,9 @@ class Player(Item):
         self.mutexes[id].acquire()
         ls = self.landmarks[id]
 
-        for l in ls:
-            l.x *= 1920
-            l.y *= 1080
-
         limb = None
         if ls:
-            if((max([l.x for l in ls]) - min([l.x for l in ls])) * (max([l.y for l in ls]) - min([l.y for l in ls])) < 10000):
-                limb = pygame.draw.polygon(self.win, (0, 0, 255), [(l.x, l.y) for l in ls])
+            limb = pygame.draw.polygon(self.win, (0, 0, 255), ls)
         self.mutexes[id].release()
 
         return limb

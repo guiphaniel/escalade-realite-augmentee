@@ -68,10 +68,24 @@ class GameSinglePlayer(Game):
     def setPlayerLandmarks(self, landmarks, root, nbLandmarks):
         valid = True
         ids = range(0, nbLandmarks * 2 - 1, 2)
+
+        # check for the landmarks accuracy (we don't want landmarks that are predicted by mediapipe)
         for i in ids:
-            if landmarks[root + i].visibility < 0.2:
+            if landmarks[root + i].visibility < 0.15:
                 valid = False
+
+
         if valid:
-            self.player.mutexes[root].acquire()
-            self.player.landmarks[root] = [landmarks[root + i] for i in ids]
-            self.player.mutexes[root].release()
+            # calibrate the landmarks
+            tmpLandmarks = []
+            for i in ids:
+                l = landmarks[root + i]
+
+                tmpLandmarks.append((l.x * 1920, l.y * 1080))
+
+            # ckeck if the area of the limb isn't too big (else, pygame will freeze)
+            if ((max([l[0] for l in tmpLandmarks]) - min([l[0] for l in tmpLandmarks])) * (
+                    max([l[1] for l in tmpLandmarks]) - min([l[1] for l in tmpLandmarks])) < 10000):
+                self.player.mutexes[root].acquire()
+                self.player.landmarks[root] = tmpLandmarks
+                self.player.mutexes[root].release()
