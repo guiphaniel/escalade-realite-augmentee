@@ -8,6 +8,7 @@ from src.view.items.item import Item
 class Button(Item, MouseListener):
     def __init__(self, parent, x, y, w=40, h=20, text=None):
         Item.__init__(self, parent)
+        self.active = True
         MouseListener.__init__(self)
 
         # init textures
@@ -25,7 +26,6 @@ class Button(Item, MouseListener):
         self.setText(text)
 
         # init events
-        self.active = True
         self.actionListeners = []
 
     def setText(self, text, textColor=(0, 0, 0), textSize=40, textFont="view/fonts/All the Way to the Sun.otf"):
