@@ -20,7 +20,7 @@ class GameSinglePlayer(Game):
         self.cap=None
         self.multiMediapipeWidth = None
         self.image = None
-        self.continueGame = False
+        self.continueGame = True
         self.player = Player(parent)
         self.parent.add(self.player)
         thMediapipe = threading.Thread(target=self.startSingleMediaPipe)
@@ -36,7 +36,6 @@ class GameSinglePlayer(Game):
     def startSingleMediaPipe(self):
         # For webcam input:
         self.cap = Camera()
-        self.continueGame=True
 
         singlePoseDetector = pose_detector.PoseDetector()
 
