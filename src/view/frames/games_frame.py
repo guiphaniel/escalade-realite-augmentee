@@ -38,7 +38,7 @@ class GamesFrame(AbstractFrame, ActionListener):
             SwitchFrameController().execute(frame=pongFrame)
             StartGameController().execute(game=PongGame(pongFrame))
         elif source == self.targetButton:
-            targetFrame = TargetsFrame((0,0,0))
+            targetFrame = TargetsFrame()
             SwitchFrameController().execute(frame=targetFrame)
             StartGameController().execute(game=OsuGame(targetFrame))
         elif source == self.pathButton:
