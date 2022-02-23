@@ -3,12 +3,12 @@ import threading
 
 import pygame.image
 
-from src.view.items.item import Item
+from src.view.items.drawable import Drawable
 
 
-class Ball(Item):
+class Ball(Drawable):
     def __init__(self, parent):
-        Item.__init__(self, parent, 0, 0, 50, 50)
+        Drawable.__init__(self, parent, 0, 0, 50, 50)
         self.image= pygame.transform.scale(pygame.image.load("view/images/sprites/ball.png"), (self.rect.w, self.rect.h))
         self.area = self.win.get_rect()
         self.rect.x = self.area.w/2 - self.rect.w/2

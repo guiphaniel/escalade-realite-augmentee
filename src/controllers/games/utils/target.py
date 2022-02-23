@@ -3,10 +3,10 @@ import random
 
 import pygame.image
 
-from src.view.items.item import Item
+from src.view.items.drawable import Drawable
 
 
-class Target(Item):
+class Target(Drawable):
 
     def __init__(self, parent):
         super().__init__(parent, 0, 0, 50, 50)

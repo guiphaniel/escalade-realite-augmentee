@@ -4,12 +4,12 @@ import pygame
 import src
 from src.utils.events.motion_listener import MotionListener
 from src.utils.events.mouse_listener import MouseListener
-from src.view.items.item import Item
+from src.view.items.drawable import Drawable
 
 
-class AbstractInternalFrame(Item, MouseListener, MotionListener):
+class AbstractInternalFrame(Drawable, MouseListener, MotionListener):
     def __init__(self, parent, coordinates, bgColor = (50, 50, 50), bgImage = None):
-        Item.__init__(self)
+        Drawable.__init__(self)
         MouseListener.__init__(self)
         MotionListener.__init__(self)
 

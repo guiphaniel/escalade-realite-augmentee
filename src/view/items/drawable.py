@@ -7,7 +7,7 @@ import src
 from src.view.items.item_display_type import itemDisplayType
 
 
-class Item(Sprite):
+class Drawable(Sprite):
     def __init__(self, parent, x, y, w, h):
         Sprite.__init__(self)
         self.parent = parent
