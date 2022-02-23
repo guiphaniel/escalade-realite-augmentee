@@ -81,7 +81,7 @@ class Button(Drawable, MouseListener):
     def removeActionListener(self, l):
         self.actionListeners.remove(l)
 
-    def onMouseEvent(self, e):
+    def onMouseEvent(self, e) -> bool:
         if not self.active:
             return False
 
