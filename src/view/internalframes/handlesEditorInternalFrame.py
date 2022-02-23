@@ -1,10 +1,18 @@
+from enum import Enum
+
 import pygame
 
 from src.view.internalframes.AbstractInternalFrame import AbstractInternalFrame
 from src.view.items.button import Button
+from src.view.listeners.action_listener import ActionListener
 
 
-class HandleEditorInternalFrame(AbstractInternalFrame):
+class HandleEditorInternalFrame(AbstractInternalFrame, ActionListener):
+    class EditorMode(Enum):
+        ADD = 0
+        REMOVE = 1
+        EDIT = 2
+
     def __init__(self, parent, coordinates, bgColor = (50, 50, 50), bgImage = None):
         super().__init__(parent, coordinates, bgColor, bgImage)
 
@@ -19,3 +27,15 @@ class HandleEditorInternalFrame(AbstractInternalFrame):
         self.add(self.editBt)
 
         self.shrinkToFit()
+
+        self.addBt.addActionListener(self)
+        self.removeBt.addActionListener(self)
+        self.editBt.addActionListener(self)
+
+    def actionPerformed(self, source):
+        if source == self.addBt:
+            self.parent.editorMode = self.EditorMode.ADD
+        elif source == self.removeBt:
+            self.parent.editorMode = self.EditorMode.REMOVE
+        elif source == self.editBt:
+            self.parent.editorMode = self.EditorMode.EDIT
