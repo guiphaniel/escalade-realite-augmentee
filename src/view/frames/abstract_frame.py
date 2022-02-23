@@ -5,7 +5,7 @@ import src
 
 
 class AbstractFrame:
-    def __init__(self, bgColor = (50, 50, 50), bgImage = None):
+    def __init__(self, bgColor = (0, 0, 0), bgImage = None):
         #remove all listeners that were previously handled by the manager, so they won't get triggered anymore
         src.view.window.Window().eventManager.removeAllListeners()
 
