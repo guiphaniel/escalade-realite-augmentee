@@ -55,8 +55,11 @@ class Transform(metaclass=Singleton):
         # src_points = np.float32([[62,139],[575,126],[5,424],[634,424]])
         dst_points = np.float32([[0, 0], [self.cam.w, 0], [0, self.cam.h], [self.cam.w, self.cam.h]])
         self.projectiveMatrix = cv2.getPerspectiveTransform(src_points, dst_points)
-        print(self.projectiveMatrix)
-        print("Calibration reussie")  # trop fort
+        # print(self.projectiveMatrix)
+        if np.linalg.det(self.projectiveMatrix) == 0:
+            print("Determinant de la matrice de transformation = 0 !")
+            return False
+
         return True
 
     def getTransformateLandmarks(self, tabPoints):
