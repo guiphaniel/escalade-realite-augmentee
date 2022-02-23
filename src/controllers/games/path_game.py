@@ -63,8 +63,7 @@ class PathGame(GameSinglePlayer, MouseListener):
 
     def onMouseEvent(self, e):
         if e.type == pygame.MOUSEBUTTONDOWN:
-            x, y = pygame.mouse.get_pos()
-            self.handles.append(Handle(x, y))
+            self.handles.append(Handle(*pygame.mouse.get_pos()))
             return True
 
         return False
