@@ -9,11 +9,10 @@ from src.view.items.drawable import Drawable
 
 class AbstractInternalFrame(Drawable, MouseListener, MotionListener):
     def __init__(self, parent, coordinates, bgColor = (50, 50, 50), bgImage = None):
-        Drawable.__init__(self)
+        Drawable.__init__(self, parent, 0, 0, 0, 0)
         MouseListener.__init__(self)
         MotionListener.__init__(self)
 
-        self.parent = parent
         self.held = False
 
         self.snappingRect = pygame.rect.Rect(coordinates[0], coordinates[1], 0, 10)
@@ -28,7 +27,7 @@ class AbstractInternalFrame(Drawable, MouseListener, MotionListener):
             self.bgImage = pygame.transform.scale(pygame.image.load(bgImage), (self.rect.w, self.rect.h))
         else:
             self.bgImage = None
-        self.win = src.view.window.Window().win
+
         self.items = []
 
     def add(self, item):
@@ -75,7 +74,7 @@ class AbstractInternalFrame(Drawable, MouseListener, MotionListener):
                 self.held = True
                 return True
             if self.rect.collidepoint(pygame.mouse.get_pos()):
-                return True  # returns True as we want it to block underneath items to be triggered by the event manager
+                return True  # returns True as we want it to prevent underneath items to be triggered by the event manager
         elif e.type == pygame.MOUSEBUTTONUP:
             if self.held:
                 needsToBeRepainted = False
