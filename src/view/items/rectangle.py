@@ -1,13 +1,13 @@
 import pygame
 
 from src.utils.events.mouse_listener import MouseListener
-from src.view.items.item import Item
+from src.view.items.drawable import Drawable
 
 
 # TODO: rajouter la gestion d'une bgImage
-class Rectangle(Item):
+class Rectangle(Drawable):
     def __init__(self, parent, x, y, w=40, h=20, bgColor = (255, 255, 255)):
-        Item.__init__(self, parent)
+        Drawable.__init__(self, parent)
 
         # init textures
         self.bgColor = bgColor

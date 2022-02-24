@@ -5,16 +5,16 @@ import mediapipe as mp
 import pygame
 from mediapipe.framework.formats import landmark_pb2
 
-from src.view.items.item import Item
+from src.view.items.drawable import Drawable
 
 mp_pose = mp.solutions.pose
 
 
-class Player(Item):
+class Player(Drawable):
 
     # Initializing
     def __init__(self, parent, pseudo=None):
-        Item.__init__(self, parent)
+        Drawable.__init__(self, parent)
         self.id = None
         self.pseudo = pseudo
 
