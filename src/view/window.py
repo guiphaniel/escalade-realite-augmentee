@@ -22,10 +22,10 @@ class Window(metaclass=Singleton):
     def run(self):
         homeFrame = HomeFrame()
         homeFrame.playButton.active = False
-        homeFrame.repaintAll()
         self.currentFrame = homeFrame
         while self.isVisible:
             self.eventManager.catchEvent()
+            self.currentFrame.repaintAll()
 
     def setVisible(self, isVisible):
         self.isVisible = isVisible

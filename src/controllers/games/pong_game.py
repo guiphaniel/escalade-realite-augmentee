@@ -58,5 +58,3 @@ class PongGame(GameMultiPlayer):
             # self.win.blit(text, text.get_rect(center=((self.win.get_rect().width / 4) * 3, 50)))
 
             lastFrame = pygame.time.get_ticks()
-
-            self.parent.repaintAll()

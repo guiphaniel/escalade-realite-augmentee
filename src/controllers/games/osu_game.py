@@ -47,5 +47,3 @@ class OsuGame(GameSinglePlayer):
                 if t.ticks + 2000 - pygame.time.get_ticks() <=0:
                     self.targetsDispawned.remove(t)
                     self.parent.remove(t)
-
-            self.parent.repaintAll()

@@ -13,26 +13,27 @@ from src.utils.events.mouse_listener import MouseListener
 from src.view.items.text import Text
 
 
-class PathGame(GameSinglePlayer, MouseListener):
+class PathGame(GameSinglePlayer):
 
     def __init__(self, parent, path, player):
         GameSinglePlayer.__init__(self, parent)
-        EventManager().addMouseListener(self)
 
         self.path = path
         self.handles = iter(path.getHandles())
         self.handlesSucceeded = []
-        # self.player = player
 
         self.score = 0
         self.currentHandle = next(self.handles)
 
+        cpt = 1
         for h in path.getHandles():
             parent.add(h)
+            parent.add(Text(parent, *h.rect.bottomright, str(cpt), (255, 255, 255)))
+            cpt += 1
 
         self.area = self.win.get_rect()
-        self.text = Text(parent, self.area.w / 2, 20, str(self.score), (255, 255, 255))
-        parent.add(self.text)
+        self.scoreText = Text(parent, self.area.w / 2, 20, str(self.score), (255, 255, 255))
+        parent.add(self.scoreText)
 
     def execute(self):
         while self.continueGame:
@@ -52,5 +53,3 @@ class PathGame(GameSinglePlayer, MouseListener):
                         SwitchFrameController().execute(frame=src.view.frames.games_frame.GamesFrame())
 
                     break
-            if self.continueGame:
-                self.parent.repaintAll()
