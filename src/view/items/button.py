@@ -18,6 +18,7 @@ class Button(Drawable, MouseListener):
         self.borderRadius = 10
 
         # self.rect is equivalent to the outer rect of the button (margin + borders included)
+        self.rect = pygame.rect.Rect(x + parent.rect.x + parent.padding, y + parent.rect.y + parent.padding, w, h)
         self.rect.w += self.padding * 2 + self.borderWidth * 2
         self.rect.h += self.padding * 2 + self.borderWidth * 2
 
