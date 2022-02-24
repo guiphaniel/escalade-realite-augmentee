@@ -127,7 +127,7 @@ class AbstractInternalFrame(Drawable, MouseListener, MotionListener):
             if iX > maxX:
                 maxX = iX
 
-            iY = i.rect.y - self.rect.y + i.rect.w
+            iY = i.rect.y - self.rect.y + i.rect.h
             if iY > maxY:
                 maxY = iY
         
