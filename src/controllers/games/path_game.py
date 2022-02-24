@@ -1,4 +1,6 @@
 import pygame
+
+import src
 from src.controllers.games.game_singleplayer import GameSinglePlayer
 from src.controllers.switch_frame_controller import SwitchFrameController
 from src.model.components.handle import Handle
@@ -7,76 +9,48 @@ from src.model.database import Database
 from src.utils.events.event_manager import EventManager
 from src.utils.events.mouse_listener import MouseListener
 
-#TODO: corriger le bug pour la création d'un parcours sans mur dans la BD -> faire une fenetre pour la creation, puis une fenetre pour le jeu
+# TODO: corriger le bug pour la création d'un parcours sans mur dans la BD -> faire une fenetre pour la creation, puis une fenetre pour le jeu
+from src.view.items.text import Text
+
+
 class PathGame(GameSinglePlayer, MouseListener):
 
-    def __init__(self, parent):
-        GameSinglePlayer.__init__(parent)
+    def __init__(self, parent, path, player):
+        GameSinglePlayer.__init__(self, parent)
         EventManager().addMouseListener(self)
-        self.font=pygame.font.SysFont(None, 24)
-        self.score = 0
-        self.path = Path()
-        Database().setPathsInWall([self.path], None)
+
+        self.path = path
+        self.handles = iter(path.getHandles())
         self.handlesSucceeded = []
+        # self.player = player
 
-        self.radius = 25
+        self.score = 0
+        self.currentHandle = next(self.handles)
 
-        self.handles = []
-        self.setup = True
+        for h in path.getHandles():
+            parent.add(h)
+
+        self.area = self.win.get_rect()
+        self.text = Text(parent, self.area.w / 2, 20, str(self.score), (255, 255, 255))
+        parent.add(self.text)
 
     def execute(self):
-        if self.setup:
-            self.win.fill((0, 0, 0))
-            for i in range(0, len(self.handles)):
-                pygame.draw.circle(self.win, (255, 0, 0), (self.handles[i].x, self.handles[i].y), self.handles[i].radius)
-                text = self.font.render(str(i + 1), True, (255, 255, 255))
-                self.win.blit(text, text.get_rect(center=(self.handles[i].x, self.handles[i].y)))
-            pygame.display.flip()
-        else:
-            self.win.fill((0, 0, 0))
+        while self.continueGame:
+            for l in list(self.player.limbs.values()):
+                if not l:
+                    continue
 
-            for i in range(0, len(self.path.getHandles())):
-                pygame.draw.circle(self.win, (255, 0, 0), (self.path.getHandles()[i].x, self.path.getHandles()[i].y),
-                                   self.path.getHandles()[i].radius)
-                text = self.font.render(str(i + 1), True, (255, 255, 255))
-                self.win.blit(text, text.get_rect(center=(self.path.getHandles()[i].x, self.path.getHandles()[i].y)))
-
-            for position in list(self.playerPosition.values()):
-                if position.colliderect(
-                        pygame.Rect(self.handles[0].x - self.radius, self.handles[0].y - self.radius, self.radius * 2,
-                                    self.radius * 2)):
-                    self.handlesSucceeded.append(self.handles[0])
-                    self.handles.remove(self.handles[0])
+                if l.colliderect(self.currentHandle.rect):
+                    self.currentHandle.color = (0, 255, 0)
                     self.score += 1
-                    print(self.score)
+                    self.text.setText(str(self.score), (255, 255, 255))
+
+                    try:
+                        self.currentHandle = next(self.handles)
+                    except:  # no more handles
+                        self.continueGame = False
+                        SwitchFrameController().execute(frame=src.view.frames.games_frame.GamesFrame())
+
                     break
-
-            for h in self.handlesSucceeded:
-                pygame.draw.circle(self.win, (0, 255, 0), (h.x, h.y), self.radius)
-
-            if len(self.handles) == 0:
-                self.continueGame=False
-                from src.view.frames.games_frame import GamesFrame
-                SwitchFrameController().execute(frame=GamesFrame())
-
-            pygame.display.flip()
-
-    def onMouseEvent(self, e):
-        if e.type == pygame.MOUSEBUTTONDOWN:
-            self.handles.append(Handle(*pygame.mouse.get_pos()))
-            return True
-
-        return False
-
-    def onKeyboardEvent(self, e):
-        if e.type == pygame.KEYDOWN:
-            if e.key == pygame.K_RETURN:
-                self.path.setHandles(self.handles)
-                self.setup = False
-            if e.key == pygame.K_ESCAPE or e.type == pygame.QUIT:
-                self.continueGame=False
-                from src.view.frames.games_frame import GamesFrame
-                SwitchFrameController().execute(frame=GamesFrame())
-            return True
-
-        return False
+            if self.continueGame:
+                self.parent.repaintAll()
