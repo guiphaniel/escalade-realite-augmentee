@@ -11,10 +11,11 @@ class Handle(Drawable):
         self.x = x
         self.y = y
         self.radius = 20
+        self.color = (255, 0, 0)
 
         Drawable.__init__(self, parent)
         self.rect = pygame.rect.Rect(x, y, self.radius, self.radius)
 
     def draw(self):
-        self.rect = pygame.draw.circle(self.win, (50, 50, 50), self.rect.center, self.radius, 5)
+        self.rect = pygame.draw.circle(self.win, self.color, self.rect.center, self.radius, 5)
 
