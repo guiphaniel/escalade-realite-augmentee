@@ -28,6 +28,7 @@ class HandleEditorInternalFrame(AbstractInternalFrame, ActionListener):
         self.backBt = Button(self, 0, self.editBt.rect.h + 20, text="RETOUR")
         self.add(self.backBt)
         self.validBt = Button(self, self.backBt.rect.w + 20, self.editBt.rect.h + 20, text="VALIDER")
+        self.validBt.active = False
         self.add(self.validBt)
 
         self.shrinkToFit()
