@@ -9,7 +9,7 @@ from src.view.items.drawable import Drawable
 
 class AbstractInternalFrame(Drawable, MouseListener, MotionListener):
     def __init__(self, parent, coordinates, bgColor = (50, 50, 50), bgImage = None):
-        Drawable.__init__(self, parent, 0, 0, 0, 0)
+        Drawable.__init__(self, parent)
         MouseListener.__init__(self)
         MotionListener.__init__(self)
 

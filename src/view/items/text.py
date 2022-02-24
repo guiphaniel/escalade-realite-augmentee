@@ -6,9 +6,11 @@ from src.view.items.drawable import Drawable
 
 # TODO: rajouter la gestion d'une bgImage
 class Button(Drawable):
-    def __init__(self, parent, x, y, text, textColor=(0, 0, 0), textSize=40, textFont="view/fonts/All the Way to the Sun.otf"):
-        Drawable.__init__(self, parent, x, y, 0, 0)
+    def __init__(self, parent, x, y, text, textColor=(0, 0, 0), textSize=40,
+                 textFont="view/fonts/All the Way to the Sun.otf"):
+        Drawable.__init__(self, parent)
 
+        self.rect = pygame.rect.Rect(x, y, 0, 0)
         self.setText(text, textColor, textSize, textFont)
 
     def setText(self, text, textColor, textSize, textFont):
@@ -18,6 +20,6 @@ class Button(Drawable):
 
     def draw(self):
         self.win.blit(self.__textSurface, self.rect)
+
     def update(self):
         pygame.display.update(self.rect)
-

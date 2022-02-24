@@ -8,11 +8,12 @@ from src.view.items.drawable import Drawable
 
 class Ball(Drawable):
     def __init__(self, parent):
-        Drawable.__init__(self, parent, 0, 0, 50, 50)
-        self.image= pygame.transform.scale(pygame.image.load("view/images/sprites/ball.png"), (self.rect.w, self.rect.h))
+        Drawable.__init__(self, parent)
         self.area = self.win.get_rect()
-        self.rect = pygame.rect.Rect(self.area.w/2 - self.rect.w/2, self.area.h/2 - self.rect.h/2, 50, 50)
+        self.radius = 25
+        self.rect = pygame.rect.Rect(self.area.w / 2 - self.radius, self.area.h / 2 - self.radius, self.radius * 2, self.radius * 2)
         self.image= pygame.transform.scale(pygame.image.load("view/images/sprites/ball.png"), (self.rect.w, self.rect.h))
+
         self.vector = []
         self.velocity = None
         self.intangible = False

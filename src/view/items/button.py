@@ -7,7 +7,7 @@ from src.view.items.drawable import Drawable
 # TODO: rajouter la gestion d'une bgImage
 class Button(Drawable, MouseListener):
     def __init__(self, parent, x, y, w=40, h=20, text=None):
-        Drawable.__init__(self, parent, x, y, w, h)
+        Drawable.__init__(self, parent)
         MouseListener.__init__(self)
 
         # init textures
