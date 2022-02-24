@@ -19,18 +19,24 @@ class HandleEditorInternalFrame(AbstractInternalFrame, ActionListener):
         self.addBt = Button(self, 0, 0, 10, 10, text=" + ")
         self.addBt.setStyle(borderRadius=100)
         self.add(self.addBt)
-        self.removeBt = Button(self, self.addBt.rect.x + self.addBt.rect.w + 20, 0, text=" - ")
+        self.removeBt = Button(self, self.addBt.rect.x + self.addBt.rect.w + 40, 0, text=" - ")
         self.removeBt.setStyle(borderRadius=100)
         self.add(self.removeBt)
-        self.editBt = Button(self, self.removeBt.rect.x + self.removeBt.rect.w + 20, 0, text=" / ")
+        self.editBt = Button(self, self.removeBt.rect.x + self.removeBt.rect.w + 40, 0, text=" / ")
         self.editBt.setStyle(borderRadius=100)
         self.add(self.editBt)
+        self.backBt = Button(self, 0, self.editBt.rect.h + 20, text="RETOUR")
+        self.add(self.backBt)
+        self.validBt = Button(self, self.backBt.rect.w + 20, self.editBt.rect.h + 20, text="VALIDER")
+        self.add(self.validBt)
 
         self.shrinkToFit()
 
         self.addBt.addActionListener(self)
         self.removeBt.addActionListener(self)
         self.editBt.addActionListener(self)
+        self.backBt.addActionListener(self)
+        self.validBt.addActionListener(self)
 
     def actionPerformed(self, source):
         if source == self.addBt:
@@ -39,3 +45,7 @@ class HandleEditorInternalFrame(AbstractInternalFrame, ActionListener):
             self.parent.editorMode = self.EditorMode.REMOVE
         elif source == self.editBt:
             self.parent.editorMode = self.EditorMode.EDIT
+        elif source == self.backBt:
+            self.parent.onBackBt()
+        elif source == self.validBt:
+            self.parent.onValidBt()
