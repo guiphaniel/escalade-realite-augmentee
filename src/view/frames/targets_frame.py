@@ -4,5 +4,5 @@ from src.view.listeners.action_listener import ActionListener
 
 
 class TargetsFrame(AbstractFrame):
-    def __init__(self, bgColor = (50, 50, 50), bgImage = None):
+    def __init__(self, bgColor = (0, 0, 0), bgImage = None):
         AbstractFrame.__init__(self, bgColor, bgImage)
