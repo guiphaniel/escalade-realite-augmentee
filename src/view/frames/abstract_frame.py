@@ -5,11 +5,11 @@ import src
 
 
 class AbstractFrame:
-    def __init__(self, bgColor = (0, 0, 0), bgImage = None):
-        #remove all listeners that were previously handled by the manager, so they won't get triggered anymore
+    def __init__(self, bgColor=(0, 0, 0), bgImage=None):
+        # remove all listeners that were previously handled by the manager, so they won't get triggered anymore
         src.view.window.Window().eventManager.removeAllListeners()
 
-        self.rect = pygame.rect.Rect(0,0,1920,1080)
+        self.rect = pygame.rect.Rect(0, 0, 1920, 1080)
         self.padding = 0
 
         self.bgColor = bgColor
