@@ -11,6 +11,7 @@ from src.controllers.games.utils.ball import Ball
 from src.controllers.games.game_multiplayer import GameMultiPlayer
 from src.controllers.games.utils.ball import Ball
 from src.view.items.rectangle import Rectangle
+from src.view.items.text import Text
 
 
 class PongGame(GameMultiPlayer):
@@ -19,12 +20,16 @@ class PongGame(GameMultiPlayer):
         super().__init__(parent)
         self.scorePlayer1 = 0
         self.scorePlayer2 = 0
-        self.font = pygame.font.SysFont(None, 128)
+        self.area = self.win.get_rect()
 
         self.ball = Ball(parent)
         parent.add(self.ball)
-        self.net = Rectangle(parent, self.win.get_rect().centerx - 1, 0, 3, self.win.get_rect().height)
+        self.net = Rectangle(parent, self.area.centerx - 1, 0, 3, self.area.height)
         parent.add(self.net)
+        self.scorePlayer1Text = Text(parent, self.area.w / 4, 50, str(0), (255, 255, 255), 120)
+        parent.add(self.scorePlayer1Text)
+        self.scorePlayer2Text = Text(parent, self.area.w / 4 * 3, 50, str(0), (255, 255, 255), 120)
+        parent.add(self.scorePlayer2Text)
 
     def execute(self):
         lastFrame = pygame.time.get_ticks()
@@ -45,16 +50,11 @@ class PongGame(GameMultiPlayer):
 
             if self.ball.goalRight():
                 self.scorePlayer1 += 1
+                self.scorePlayer1Text.setText(str(self.scorePlayer1), (255, 255, 255), 120)
                 self.ball.spawn()
             elif self.ball.goalLeft():
                 self.scorePlayer2 += 1
+                self.scorePlayer2Text.setText(str(self.scorePlayer2), (255, 255, 255), 120)
                 self.ball.spawn()
-
-            # TODO: create Item class text to display scores inside parent frame 
-            # text = self.font.render(str(self.scorePlayer1), True, (255, 255, 255))
-            # self.win.blit(text, text.get_rect(center=(self.win.get_rect().width / 4, 50)))
-            #
-            # text = self.font.render(str(self.scorePlayer2), True, (255, 255, 255))
-            # self.win.blit(text, text.get_rect(center=((self.win.get_rect().width / 4) * 3, 50)))
 
             lastFrame = pygame.time.get_ticks()
