@@ -4,6 +4,8 @@ from src.controllers.games.path_game import PathGame
 from src.controllers.games.pong_game import PongGame
 from src.controllers.start_game_controller import StartGameController
 from src.controllers.switch_frame_controller import SwitchFrameController
+from src.model.components.path import Path
+from src.model.database import Database
 from src.view.frames.abstract_frame import AbstractFrame
 from src.view.frames.path_creation_frame import PathCreationFrame
 from src.view.frames.path_frame import PathFrame
@@ -43,7 +45,9 @@ class GamesFrame(AbstractFrame, ActionListener):
             SwitchFrameController().execute(frame=targetFrame)
             StartGameController().execute(game=OsuGame(targetFrame))
         elif source == self.pathButton:
-            pathCreationFrame = PathCreationFrame()
+            path = Path()
+            Database().setPathsInWall([path], None)
+            pathCreationFrame = PathCreationFrame(path)
             SwitchFrameController().execute(frame=pathCreationFrame)
         elif source == self.returnButton:
             from src.view.frames.home_frame import HomeFrame
