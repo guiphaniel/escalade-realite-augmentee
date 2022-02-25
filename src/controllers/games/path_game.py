@@ -22,7 +22,7 @@ class PathGame(GameSinglePlayer):
         self.handles = iter(path.getHandles())
         self.handlesSucceeded = []
 
-        self.score = 0
+        self.score = pygame.time.get_ticks()
         self.currentHandle = next(self.handles)
 
         cpt = 1
@@ -32,7 +32,7 @@ class PathGame(GameSinglePlayer):
             cpt += 1
 
         self.area = self.win.get_rect()
-        self.scoreText = Text(parent, self.area.w / 2, 20, str(self.score), (255, 255, 255))
+        self.scoreText = Text(parent, self.area.w / 2, 100, str(0), (255, 255, 255), 120)
         parent.add(self.scoreText)
 
     def execute(self):
@@ -43,8 +43,6 @@ class PathGame(GameSinglePlayer):
 
                 if l.colliderect(self.currentHandle.rect):
                     self.currentHandle.color = (0, 255, 0)
-                    self.score += 1
-                    self.scoreText.setText(str(self.score), (255, 255, 255))
 
                     try:
                         self.currentHandle = next(self.handles)
@@ -53,3 +51,5 @@ class PathGame(GameSinglePlayer):
                         SwitchFrameController().execute(frame=src.view.frames.games_frame.GamesFrame())
 
                     break
+
+            self.scoreText.setText(str((pygame.time.get_ticks() - self.score) / 1000), (255, 255, 255), 120)
