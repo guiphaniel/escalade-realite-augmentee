@@ -90,7 +90,11 @@ class AbstractInternalFrame(Drawable, MouseListener, MotionListener):
                 self.held = False
                 return True
 
-        return False
+        return self.onMouse(e)
+
+    @abstractmethod
+    def onMouse(self, e) -> bool:
+        pass
 
     def onMotionEvent(self, e) -> bool:
         if self.held:
@@ -103,7 +107,11 @@ class AbstractInternalFrame(Drawable, MouseListener, MotionListener):
             self.parent.repaintAll()
             return True
 
-        return False
+        return self.onMotion(e)
+
+    @abstractmethod
+    def onMotion(self, e) -> bool:
+        pass
 
     def move(self, x, y):
         self.snappingRect = self.snappingRect.move(x, y)
