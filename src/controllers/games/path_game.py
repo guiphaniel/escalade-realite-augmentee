@@ -44,7 +44,7 @@ class PathGame(GameSinglePlayer):
                 if l.colliderect(self.currentHandle.rect):
                     self.currentHandle.color = (0, 255, 0)
                     self.score += 1
-                    self.text.setText(str(self.score), (255, 255, 255))
+                    self.scoreText.setText(str(self.score), (255, 255, 255))
 
                     try:
                         self.currentHandle = next(self.handles)
