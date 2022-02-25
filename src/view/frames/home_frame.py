@@ -7,7 +7,7 @@ from src.view.frames.abstract_frame import AbstractFrame
 from src.view.frames.calibration_frame import CalibrationFrame
 from src.view.frames.games_frame import GamesFrame
 from src.view.internalframes.AbstractInternalFrame import AbstractInternalFrame
-from src.view.internalframes.handlesEditorInternalFrame import HandleEditorInternalFrame
+from src.view.internalframes.handlesInPathEditor import HandleEditorInternalFrame
 from src.view.items.button import Button
 from src.view.listeners.action_listener import ActionListener
 

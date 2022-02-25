@@ -13,14 +13,16 @@ from src.utils.events.motion_listener import MotionListener
 from src.utils.events.mouse_listener import MouseListener
 from src.view.frames.abstract_frame import AbstractFrame
 from src.view.frames.path_frame import PathFrame
-from src.view.internalframes.handlesEditorInternalFrame import HandleEditorInternalFrame
+from src.view.internalframes.handlesInPathEditor import HandleEditorInternalFrame
+
+from src.view.internalframes.handlesInPathEditor import HandlesInPathEditor
 
 eM = HandleEditorInternalFrame.EditorMode
 
 
 class PathCreationFrame(AbstractFrame, MouseListener, MotionListener, KeyboardListener):
 
-    def __init__(self):
+    def __init__(self, path):
         AbstractFrame.__init__(self)
         MouseListener.__init__(self)
         MotionListener.__init__(self)
@@ -34,7 +36,7 @@ class PathCreationFrame(AbstractFrame, MouseListener, MotionListener, KeyboardLi
         self.lastMousePosY = None
         self.editedHandle = None
 
-        self.editorFrame = HandleEditorInternalFrame(self, (10, 10))
+        self.editorFrame = HandlesInPathEditor(path, self, (10, 10))
         self.add(self.editorFrame)
 
     def onMouseEvent(self, e) -> bool:
