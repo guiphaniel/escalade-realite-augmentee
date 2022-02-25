@@ -2,19 +2,32 @@ from enum import Enum
 
 import pygame
 
+from src.controllers.games.path_game import PathGame
+from src.controllers.start_game_controller import StartGameController
+from src.controllers.switch_frame_controller import SwitchFrameController
+from src.model.components.handle import Handle
+from src.model.components.player import Player
+from src.model.database import Database
+from src.view.frames.path_frame import PathFrame
 from src.view.internalframes.AbstractInternalFrame import AbstractInternalFrame
 from src.view.items.button import Button
 from src.view.listeners.action_listener import ActionListener
 
 
-class HandleEditorInternalFrame(AbstractInternalFrame, ActionListener):
+class HandlesInPathEditor(AbstractInternalFrame, ActionListener):
     class EditorMode(Enum):
         ADD = 0
         REMOVE = 1
         EDIT = 2
 
-    def __init__(self, parent, coordinates, bgColor = (50, 50, 50), bgImage = None):
+    def __init__(self, path, parent, coordinates, bgColor = (50, 50, 50), bgImage = None):
         super().__init__(parent, coordinates, bgColor, bgImage)
+        self.path = path
+        self.handles = []
+        self.editorMode = self.EditorMode.ADD
+        self.lastMousePosX = None
+        self.lastMousePosY = None
+        self.editedHandle = None
 
         self.addBt = Button(self, 0, 0, 10, 10, text=" + ")
         self.addBt.setStyle(borderRadius=100)
@@ -41,12 +54,68 @@ class HandleEditorInternalFrame(AbstractInternalFrame, ActionListener):
 
     def actionPerformed(self, source):
         if source == self.addBt:
-            self.parent.editorMode = self.EditorMode.ADD
+            self.editorMode = self.EditorMode.ADD
         elif source == self.removeBt:
-            self.parent.editorMode = self.EditorMode.REMOVE
+            self.editorMode = self.EditorMode.REMOVE
         elif source == self.editBt:
-            self.parent.editorMode = self.EditorMode.EDIT
+            self.editorMode = self.EditorMode.EDIT
         elif source == self.backBt:
-            self.parent.onBackBt()
+            from src.view.frames.games_frame import GamesFrame
+            SwitchFrameController().execute(frame=GamesFrame())
         elif source == self.validBt:
-            self.parent.onValidBt()
+            self.path.setHandles(self.handles)
+            Database().setHandlesInPath(self.handles, self.path)
+
+            pathFrame = PathFrame()
+            SwitchFrameController().execute(frame=pathFrame)
+            StartGameController().execute(game=PathGame(pathFrame, self.path, Player(pathFrame)))
+
+    def onMouse(self, e) -> bool:
+        pos = pygame.mouse.get_pos()
+        if e.type == pygame.MOUSEBUTTONDOWN:
+            if self.editorMode == self.EditorMode.ADD:
+                handle = Handle(self, pos[0] - Handle.radius / 2, pos[1] - Handle.radius / 2)
+                self.handles.append(handle)
+                self.parent.add(handle)
+                self.__isHandlesEmpty()
+                return True
+
+            elif self.editorMode == self.EditorMode.REMOVE:
+                handle = self.__findHandle(pygame.mouse.get_pos())
+                if handle:
+                    self.handles.remove(handle)
+                    self.parent.remove(handle)
+                    self.__isHandlesEmpty()
+                    return True
+
+        if self.editorMode == self.EditorMode.EDIT:
+            if e.type == pygame.MOUSEBUTTONDOWN:
+                self.lastMousePosX, self.lastMousePosY = pos
+                self.editedHandle = self.__findHandle(pos)
+            if e.type == pygame.MOUSEBUTTONUP:
+                self.editedHandle = None
+            return True
+
+        return False
+
+    def __findHandle(self, coordinates):
+        for h in self.handles:
+            if h.rect.collidepoint(coordinates):
+                return h
+
+    def __isHandlesEmpty(self):
+        if self.handles:
+            self.validBt.active = True
+        else:
+            self.validBt.active = False
+
+    def onMotion(self, e) -> bool:
+        if self.editedHandle:
+            x, y = pygame.mouse.get_pos()
+            newX, newY = x - self.lastMousePosX, y - self.lastMousePosY
+            self.lastMousePosX, self.lastMousePosY = x, y
+
+            self.editedHandle.move(newX, newY)
+            return True
+
+        return False
