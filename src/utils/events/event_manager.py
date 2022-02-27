@@ -55,3 +55,4 @@ class EventManager(metaclass=Singleton):
     def removeAllListeners(self):
         self.keyboardListeners.clear()
         self.mouseListeners.clear()
+        self.motionListeners.clear()
