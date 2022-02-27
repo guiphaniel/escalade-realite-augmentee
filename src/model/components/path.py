@@ -16,3 +16,6 @@ class Path:
     def setHandles(self, handles):
         self.__handles = handles
         database.Database().setHandlesInPath(self.__handles, self)
+
+    def toString(self):
+        return self.name

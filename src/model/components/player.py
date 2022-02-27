@@ -47,3 +47,7 @@ class Player(Drawable):
         self.mutexes[id].release()
 
         return limb
+
+
+    def toString(self):
+        return self.name

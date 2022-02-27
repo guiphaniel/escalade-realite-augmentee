@@ -163,7 +163,7 @@ class Database(metaclass=Singleton):
                 if path.id not in pathsIdsInDb:
                     self.__addPathInWall(path, dummyWall)
                 else:
-                    self.__updatePathInWall(path, dummyWall)
+                    self.__updatePath(path)
 
         # check if wall exists
         elif wall.id not in self.__getWallsIdsInDb():
@@ -187,7 +187,7 @@ class Database(metaclass=Singleton):
                 if path.id not in pathsIdsInDb:
                     self.__addPathInWall(path, wall)
                 else:
-                    self.__updatePathInWall(path, wall)
+                    self.__updatePath(path)
 
     def __addPathInWall(self, path, wall):
         self.cur.execute("insert into paths values(null, :name, :wallId)",
@@ -200,10 +200,10 @@ class Database(metaclass=Singleton):
             self.cur.execute("update paths set name=:name where id=:id",
                         {"name": path.name, "id": path.id})
 
-    def __updatePathInWall(self, path):
-        self.cur.execute("update paths set name=:name where id=:id", {"name": path.name})
+    def __updatePath(self, path):
+        self.cur.execute("update paths set name=:name where id=:id", {"name": path.name, "id": path.id})
 
-    def getPathInWall(self, wall):
+    def getPathsInWall(self, wall):
         # free paths
         if not wall:
             self.cur.execute("select id, name from paths where wallId is null")
@@ -211,7 +211,8 @@ class Database(metaclass=Singleton):
         elif wall.id not in self.__getWallsIdsInDb():
             self.logger.warning("wall hasn't been initialized", stack_info=True)
 
-        self.cur.execute("select id, name from paths where wallId=:wallId",
+        else:
+            self.cur.execute("select id, name from paths where wallId=:wallId",
                     {"wallId": wall.id})
 
         result = self.cur.fetchall()
@@ -287,7 +288,7 @@ class Database(metaclass=Singleton):
 
         handles = []
         for h in result:
-            handle = src.model.components.handle.Handle(h[1], h[2])
+            handle = src.model.components.handle.Handle(None, h[1], h[2])
             handle.id = h[0]
             handles.append(handle)
 

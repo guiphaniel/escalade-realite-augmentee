@@ -23,7 +23,10 @@ class HandlesInPathEditor(AbstractInternalFrame, ActionListener):
     def __init__(self, path, parent, coordinates, bgColor = (50, 50, 50), bgImage = None):
         super().__init__(parent, coordinates, bgColor, bgImage)
         self.path = path
-        self.handles = []
+        self.handles = Database().getHandlesInPath(path)
+        for h in self.handles:
+            h.parent = self.parent
+            self.parent.add(h)
         self.editorMode = self.EditorMode.ADD
         self.lastMousePosX = None
         self.lastMousePosY = None
@@ -41,7 +44,7 @@ class HandlesInPathEditor(AbstractInternalFrame, ActionListener):
         self.backBt = Button(self, 0, self.editBt.rect.h + 20, text="RETOUR")
         self.add(self.backBt)
         self.validBt = Button(self, self.backBt.rect.w + 20, self.editBt.rect.h + 20, text="VALIDER")
-        self.validBt.active = False
+        self.__isHandlesEmpty()
         self.add(self.validBt)
 
         self.shrinkToFit()
@@ -60,8 +63,8 @@ class HandlesInPathEditor(AbstractInternalFrame, ActionListener):
         elif source == self.editBt:
             self.editorMode = self.EditorMode.EDIT
         elif source == self.backBt:
-            from src.view.frames.games_frame import GamesFrame
-            SwitchFrameController().execute(frame=GamesFrame())
+            from src.view.frames.path_manager_frame import PathManagerFrame
+            SwitchFrameController().execute(frame=PathManagerFrame())
         elif source == self.validBt:
             self.path.setHandles(self.handles)
             Database().setHandlesInPath(self.handles, self.path)
@@ -74,7 +77,7 @@ class HandlesInPathEditor(AbstractInternalFrame, ActionListener):
         pos = pygame.mouse.get_pos()
         if e.type == pygame.MOUSEBUTTONDOWN:
             if self.editorMode == self.EditorMode.ADD:
-                handle = Handle(self, pos[0] - Handle.radius / 2, pos[1] - Handle.radius / 2)
+                handle = Handle(self.parent, pos[0] - Handle.radius / 2, pos[1] - Handle.radius / 2)
                 self.handles.append(handle)
                 self.parent.add(handle)
                 self.__isHandlesEmpty()

@@ -13,7 +13,7 @@ class Text(Drawable):
 
         self.x = x
         self.y = y
-        self.rect = pygame.rect.Rect(x, y, 0, 0)
+        self.rect = pygame.rect.Rect(x + parent.rect.x + parent.padding, y + parent.rect.y + parent.padding, 0, 0)
 
         self.setText(text, textColor, textSize, textFont)
 
