@@ -92,8 +92,8 @@ class GameMultiPlayer(Game):
         while self.continueGame:
             if self.transfoResults[player]:
                 landmarks = self.transfoResults[player].landmark
-                self.setPlayerLandmarks(player, landmarks, mp_pose.PoseLandmark.LEFT_WRIST, 4)
-                self.setPlayerLandmarks(player, landmarks, mp_pose.PoseLandmark.RIGHT_WRIST, 4)
+                self.setPlayerLandmarks(player, landmarks, mp_pose.PoseLandmark.LEFT_WRIST, 3)
+                self.setPlayerLandmarks(player, landmarks, mp_pose.PoseLandmark.RIGHT_WRIST, 3)
                 self.setPlayerLandmarks(player, landmarks, mp_pose.PoseLandmark.LEFT_ANKLE, 3)
                 self.setPlayerLandmarks(player, landmarks, mp_pose.PoseLandmark.RIGHT_ANKLE, 3)
 

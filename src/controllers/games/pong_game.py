@@ -36,15 +36,17 @@ class PongGame(GameMultiPlayer):
 
         while self.continueGame:
             self.ball.collideBorder()
-            for limb in self.player1.limbs.values():
-                if not limb:
+            for id, l in self.player1.landmarks.items():
+                radius = self.player1.limbsRadius[id]
+                if not l or not radius:
                     continue
-                self.ball.collidePlayer(limb)
+                self.ball.collidePlayer(l, radius)
 
-            for limb in self.player2.limbs.values():
-                if not limb:
+            for id, l in self.player2.landmarks.items():
+                radius = self.player2.limbsRadius[id]
+                if not l or not radius:
                     continue
-                self.ball.collidePlayer(limb)
+                self.ball.collidePlayer(l, radius)
 
             self.ball.update(pygame.time.get_ticks() - lastFrame)
 
