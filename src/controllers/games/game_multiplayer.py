@@ -103,7 +103,6 @@ class GameMultiPlayer(Game):
 
         if valid:
             # calibrate the landmarks
-            tmpLandmarks = []
             moyX = 0
             moyY = 0
             for i in ids:
@@ -113,17 +112,4 @@ class GameMultiPlayer(Game):
             moyX /= nbLandmarks
             moyY /= nbLandmarks
             
-            player.landmarks[root] = (moyX, moyY)
-
-    def setPlayerPosition(self,playerNumber):
-        while self.continueGame:
-            if self.transfoResults is None:
-                continue
-            if self.transfoResults[playerNumber]:
-                landmark = self.transfoResults[playerNumber].landmark
-                for n in [15, 16]:
-                    self.playersPosition[playerNumber][n] = [((landmark[n].x + landmark[n + 2].x + landmark[n + 4].x + landmark[n + 6].x)/4.0)*1920,((landmark[n].y + landmark[n + 2].y + landmark[n + 4].y + landmark[n + 6].y)/4.0)*1080]
-                    pygame.draw.circle(self.win,(0,0,255), self.playersPosition[playerNumber][n], self.playerRadius)
-                for n in [27, 28]:
-                    self.playersPosition[playerNumber][n] = [((landmark[n].x + landmark[n + 2].x + landmark[n + 4].x)/3.0)*1920,((landmark[n].y + landmark[n + 2].y + landmark[n + 4].y)/3.0)*1080]
-                    pygame.draw.circle(self.win, (0, 0, 255), self.playersPosition[playerNumber][n], self.playerRadius)
+            player.landmarks[root] = (moyX * 1920, moyY * 1080)

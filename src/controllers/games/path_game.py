@@ -1,3 +1,5 @@
+import math
+
 import pygame
 
 import src
@@ -37,11 +39,13 @@ class PathGame(GameSinglePlayer):
 
     def execute(self):
         while self.continueGame:
-            for l in list(self.player.limbs.values()):
-                if not l:
+            for id, l in self.player.landmarks.items():
+                radius = self.player.limbsRadius[id]
+                if not l or not radius:
                     continue
 
-                if l.colliderect(self.currentHandle.rect):
+                if (radius + (self.currentHandle.rect.width / 2)) > math.sqrt(
+                        (l[0] - self.currentHandle.rect.centerx) ** 2 + (l[1] - self.currentHandle.rect.centery) ** 2):
                     self.currentHandle.color = (0, 255, 0)
 
                     try:

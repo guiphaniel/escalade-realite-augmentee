@@ -17,37 +17,33 @@ class Player(Drawable):
         Drawable.__init__(self, parent)
         self.id = None
         self.pseudo = pseudo
+        self.limbsRadius = {mp_pose.PoseLandmark.LEFT_WRIST: 50,
+                            mp_pose.PoseLandmark.RIGHT_WRIST: 50,
+                            mp_pose.PoseLandmark.LEFT_ANKLE: 50,
+                            mp_pose.PoseLandmark.RIGHT_ANKLE: 50}
 
-        self.landmarks = {mp_pose.PoseLandmark.LEFT_WRIST: [],
-                          mp_pose.PoseLandmark.RIGHT_WRIST: [],
-                          mp_pose.PoseLandmark.LEFT_ANKLE: [],
-                          mp_pose.PoseLandmark.RIGHT_ANKLE: []}
+        self.landmarks = {mp_pose.PoseLandmark.LEFT_WRIST: None,
+                          mp_pose.PoseLandmark.RIGHT_WRIST: None,
+                          mp_pose.PoseLandmark.LEFT_ANKLE: None,
+                          mp_pose.PoseLandmark.RIGHT_ANKLE: None}
 
         self.mutexes = {mp_pose.PoseLandmark.LEFT_WRIST: threading.Lock(),
                         mp_pose.PoseLandmark.RIGHT_WRIST: threading.Lock(),
                         mp_pose.PoseLandmark.LEFT_ANKLE: threading.Lock(),
                         mp_pose.PoseLandmark.RIGHT_ANKLE: threading.Lock()}
 
-        self.limbs = {}
-
     def draw(self):
-        self.limbs[mp_pose.PoseLandmark.LEFT_WRIST] = self.__drawLimb(mp_pose.PoseLandmark.LEFT_WRIST)
-        self.limbs[mp_pose.PoseLandmark.RIGHT_WRIST] = self.__drawLimb(mp_pose.PoseLandmark.RIGHT_WRIST)
-        self.limbs[mp_pose.PoseLandmark.LEFT_ANKLE] = self.__drawLimb(mp_pose.PoseLandmark.LEFT_ANKLE)
-        self.limbs[mp_pose.PoseLandmark.RIGHT_ANKLE] = self.__drawLimb(mp_pose.PoseLandmark.RIGHT_ANKLE)
-
+        self.__drawLimb(mp_pose.PoseLandmark.LEFT_WRIST)
+        self.__drawLimb(mp_pose.PoseLandmark.RIGHT_WRIST)
+        self.__drawLimb(mp_pose.PoseLandmark.LEFT_ANKLE)
+        self.__drawLimb(mp_pose.PoseLandmark.RIGHT_ANKLE)
 
     def __drawLimb(self, id):
-        #self.mutexes[id].acquire()
-        ls = self.landmarks[id]
+        l = self.landmarks[id]
+        r = self.limbsRadius[id]
 
-        limb = None
-        if ls:
-            limb = pygame.draw.polygon(self.win, (0, 0, 255), ls)
-        #self.mutexes[id].release()
-
-        return limb
-
+        if l and r:
+            pygame.draw.circle(self.win,(0,0,255), l, r)
 
     def toString(self):
         return self.name

@@ -31,12 +31,13 @@ class OsuGame(GameSinglePlayer):
                     t.ticks = pygame.time.get_ticks()
                     t.failed()
 
-            for limb in self.player.limbs.values():
-                if not limb:
+            for id, limb in self.player.landmarks.items():
+                radius = self.player.limbsRadius[id]
+                if not limb or not radius:
                     continue
 
                 for t in self.targets:
-                    if t.collide(limb):
+                    if t.collide(limb, radius):
                         self.targets.remove(t)
                         self.targetsDispawned.append(t)
                         t.ticks = pygame.time.get_ticks()

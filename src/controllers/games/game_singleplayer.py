@@ -59,8 +59,8 @@ class GameSinglePlayer(Game):
         while self.continueGame:
             if self.transfoResults:
                 landmarks = self.transfoResults.landmark
-                self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.LEFT_WRIST, 4)
-                self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.RIGHT_WRIST, 4)
+                self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.LEFT_WRIST, 3)
+                self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.RIGHT_WRIST, 3)
                 self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.LEFT_ANKLE, 3)
                 self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.RIGHT_ANKLE, 3)
 
@@ -68,23 +68,15 @@ class GameSinglePlayer(Game):
         valid = True
         ids = range(0, nbLandmarks * 2 - 1, 2)
 
-        # check for the landmarks accuracy (we don't want landmarks that are predicted by mediapipe)
-        for i in ids:
-            if landmarks[root + i].visibility < 0.15:
-                valid = False
-
-
         if valid:
             # calibrate the landmarks
-            tmpLandmarks = []
+            moyX = 0
+            moyY = 0
             for i in ids:
-                l = landmarks[root + i]
+                moyX += landmarks[root + i].x
+                moyY += landmarks[root + i].y
 
-                tmpLandmarks.append((l.x * 1920, l.y * 1080))
+            moyX /= nbLandmarks
+            moyY /= nbLandmarks
 
-            # ckeck if the area of the limb isn't too big (else, pygame will freeze)
-            if ((max([l[0] for l in tmpLandmarks]) - min([l[0] for l in tmpLandmarks])) * (
-                    max([l[1] for l in tmpLandmarks]) - min([l[1] for l in tmpLandmarks])) < 10000):
-                #self.player.mutexes[root].acquire()
-                self.player.landmarks[root] = tmpLandmarks
-                #self.player.mutexes[root].release()
+            self.player.landmarks[root] = (moyX * 1920, moyY * 1080)
