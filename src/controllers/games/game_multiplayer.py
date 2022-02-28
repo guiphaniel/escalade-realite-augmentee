@@ -96,18 +96,3 @@ class GameMultiPlayer(Game):
                 for n in [27, 28]:
                     self.playersPosition[playerNumber][n] = [((landmark[n].x + landmark[n + 2].x + landmark[n + 4].x)/3.0)*1920,((landmark[n].y + landmark[n + 2].y + landmark[n + 4].y)/3.0)*1080]
                     pygame.draw.circle(self.win, (0, 0, 255), self.playersPosition[playerNumber][n], self.playerRadius)
-
-#    def setPlayer2Position(self):
-#        while self.continueGame:
-#            if self.transfoResults is None:
-#                continue
-#            if self.transfoResults[1]:
-#                landmark = self.transfoResults[1].landmark
-#                for n in [15, 16]:
-#                    if -100 <= landmark[n].x * 1920 <= 2100 and -100 <= landmark[n].y * 1080 <= 1200 and -100 <= landmark[n + 2].x * 1920 <= 2100 and -100 <= landmark[n + 2].y * 1080 <= 1200 and -100 <= landmark[n + 4].x * 1920 <= 2100 and -100 <= landmark[n + 4].y * 1080 <= 1200 and -100 <= landmark[n + 6].x * 1920 <= 2100 and -100 <= landmark[n + 6].y * 1080 <= 1200:
-#                        self.playersPosition[1][n] = (pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[n].x * 1920, landmark[n].y * 1080), (landmark[n + 2].x * 1920, landmark[n + 2].y * 1080),(landmark[n + 4].x * 1920, landmark[n + 4].y * 1080),(landmark[n + 6].x * 1920, landmark[n + 6].y * 1080))))
-#
-#                for n in [27, 28]:
-#                    if -100 <= landmark[n].x * 1920 <= 2100 and -100 <= landmark[n].y * 1080 <= 1200 and -100 <= landmark[n + 2].x * 1920 <= 2100 and -100 <= landmark[n + 2].y * 1080 <= 1200 and -100 <= landmark[n + 4].x * 1920 <= 2100 and -100 <= landmark[n + 4].y * 1080 <= 1200:
-#                        self.playersPosition[1][n] = (pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[n].x * 1920, landmark[n].y * 1080), (landmark[n + 2].x * 1920, landmark[n + 2].y * 1080),(landmark[n + 4].x * 1920, landmark[n + 4].y * 1080))))
-
