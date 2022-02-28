@@ -33,9 +33,9 @@ class PongGame(GameMultiPlayer):
 
             self.ball.collideBorder()
             for position in list(self.playersPosition[0].values()):
-                self.ball.collidePlayer(position)
+                self.ball.collidePlayer(position,self.playerRadius)
             for position in list(self.playersPosition[1].values()):
-                self.ball.collidePlayer(position)
+                self.ball.collidePlayer(position,self.playerRadius)
             self.ball.update(pygame.time.get_ticks() - lastFrame)
             self.ball.draw()
 

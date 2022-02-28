@@ -22,11 +22,12 @@ class GameMultiPlayer(Game):
         self.image = None
         self.continueGame = False
         self.playersPosition = {0:{},1:{}}
+        self.playerRadius = 50
         thMediapipe = threading.Thread(target=self.startMultiMediaPipe)
         thMediapipe.start()
-        thPlayer1Position = threading.Thread(target=self.setPlayer1Position)
+        thPlayer1Position = threading.Thread(target=self.setPlayerPosition,args=[0])
         thPlayer1Position.start()
-        thPlayer2Position = threading.Thread(target=self.setPlayer2Position)
+        thPlayer2Position = threading.Thread(target=self.setPlayerPosition,args=[1])
         thPlayer2Position.start()
 
     @abstractmethod
@@ -59,7 +60,7 @@ class GameMultiPlayer(Game):
 
     def startMultiMediaPipe(self):
         # For webcam input:
-        self.cap = Camera(1)
+        self.cap = Camera()
         self.continueGame = True
         self.transfoResults = [None, None]
         thLeft = threading.Thread(target=self.startResultLeft)
@@ -83,31 +84,30 @@ class GameMultiPlayer(Game):
     def closeCam(self):
         self.continueGame = False
 
-    def setPlayer1Position(self):
+    def setPlayerPosition(self,playerNumber):
         while self.continueGame:
             if self.transfoResults is None:
                 continue
-            if self.transfoResults[0]:
-                landmark = self.transfoResults[0].landmark
+            if self.transfoResults[playerNumber]:
+                landmark = self.transfoResults[playerNumber].landmark
                 for n in [15, 16]:
-                    if -100 <= landmark[n].x * 1920 <= 2100 and -100 <= landmark[n].y * 1080 <= 1200 and -100 <= landmark[n + 2].x * 1920 <= 2100 and -100 <= landmark[n + 2].y * 1080 <= 1200 and -100 <= landmark[n + 4].x * 1920 <= 2100 and -100 <= landmark[n + 4].y * 1080 <= 1200 and -100 <= landmark[n + 6].x * 1920 <= 2100 and -100 <= landmark[n + 6].y * 1080 <= 1200:
-                        self.playersPosition[0][n] = (pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[n].x * 1920, landmark[n].y * 1080), (landmark[n + 2].x * 1920, landmark[n + 2].y * 1080),(landmark[n + 4].x * 1920, landmark[n + 4].y * 1080),(landmark[n + 6].x * 1920, landmark[n + 6].y * 1080))))
-
+                    self.playersPosition[playerNumber][n] = [((landmark[n].x + landmark[n + 2].x + landmark[n + 4].x + landmark[n + 6].x)/4.0)*1920,((landmark[n].y + landmark[n + 2].y + landmark[n + 4].y + landmark[n + 6].y)/4.0)*1080]
+                    pygame.draw.circle(self.win,(0,0,255), self.playersPosition[playerNumber][n], self.playerRadius)
                 for n in [27, 28]:
-                    if -100 <= landmark[n].x * 1920 <= 2100 and -100 <= landmark[n].y * 1080 <= 1200 and -100 <= landmark[n + 2].x * 1920 <= 2100 and -100 <= landmark[n + 2].y * 1080 <= 1200 and -100 <= landmark[n + 4].x * 1920 <= 2100 and -100 <= landmark[n + 4].y * 1080 <= 1200:
-                        self.playersPosition[0][n] = (pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[n].x * 1920, landmark[n].y * 1080), (landmark[n + 2].x * 1920, landmark[n + 2].y * 1080),(landmark[n + 4].x * 1920, landmark[n + 4].y * 1080))))
+                    self.playersPosition[playerNumber][n] = [((landmark[n].x + landmark[n + 2].x + landmark[n + 4].x)/3.0)*1920,((landmark[n].y + landmark[n + 2].y + landmark[n + 4].y)/3.0)*1080]
+                    pygame.draw.circle(self.win, (0, 0, 255), self.playersPosition[playerNumber][n], self.playerRadius)
 
-    def setPlayer2Position(self):
-        while self.continueGame:
-            if self.transfoResults is None:
-                continue
-            if self.transfoResults[1]:
-                landmark = self.transfoResults[1].landmark
-                for n in [15, 16]:
-                    if -100 <= landmark[n].x * 1920 <= 2100 and -100 <= landmark[n].y * 1080 <= 1200 and -100 <= landmark[n + 2].x * 1920 <= 2100 and -100 <= landmark[n + 2].y * 1080 <= 1200 and -100 <= landmark[n + 4].x * 1920 <= 2100 and -100 <= landmark[n + 4].y * 1080 <= 1200 and -100 <= landmark[n + 6].x * 1920 <= 2100 and -100 <= landmark[n + 6].y * 1080 <= 1200:
-                        self.playersPosition[1][n] = (pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[n].x * 1920, landmark[n].y * 1080), (landmark[n + 2].x * 1920, landmark[n + 2].y * 1080),(landmark[n + 4].x * 1920, landmark[n + 4].y * 1080),(landmark[n + 6].x * 1920, landmark[n + 6].y * 1080))))
-
-                for n in [27, 28]:
-                    if -100 <= landmark[n].x * 1920 <= 2100 and -100 <= landmark[n].y * 1080 <= 1200 and -100 <= landmark[n + 2].x * 1920 <= 2100 and -100 <= landmark[n + 2].y * 1080 <= 1200 and -100 <= landmark[n + 4].x * 1920 <= 2100 and -100 <= landmark[n + 4].y * 1080 <= 1200:
-                        self.playersPosition[1][n] = (pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[n].x * 1920, landmark[n].y * 1080), (landmark[n + 2].x * 1920, landmark[n + 2].y * 1080),(landmark[n + 4].x * 1920, landmark[n + 4].y * 1080))))
+#    def setPlayer2Position(self):
+#        while self.continueGame:
+#            if self.transfoResults is None:
+#                continue
+#            if self.transfoResults[1]:
+#                landmark = self.transfoResults[1].landmark
+#                for n in [15, 16]:
+#                    if -100 <= landmark[n].x * 1920 <= 2100 and -100 <= landmark[n].y * 1080 <= 1200 and -100 <= landmark[n + 2].x * 1920 <= 2100 and -100 <= landmark[n + 2].y * 1080 <= 1200 and -100 <= landmark[n + 4].x * 1920 <= 2100 and -100 <= landmark[n + 4].y * 1080 <= 1200 and -100 <= landmark[n + 6].x * 1920 <= 2100 and -100 <= landmark[n + 6].y * 1080 <= 1200:
+#                        self.playersPosition[1][n] = (pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[n].x * 1920, landmark[n].y * 1080), (landmark[n + 2].x * 1920, landmark[n + 2].y * 1080),(landmark[n + 4].x * 1920, landmark[n + 4].y * 1080),(landmark[n + 6].x * 1920, landmark[n + 6].y * 1080))))
+#
+#                for n in [27, 28]:
+#                    if -100 <= landmark[n].x * 1920 <= 2100 and -100 <= landmark[n].y * 1080 <= 1200 and -100 <= landmark[n + 2].x * 1920 <= 2100 and -100 <= landmark[n + 2].y * 1080 <= 1200 and -100 <= landmark[n + 4].x * 1920 <= 2100 and -100 <= landmark[n + 4].y * 1080 <= 1200:
+#                        self.playersPosition[1][n] = (pygame.draw.polygon(self.win, (0, 0, 255), ((landmark[n].x * 1920, landmark[n].y * 1080), (landmark[n + 2].x * 1920, landmark[n + 2].y * 1080),(landmark[n + 4].x * 1920, landmark[n + 4].y * 1080))))
 
