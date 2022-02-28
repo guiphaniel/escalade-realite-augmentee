@@ -38,13 +38,13 @@ class Player(Drawable):
 
 
     def __drawLimb(self, id):
-        self.mutexes[id].acquire()
+        #self.mutexes[id].acquire()
         ls = self.landmarks[id]
 
         limb = None
         if ls:
             limb = pygame.draw.polygon(self.win, (0, 0, 255), ls)
-        self.mutexes[id].release()
+        #self.mutexes[id].release()
 
         return limb
 

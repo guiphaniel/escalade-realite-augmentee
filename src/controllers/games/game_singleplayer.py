@@ -85,6 +85,6 @@ class GameSinglePlayer(Game):
             # ckeck if the area of the limb isn't too big (else, pygame will freeze)
             if ((max([l[0] for l in tmpLandmarks]) - min([l[0] for l in tmpLandmarks])) * (
                     max([l[1] for l in tmpLandmarks]) - min([l[1] for l in tmpLandmarks])) < 10000):
-                self.player.mutexes[root].acquire()
+                #self.player.mutexes[root].acquire()
                 self.player.landmarks[root] = tmpLandmarks
-                self.player.mutexes[root].release()
+                #self.player.mutexes[root].release()

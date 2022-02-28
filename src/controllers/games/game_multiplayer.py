@@ -117,6 +117,6 @@ class GameMultiPlayer(Game):
             # ckeck if the area of the limb isn't too big (else, pygame will freeze)
             if ((max([l[0] for l in tmpLandmarks]) - min([l[0] for l in tmpLandmarks])) * (
                     max([l[1] for l in tmpLandmarks]) - min([l[1] for l in tmpLandmarks])) < 20000) and 0 < (max([l[0] for l in tmpLandmarks]) + min([l[0] for l in tmpLandmarks])) / 2 < 1920 and 0 < (max([l[1] for l in tmpLandmarks]) + min([l[1] for l in tmpLandmarks])) / 2 < 1080:
-                player.mutexes[root].acquire()
+                #player.mutexes[root].acquire()
                 player.landmarks[root] = tmpLandmarks
-                player.mutexes[root].release()
+                #player.mutexes[root].release()
