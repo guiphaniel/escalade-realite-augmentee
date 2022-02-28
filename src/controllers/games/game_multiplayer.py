@@ -101,22 +101,29 @@ class GameMultiPlayer(Game):
         valid = True
         ids = range(0, nbLandmarks * 2 - 1, 2)
 
-        # check for the landmarks accuracy (we don't want landmarks that are predicted by mediapipe)
-        for i in ids:
-            if landmarks[root + i].visibility < 0.15:
-                valid = False
-
         if valid:
             # calibrate the landmarks
             tmpLandmarks = []
+            moyX = 0
+            moyY = 0
             for i in ids:
-                l = landmarks[root + i]
+                moyX += landmarks[root + i].x
+                moyY += landmarks[root + i].y
 
-                tmpLandmarks.append((l.x * 1920, l.y * 1080))
+            moyX /= nbLandmarks
+            moyY /= nbLandmarks
+            
+            player.landmarks[root] = (moyX, moyY)
 
-            # ckeck if the area of the limb isn't too big (else, pygame will freeze)
-            if ((max([l[0] for l in tmpLandmarks]) - min([l[0] for l in tmpLandmarks])) * (
-                    max([l[1] for l in tmpLandmarks]) - min([l[1] for l in tmpLandmarks])) < 20000) and 0 < (max([l[0] for l in tmpLandmarks]) + min([l[0] for l in tmpLandmarks])) / 2 < 1920 and 0 < (max([l[1] for l in tmpLandmarks]) + min([l[1] for l in tmpLandmarks])) / 2 < 1080:
-                #player.mutexes[root].acquire()
-                player.landmarks[root] = tmpLandmarks
-                #player.mutexes[root].release()
+    def setPlayerPosition(self,playerNumber):
+        while self.continueGame:
+            if self.transfoResults is None:
+                continue
+            if self.transfoResults[playerNumber]:
+                landmark = self.transfoResults[playerNumber].landmark
+                for n in [15, 16]:
+                    self.playersPosition[playerNumber][n] = [((landmark[n].x + landmark[n + 2].x + landmark[n + 4].x + landmark[n + 6].x)/4.0)*1920,((landmark[n].y + landmark[n + 2].y + landmark[n + 4].y + landmark[n + 6].y)/4.0)*1080]
+                    pygame.draw.circle(self.win,(0,0,255), self.playersPosition[playerNumber][n], self.playerRadius)
+                for n in [27, 28]:
+                    self.playersPosition[playerNumber][n] = [((landmark[n].x + landmark[n + 2].x + landmark[n + 4].x)/3.0)*1920,((landmark[n].y + landmark[n + 2].y + landmark[n + 4].y)/3.0)*1080]
+                    pygame.draw.circle(self.win, (0, 0, 255), self.playersPosition[playerNumber][n], self.playerRadius)

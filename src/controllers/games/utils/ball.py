@@ -26,15 +26,15 @@ class Ball(Drawable):
         elif self.rect.y + self.rect.height >= self.area.height:
             self.vector[1] = abs(self.vector[1]) * -1
 
-    def collidePlayer(self, polygon):
-        if not polygon.colliderect(self.rect) or self.intangible:
+    def collidePlayer(self, point,radius):
+        if (radius+(self.rect.width / 2)) < math.sqrt((point[0]-self.rect.centerx)**2 + (point[1]-self.rect.centery)**2)  or self.intangible:
             return
         if self.rect.centerx > self.area.width / 2:  # joueur gauche touche la balle
-            self.vector = [abs(self.rect.centerx - polygon.centerx) * -1, self.rect.centery - polygon.centery]
+            self.vector = [abs(self.rect.centerx - point[0]) * -1, self.rect.centery - point[1]]
         elif self.rect.centerx < self.area.width / 2:
-            self.vector = [abs(self.rect.centerx - polygon.centerx), self.rect.centery - polygon.centery]
+            self.vector = [abs(self.rect.centerx - point[0]), self.rect.centery - point[1]]
         else:
-            self.vector = [self.rect.centerx - polygon.centerx, self.rect.centery - polygon.centery]
+            self.vector = [self.rect.centerx - point[0], self.rect.centery - point[1]]
 
         th = threading.Thread(target=self.startTimerIntangible)
         th.start()
