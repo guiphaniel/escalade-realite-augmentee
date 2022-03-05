@@ -27,11 +27,14 @@ class AbstractManagerFrame(AbstractFrame, ListListener, ActionListener):
         self.selectBt = Button(self, 600, 800, text="Selectionner")
         self.selectBt.active = False
         self.add(self.selectBt)
+        self.backBt = Button(self, 1551, 919, text="RETOUR")
+        self.add(self.backBt)
 
         self.addBt.addActionListener(self)
         self.editBt.addActionListener(self)
         self.removeBt.addActionListener(self)
         self.selectBt.addActionListener(self)
+        self.backBt.addActionListener(self)
 
         self.list.addListListener(self)
 
@@ -44,6 +47,8 @@ class AbstractManagerFrame(AbstractFrame, ListListener, ActionListener):
             self.removeT()
         elif source == self.selectBt:
             self.selectT()
+        elif source == self.backBt:
+            self.onBackBt()
 
     @abstractmethod
     def addT(self):
@@ -61,6 +66,10 @@ class AbstractManagerFrame(AbstractFrame, ListListener, ActionListener):
     # need to save in bd, and launch appropriate activity
     @abstractmethod
     def selectT(self):
+        pass
+
+    @abstractmethod
+    def onBackBt(self):
         pass
 
     def valueChanged(self, source):

@@ -17,9 +17,12 @@ class HomeFrame(AbstractFrame, ActionListener):
         self.add(self.calibrationButton)
         self.playButton = Button(self, 300, 700, text="JOUER")
         self.add(self.playButton)
+        self.quitButton = Button(self, 1551, 919, text="QUITTER")
+        self.add(self.quitButton)
 
         self.calibrationButton.addActionListener(self)
         self.playButton.addActionListener(self)
+        self.quitButton.addActionListener(self)
 
     # TODO: use controllers, having window imbedded
     def actionPerformed(self, source):
@@ -28,3 +31,6 @@ class HomeFrame(AbstractFrame, ActionListener):
         elif source == self.calibrationButton:
             SwitchFrameController().execute(frame=src.view.frames.home_frame.CalibrationFrame())
             StartCalibrationController().execute()
+        elif source == self.quitButton:
+            from src.view.window import Window
+            Window().setVisible(False)

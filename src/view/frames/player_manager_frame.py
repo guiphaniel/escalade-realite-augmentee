@@ -48,6 +48,10 @@ class PlayerManagerFrame(AbstractManagerFrame, EditTextListener):
         SwitchFrameController().execute(frame=pathFrame)
         StartGameController().execute(game=PathGame(pathFrame, self.path, self.list.selectedItem.obj))
 
+    def onBackBt(self):
+        from src.view.frames.path_manager_frame import PathManagerFrame
+        SwitchFrameController().execute(frame=PathManagerFrame())
+
     def onEditTextResult(self, source):
         if source == self.editText:
             self.list.selectedItem.setText(source.text)

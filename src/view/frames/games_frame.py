@@ -26,14 +26,11 @@ class GamesFrame(AbstractFrame, ActionListener):
         self.add(self.pathButton)
         self.returnButton = Button(self, 1551, 919, text="RETOUR")
         self.add(self.returnButton)
-        self.handlesDetectorButton = Button(self, 900, 550, text="DETECTION PRISES")
-        self.add(self.handlesDetectorButton)
 
         self.pongButton.addActionListener(self)
         self.targetButton.addActionListener(self)
         self.pathButton.addActionListener(self)
         self.returnButton.addActionListener(self)
-        self.handlesDetectorButton.addActionListener(self)
 
     #TODO: use controllers, having window imbedded
     def actionPerformed(self, source):

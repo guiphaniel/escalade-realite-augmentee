@@ -40,6 +40,10 @@ class PathManagerFrame(AbstractManagerFrame):
             playerManagerFrame = PlayerManagerFrame(self.list.selectedItem.obj)
             SwitchFrameController().execute(frame=playerManagerFrame)
 
+    def onBackBt(self):
+        from src.view.frames.games_frame import GamesFrame
+        SwitchFrameController().execute(frame=GamesFrame())
+
     @property
     def paths(self):
         return [i.obj for i in self.list.items]
