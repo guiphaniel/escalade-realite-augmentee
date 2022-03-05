@@ -24,12 +24,15 @@ class GamesFrame(AbstractFrame, ActionListener):
         self.add(self.targetButton)
         self.pathButton = Button(self, 300, 700, text="PARCOURS")
         self.add(self.pathButton)
+        self.scoresButton = Button(self, 1551, 100, text="SCORES")
+        self.add(self.scoresButton)
         self.returnButton = Button(self, 1551, 919, text="RETOUR")
         self.add(self.returnButton)
 
         self.pongButton.addActionListener(self)
         self.targetButton.addActionListener(self)
         self.pathButton.addActionListener(self)
+        self.scoresButton.addActionListener(self)
         self.returnButton.addActionListener(self)
 
     #TODO: use controllers, having window imbedded
@@ -47,3 +50,6 @@ class GamesFrame(AbstractFrame, ActionListener):
         elif source == self.returnButton:
             from src.view.frames.home_frame import HomeFrame
             SwitchFrameController().execute(frame=HomeFrame())
+        elif source == self.scoresButton:
+            from src.view.frames.scores_frame import ScoresFrame
+            SwitchFrameController().execute(frame=ScoresFrame())

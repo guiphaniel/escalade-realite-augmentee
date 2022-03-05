@@ -52,6 +52,7 @@ class PathGame(GameSinglePlayer):
                         self.currentHandle = next(self.handles)
                     except:  # no more handles
                         self.continueGame = False
+                        Database().saveScore(self.path, self.player, (pygame.time.get_ticks() - self.score) / 1000)
                         SwitchFrameController().execute(frame=src.view.frames.games_frame.GamesFrame())
 
                     break

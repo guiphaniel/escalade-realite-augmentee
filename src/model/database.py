@@ -4,6 +4,8 @@
 # /!\ est un singleton
 import logging
 import sqlite3
+from collections import namedtuple, defaultdict
+from datetime import datetime
 
 from absl.app import Error
 
@@ -15,7 +17,7 @@ class Database(metaclass=Singleton):
     def __init__(self):
         self.logger = logging.getLogger('log')
         try:
-            self.con = sqlite3.connect("database.db", isolation_level=None)
+            self.con = sqlite3.connect("database.db", isolation_level=None, check_same_thread=False)
             self.con.execute("PRAGMA foreign_keys = ON")
         except Error as e:
             print(e)
@@ -342,12 +344,52 @@ class Database(metaclass=Singleton):
 
         return players
 
+    # yet, works only for pathGame
     def saveScore(self, path, player, score):
         # if the wall doesn't exist yet, warning
         if not player.id:
             self.logger.warning("player hasn't been initialized", stack_info=True)
 
-        self.cur.execute("insert into history values(:pathId, :playerId, :score, strftime('%s', 'now'))", {path.id if path else "null", player.id, score})
+        date = datetime.now().strftime("%d/%m/%Y, %H:%M")
+        self.cur.execute("insert into history values(:pathId, :playerId, :score, :date)", {"pathId": path.id, "playerId": player.id, "score": score, "date": date})
+
+
+    # assumes that all fields are set (not any Null)
+    def getScores(self):
+        self.cur.execute("select * from history")
+
+        result = self.cur.fetchall()
+
+        scores = defaultdict(list)
+        Score = namedtuple("Score", ["player", "score", "date"])
+        for r in result:
+            path = self.__getPathById(r[0])
+            player = self.__getPlayerById(r[1])
+            score = r[2]
+            date = r[3]
+
+            scores[path].append(Score(player, score, date))
+
+        return scores
+
+    def __getPathById(self, id):
+        self.cur.execute("select * from paths where id = :id", {"id": id})
+        p = self.cur.fetchone()
+
+        from src.model.components.path import Path
+        path = Path(p[1])
+        path.id = p[0]
+        return path
+
+    def __getPlayerById(self, id):
+        self.cur.execute("select * from players where id = :id", {"id": id})
+        p = self.cur.fetchone()
+
+        from src.model.components.player import Player
+        player = Player(None, p[1])
+        player.id = p[0]
+        return player
+
 
     def __closeConnection(self):
         self.con.close()
