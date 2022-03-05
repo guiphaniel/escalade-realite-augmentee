@@ -81,3 +81,8 @@ class AbstractManagerFrame(AbstractFrame, ListListener, ActionListener):
             self.editBt.active = False
             self.removeBt.active = False
             self.selectBt.active = False
+        self.onListValueChanged()
+
+    @abstractmethod
+    def onListValueChanged(self):
+        pass
