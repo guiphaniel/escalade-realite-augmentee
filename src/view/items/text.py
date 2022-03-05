@@ -7,7 +7,7 @@ from src.view.items.item_display_type import ItemDisplayType
 
 
 class Text(Drawable):
-    def __init__(self, parent, x, y, text, textColor=(0, 0, 0), textSize=40,
+    def __init__(self, parent, x, y, text, textColor=(255, 255, 255), textSize=40,
                  textFont="view/fonts/All the Way to the Sun.otf", displayType=ItemDisplayType.TOP_LEFT):
         Drawable.__init__(self, parent, displayType)
 

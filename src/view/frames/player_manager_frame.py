@@ -17,7 +17,7 @@ class PlayerManagerFrame(AbstractManagerFrame, EditTextListener):
 
     def __init__(self, path):
         AbstractManagerFrame.__init__(self)
-        self.add(Text(self, 40, 50, "Selectionnez un grimpeur", textSize=120))
+        self.add(Text(self, 40, 50, "Selectionnez un grimpeur", (0, 0, 0), 120))
         self.list.items = [ListItem(self.list, p) for p in Database().getPlayers()]
         self.editText = None
         self.path = path

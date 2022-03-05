@@ -16,7 +16,7 @@ class PathManagerFrame(AbstractManagerFrame):
 
     def __init__(self):
         AbstractManagerFrame.__init__(self)
-        self.add(Text(self, 40, 50, "Selectionnez un parcours", textSize=120))
+        self.add(Text(self, 40, 50, "Selectionnez un parcours", (0, 0, 0), 120))
         self.list.items = [ListItem(self.list, p) for p in Database().getPathsInWall(None)]
 
     def addT(self):
