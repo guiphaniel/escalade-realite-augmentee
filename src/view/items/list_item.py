@@ -33,7 +33,8 @@ class ListItem(Drawable, MouseListener):
     def onMouseEvent(self, e) -> bool:
         if e.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(*pygame.mouse.get_pos()):
-                self.parent.selectedItem = self
-                return True
+                if self.parent.selectedItem != self:
+                    self.parent.selectedItem = self
+                    return True
 
         return False
