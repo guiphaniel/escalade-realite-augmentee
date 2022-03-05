@@ -35,8 +35,10 @@ class PathManagerFrame(AbstractManagerFrame):
         Database().setPathsInWall(self.paths, None)
 
     def selectT(self):
-        playerManagerFrame = PlayerManagerFrame(PathFrame, PathGame)
-        SwitchFrameController().execute(frame=playerManagerFrame)
+        # check if the path has handles in it. TODO: display warning
+        if self.list.selectedItem.obj.getHandles():
+            playerManagerFrame = PlayerManagerFrame(self.list.selectedItem.obj)
+            SwitchFrameController().execute(frame=playerManagerFrame)
 
     @property
     def paths(self):
