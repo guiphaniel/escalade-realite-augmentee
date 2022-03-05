@@ -15,13 +15,12 @@ from src.view.listeners.edit_text_listener import EditTextListener
 
 class PlayerManagerFrame(AbstractManagerFrame, EditTextListener):
 
-    def __init__(self, nextFrame, nextGame):
+    def __init__(self, path):
         AbstractManagerFrame.__init__(self)
         self.add(Text(self, 40, 50, "Selectionnez un grimpeur", textSize=120))
         self.list.items = [ListItem(self.list, p) for p in Database().getPlayers()]
         self.editText = None
-        self.nextFrame = nextFrame
-        self.nextGame = nextGame
+        self.path = path
 
     @property
     def players(self):
@@ -45,9 +44,9 @@ class PlayerManagerFrame(AbstractManagerFrame, EditTextListener):
         Database().setPlayers(self.players)
 
     def selectT(self):
-        nextFrame = self.nextFrame()
-        SwitchFrameController().execute(frame=nextFrame)
-        StartGameController().execute(game=self.nextGame(nextFrame, self.list.selectedItem.obj, Player(nextFrame)))
+        pathFrame = PathFrame()
+        SwitchFrameController().execute(frame=pathFrame)
+        StartGameController().execute(game=PathGame(pathFrame, self.path, self.list.selectedItem.obj))
 
     def onEditTextResult(self, source):
         if source == self.editText:
