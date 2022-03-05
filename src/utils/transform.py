@@ -44,7 +44,11 @@ class Transform(metaclass=Singleton):
         return minPoint
 
     def startCalibration(self):
-        success, tab = Surface().findCornerPoints()
+        try:
+            success, tab = Surface().findCornerPoints()
+        except:
+            print("Calibration failed")
+            return False
         if not success:
             print("Calibration failed")
             return False
