@@ -12,5 +12,5 @@ class StartCalibrationController(AbstractController):
             SwitchFrameController().execute(frame=src.view.frames.home_frame.HomeFrame())
         else:
             homeFrame = src.view.frames.home_frame.HomeFrame()
-            homeFrame.playButton.active = False
+            homeFrame.startButton.active = False
             SwitchFrameController().execute(frame=homeFrame)

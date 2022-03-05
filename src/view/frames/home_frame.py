@@ -13,20 +13,20 @@ from src.view.listeners.action_listener import ActionListener
 class HomeFrame(AbstractFrame, ActionListener):
     def __init__(self):
         AbstractFrame.__init__(self, bgImage="view/images/background.png")
-        self.calibrationButton = Button(self, 300, 400, text="CALIBRATION")
+        self.calibrationButton = Button(self, 300, 100, text="CALIBRER")
         self.add(self.calibrationButton)
-        self.playButton = Button(self, 300, 700, text="JOUER")
-        self.add(self.playButton)
+        self.startButton = Button(self, 300, 400, text="COMMENCER")
+        self.add(self.startButton)
         self.quitButton = Button(self, 1551, 919, text="QUITTER")
         self.add(self.quitButton)
 
         self.calibrationButton.addActionListener(self)
-        self.playButton.addActionListener(self)
+        self.startButton.addActionListener(self)
         self.quitButton.addActionListener(self)
 
     # TODO: use controllers, having window imbedded
     def actionPerformed(self, source):
-        if source == self.playButton:
+        if source == self.startButton:
             SwitchFrameController().execute(frame=src.view.frames.home_frame.GamesFrame())
         elif source == self.calibrationButton:
             SwitchFrameController().execute(frame=src.view.frames.home_frame.CalibrationFrame())

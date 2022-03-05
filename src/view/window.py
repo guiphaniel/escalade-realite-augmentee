@@ -21,7 +21,7 @@ class Window(metaclass=Singleton):
 
     def run(self):
         homeFrame = HomeFrame()
-        homeFrame.playButton.active = False
+        homeFrame.startButton.active = False
         self.currentFrame = homeFrame
         while self.isVisible:
             self.eventManager.catchEvent()
