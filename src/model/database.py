@@ -336,7 +336,7 @@ class Database(metaclass=Singleton):
 
         players = []
         for p in result:
-            player = src.model.components.player.Player(p[1])
+            player = src.model.components.player.Player(None, p[1])
             player.id = p[0]
             players.append(player)
 

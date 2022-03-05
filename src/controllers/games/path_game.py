@@ -18,7 +18,7 @@ from src.view.items.text import Text
 class PathGame(GameSinglePlayer):
 
     def __init__(self, parent, path, player):
-        GameSinglePlayer.__init__(self, parent)
+        GameSinglePlayer.__init__(self, parent, player)
 
         self.path = path
         self.handles = iter(path.getHandles())

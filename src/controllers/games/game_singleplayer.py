@@ -14,14 +14,15 @@ mp_pose = mp.solutions.pose
 class GameSinglePlayer(Game):
 
     @abstractmethod
-    def __init__(self, parent):
+    def __init__(self, parent, player):
         super().__init__(parent)
         self.transfoResults=None
         self.cap=None
         self.multiMediapipeWidth = None
         self.image = None
         self.continueGame = True
-        self.player = Player(parent)
+        player.parent = parent
+        self.player = player
         self.parent.add(self.player)
         thMediapipe = threading.Thread(target=self.startSingleMediaPipe)
         thMediapipe.start()

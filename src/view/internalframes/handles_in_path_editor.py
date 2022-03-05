@@ -69,9 +69,8 @@ class HandlesInPathEditor(AbstractInternalFrame, ActionListener):
             self.path.setHandles(self.handles)
             Database().setHandlesInPath(self.handles, self.path)
 
-            pathFrame = PathFrame()
-            SwitchFrameController().execute(frame=pathFrame)
-            StartGameController().execute(game=PathGame(pathFrame, self.path, Player(pathFrame)))
+            from src.view.frames.path_manager_frame import PathManagerFrame
+            SwitchFrameController().execute(frame=PathManagerFrame())
 
     def onMouse(self, e) -> bool:
         pos = pygame.mouse.get_pos()

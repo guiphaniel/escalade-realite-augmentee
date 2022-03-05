@@ -7,13 +7,16 @@ from src.model.database import Database
 from src.view.frames.abstract_manager_frame import AbstractManagerFrame
 from src.view.frames.path_creation_frame import PathCreationFrame
 from src.view.frames.path_frame import PathFrame
+from src.view.frames.player_manager_frame import PlayerManagerFrame
 from src.view.items.list_item import ListItem
+from src.view.items.text import Text
 
 
 class PathManagerFrame(AbstractManagerFrame):
 
     def __init__(self):
         AbstractManagerFrame.__init__(self)
+        self.add(Text(self, 40, 50, "Selectionnez un parcours", textSize=120))
         self.list.items = [ListItem(self.list, p) for p in Database().getPathsInWall(None)]
 
     def addT(self):
@@ -32,9 +35,8 @@ class PathManagerFrame(AbstractManagerFrame):
         Database().setPathsInWall(self.paths, None)
 
     def selectT(self):
-        pathFrame = PathFrame()
-        SwitchFrameController().execute(frame=pathFrame)
-        StartGameController().execute(game=PathGame(pathFrame, self.list.selectedItem.obj, Player(pathFrame)))
+        playerManagerFrame = PlayerManagerFrame(PathFrame, PathGame)
+        SwitchFrameController().execute(frame=playerManagerFrame)
 
     @property
     def paths(self):

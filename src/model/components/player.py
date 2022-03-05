@@ -46,4 +46,4 @@ class Player(Drawable):
             pygame.draw.circle(self.win,(0,0,255), l, r)
 
     def toString(self):
-        return self.name
+        return self.pseudo

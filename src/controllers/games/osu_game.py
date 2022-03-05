@@ -3,12 +3,13 @@ import pygame
 
 from src.controllers.games.game_singleplayer import GameSinglePlayer
 from src.controllers.games.utils.target import Target
+from src.model.components.player import Player
 
 
 class OsuGame(GameSinglePlayer):
 
     def __init__(self, parent):
-        super().__init__(parent)
+        super().__init__(parent, Player(parent))
         self.score = 0
         self.initTimeTarget = pygame.time.get_ticks()
         self.waitTimeTarget = random.randint(2000, 5000)
