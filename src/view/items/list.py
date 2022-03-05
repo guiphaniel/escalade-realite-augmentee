@@ -2,10 +2,8 @@ import pygame
 
 from src.view.items.drawable import Drawable
 from src.view.items.list_item import ListItem
-from src.view.listeners.list_listener import ListListener
 
-
-class List(Drawable, ListListener):
+class List(Drawable):
 
     def __init__(self, parent, x, y):
         Drawable.__init__(self, parent)
