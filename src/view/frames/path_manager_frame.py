@@ -49,5 +49,5 @@ class PathManagerFrame(AbstractManagerFrame):
         return [i.obj for i in self.list.items]
 
     def onListValueChanged(self):
-        if not self.list.selectedItem.obj.getHandles():
+        if self.list.selectedItem and not self.list.selectedItem.obj.getHandles():
             self.selectBt.active = False

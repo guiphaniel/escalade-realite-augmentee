@@ -165,7 +165,7 @@ class Database(metaclass=Singleton):
                 if path.id not in pathsIdsInDb:
                     self.__addPathInWall(path, dummyWall)
                 else:
-                    self.__updatePath(path)
+                    self.updatePath(path)
 
         # check if wall exists
         elif wall.id not in self.__getWallsIdsInDb():
@@ -189,7 +189,7 @@ class Database(metaclass=Singleton):
                 if path.id not in pathsIdsInDb:
                     self.__addPathInWall(path, wall)
                 else:
-                    self.__updatePath(path)
+                    self.updatePath(path)
 
     def __addPathInWall(self, path, wall):
         self.cur.execute("insert into paths values(null, :name, :wallId)",
@@ -202,7 +202,7 @@ class Database(metaclass=Singleton):
             self.cur.execute("update paths set name=:name where id=:id",
                         {"name": path.name, "id": path.id})
 
-    def __updatePath(self, path):
+    def updatePath(self, path):
         self.cur.execute("update paths set name=:name where id=:id", {"name": path.name, "id": path.id})
 
     def getPathsInWall(self, wall):

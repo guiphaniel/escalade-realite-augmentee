@@ -11,10 +11,11 @@ from src.model.database import Database
 from src.view.frames.path_frame import PathFrame
 from src.view.internalframes.AbstractInternalFrame import AbstractInternalFrame
 from src.view.items.button import Button
+from src.view.items.edit_text import EditText
 from src.view.listeners.action_listener import ActionListener
 
 
-class HandlesInPathEditor(AbstractInternalFrame, ActionListener):
+class PathEditor(AbstractInternalFrame, ActionListener):
     class EditorMode(Enum):
         ADD = 0
         REMOVE = 1
@@ -32,18 +33,20 @@ class HandlesInPathEditor(AbstractInternalFrame, ActionListener):
         self.lastMousePosY = None
         self.editedHandle = None
 
-        self.addBt = Button(self, 0, 0, 10, 10, text=" + ")
+        self.editText = EditText(self, 0, 0, self.path.name)
+        self.add(self.editText)
+        self.addBt = Button(self, 0, self.editText.rect.h + 20, 10, 10, text=" + ")
         self.addBt.setStyle(borderRadius=100)
         self.add(self.addBt)
-        self.removeBt = Button(self, self.addBt.rect.x + self.addBt.rect.w + 40, 0, text=" - ")
+        self.removeBt = Button(self, self.addBt.rect.x + self.addBt.rect.w + 40, self.editText.rect.h + 20, text=" - ")
         self.removeBt.setStyle(borderRadius=100)
         self.add(self.removeBt)
-        self.editBt = Button(self, self.removeBt.rect.x + self.removeBt.rect.w + 40, 0, text=" / ")
+        self.editBt = Button(self, self.removeBt.rect.x + self.removeBt.rect.w + 40, self.editText.rect.h + 20, text=" / ")
         self.editBt.setStyle(borderRadius=100)
         self.add(self.editBt)
-        self.backBt = Button(self, 0, self.editBt.rect.h + 20, text="RETOUR")
+        self.backBt = Button(self, 0, self.editBt.rect.y + self.editBt.rect.h + 20, text="RETOUR")
         self.add(self.backBt)
-        self.validBt = Button(self, self.backBt.rect.w + 20, self.editBt.rect.h + 20, text="VALIDER")
+        self.validBt = Button(self, self.backBt.rect.w + 20, self.editBt.rect.y + self.editBt.rect.h + 20, text="VALIDER")
         self.__isHandlesEmpty()
         self.add(self.validBt)
 
@@ -68,6 +71,9 @@ class HandlesInPathEditor(AbstractInternalFrame, ActionListener):
         elif source == self.validBt:
             self.path.setHandles(self.handles)
             Database().setHandlesInPath(self.handles, self.path)
+
+            self.path.name = self.editText.text
+            Database().updatePath(self.path)
 
             from src.view.frames.path_manager_frame import PathManagerFrame
             SwitchFrameController().execute(frame=PathManagerFrame())

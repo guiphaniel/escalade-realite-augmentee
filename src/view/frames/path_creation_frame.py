@@ -14,7 +14,7 @@ from src.utils.events.mouse_listener import MouseListener
 from src.view.frames.abstract_frame import AbstractFrame
 from src.view.frames.path_frame import PathFrame
 
-from src.view.internalframes.handles_in_path_editor import HandlesInPathEditor
+from src.view.internalframes.path_editor import PathEditor
 
 
 class PathCreationFrame(AbstractFrame, MouseListener, MotionListener, KeyboardListener):
@@ -23,7 +23,7 @@ class PathCreationFrame(AbstractFrame, MouseListener, MotionListener, KeyboardLi
         AbstractFrame.__init__(self)
         KeyboardListener.__init__(self)
 
-        self.editorFrame = HandlesInPathEditor(path, self, (10, 10))
+        self.editorFrame = PathEditor(path, self, (10, 10))
         self.add(self.editorFrame)
 
     def repaintAll(self):
