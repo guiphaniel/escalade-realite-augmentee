@@ -32,7 +32,6 @@ class PlayerManagerFrame(AbstractManagerFrame, EditTextListener):
         self.list.items.append(ListItem(self.list, player))
 
     def editT(self):
-        Database().setPlayers(self.players)
         pseudo = self.list.selectedItem.obj.pseudo
         self.editText = EditTextInternalFrame(self, (300, 300), pseudo)
         self.editText.addEditTextListener(self)
@@ -56,3 +55,4 @@ class PlayerManagerFrame(AbstractManagerFrame, EditTextListener):
         if source == self.editText:
             self.list.selectedItem.setText(source.text)
             self.list.selectedItem.obj.pseudo = source.text
+            Database().setPlayers(self.players)
