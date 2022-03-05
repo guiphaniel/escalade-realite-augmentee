@@ -1,5 +1,5 @@
 import src
-from src.controllers.games.osu_game import OsuGame
+from src.controllers.games.targets_game import TargetsGame
 from src.controllers.games.path_game import PathGame
 from src.controllers.games.pong_game import PongGame
 from src.controllers.start_game_controller import StartGameController
@@ -41,7 +41,7 @@ class GamesFrame(AbstractFrame, ActionListener):
         elif source == self.targetButton:
             targetFrame = TargetsFrame()
             SwitchFrameController().execute(frame=targetFrame)
-            StartGameController().execute(game=OsuGame(targetFrame))
+            StartGameController().execute(game=TargetsGame(targetFrame))
         elif source == self.pathButton:
             SwitchFrameController().execute(frame=PathManagerFrame())
         elif source == self.returnButton:

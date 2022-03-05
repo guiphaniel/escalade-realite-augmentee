@@ -7,7 +7,7 @@ from src.model.components.player import Player
 from src.view.items.text import Text
 
 
-class OsuGame(GameSinglePlayer):
+class TargetsGame(GameSinglePlayer):
 
     def __init__(self, parent):
         super().__init__(parent, Player(parent))
