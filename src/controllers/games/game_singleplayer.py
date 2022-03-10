@@ -51,19 +51,25 @@ class GameSinglePlayer(Game):
             if not results:
                 continue
 
-            self.transfoResults = Transform().getTransformateLandmarks(results)
+            #self.transfoResults = Transform().getTransformateLandmarks(results)
+            self.transfoResults = results
             if cv2.waitKey(5) & 0xFF == 27:
                 break
         del singlePoseDetector
 
     def setPlayerPosition(self):
         while self.continueGame:
-            if self.transfoResults:
-                landmarks = self.transfoResults.landmark
-                self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.LEFT_WRIST, 3)
-                self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.RIGHT_WRIST, 3)
-                self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.LEFT_ANKLE, 3)
-                self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.RIGHT_ANKLE, 3)
+            landmarks = self.transfoResults.landmark
+            self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.LEFT_WRIST, 3)
+            self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.RIGHT_WRIST, 3)
+            self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.LEFT_ANKLE, 3)
+            self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.RIGHT_ANKLE, 3)
+            #if self.transfoResults:
+                #landmarks = self.transfoResults.landmark
+                #self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.LEFT_WRIST, 3)
+                #self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.RIGHT_WRIST, 3)
+                #self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.LEFT_ANKLE, 3)
+                #self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.RIGHT_ANKLE, 3)
 
     def setPlayerLandmarks(self, landmarks, root, nbLandmarks):
         valid = True
@@ -80,4 +86,8 @@ class GameSinglePlayer(Game):
             moyX /= nbLandmarks
             moyY /= nbLandmarks
 
-            self.player.landmarks[root] = (moyX * 1920, moyY * 1080)
+            tabMoy = [moyX,moyY]
+
+            Transform.getTransformatedPoint(tabMoy)
+
+            self.player.landmarks[root] = (tabMoy[0] * 1920, tabMoy[1] * 1080)

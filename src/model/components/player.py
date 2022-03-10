@@ -27,11 +27,6 @@ class Player(Drawable):
                           mp_pose.PoseLandmark.LEFT_ANKLE: None,
                           mp_pose.PoseLandmark.RIGHT_ANKLE: None}
 
-        self.mutexes = {mp_pose.PoseLandmark.LEFT_WRIST: threading.Lock(),
-                        mp_pose.PoseLandmark.RIGHT_WRIST: threading.Lock(),
-                        mp_pose.PoseLandmark.LEFT_ANKLE: threading.Lock(),
-                        mp_pose.PoseLandmark.RIGHT_ANKLE: threading.Lock()}
-
     def draw(self):
         self.__drawLimb(mp_pose.PoseLandmark.LEFT_WRIST)
         self.__drawLimb(mp_pose.PoseLandmark.RIGHT_WRIST)
