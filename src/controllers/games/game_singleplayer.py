@@ -4,7 +4,6 @@ import mediapipe as mp
 import cv2
 
 from src.controllers.games.game import Game
-from src.model.components.player import Player
 from src.utils.camera import Camera
 from src.utils.detectors import pose_detector
 from src.utils.transform import Transform
@@ -16,7 +15,7 @@ class GameSinglePlayer(Game):
     @abstractmethod
     def __init__(self, parent, player):
         super().__init__(parent)
-        self.transfoResults=None
+        self.results = None
         self.cap=None
         self.multiMediapipeWidth = None
         self.image = None
@@ -47,29 +46,21 @@ class GameSinglePlayer(Game):
                 # If loading a video, use 'break' instead of 'continue'.
                 continue
 
-            results = singlePoseDetector.detectLandmarks(image)
-            if not results:
+            self.results = singlePoseDetector.detectLandmarks(image)
+            if not self.results:
                 continue
-
-            #self.transfoResults = Transform().getTransformateLandmarks(results)
-            self.transfoResults = results
             if cv2.waitKey(5) & 0xFF == 27:
                 break
         del singlePoseDetector
 
     def setPlayerPosition(self):
         while self.continueGame:
-            landmarks = self.transfoResults.landmark
-            self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.LEFT_WRIST, 3)
-            self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.RIGHT_WRIST, 3)
-            self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.LEFT_ANKLE, 3)
-            self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.RIGHT_ANKLE, 3)
-            #if self.transfoResults:
-                #landmarks = self.transfoResults.landmark
-                #self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.LEFT_WRIST, 3)
-                #self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.RIGHT_WRIST, 3)
-                #self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.LEFT_ANKLE, 3)
-                #self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.RIGHT_ANKLE, 3)
+            if self.results:
+                landmarks = self.results.landmark
+                self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.LEFT_WRIST, 3)
+                self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.RIGHT_WRIST, 3)
+                self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.LEFT_ANKLE, 3)
+                self.setPlayerLandmarks(landmarks, mp_pose.PoseLandmark.RIGHT_ANKLE, 3)
 
     def setPlayerLandmarks(self, landmarks, root, nbLandmarks):
         valid = True
@@ -88,6 +79,6 @@ class GameSinglePlayer(Game):
 
             tabMoy = [moyX,moyY]
 
-            Transform.getTransformatedPoint(tabMoy)
+            Transform().getTransformatedPoint(tabMoy)
 
-            self.player.landmarks[root] = (tabMoy[0] * 1920, tabMoy[1] * 1080)
+            self.player.landmarks[root] = (int(tabMoy[0] * 1920), int(tabMoy[1] * 1080))

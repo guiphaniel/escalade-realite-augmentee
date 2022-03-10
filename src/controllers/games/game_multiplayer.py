@@ -28,7 +28,7 @@ class GameMultiPlayer(Game):
         self.player2 = Player(parent)  # right player
         parent.add(self.player2)
 
-        self.transfoResults = {self.player1: None, self.player2: None}
+        self.results = {self.player1: None, self.player2: None}
         self.cap = None
         self.multiMediapipeWidth = None
         self.image = None
@@ -46,16 +46,16 @@ class GameMultiPlayer(Game):
         pass
 
     def startResult(self, player, topLeft, bottomRight):
-        leftPoseDetector = pose_detector.PoseDetector()
+        poseDetector = pose_detector.PoseDetector()
         while self.continueGame:
             if self.image is None:
                 continue
             copy = self.image.copy()
             cv2.rectangle(copy, topLeft, bottomRight, (0, 0, 0), -1)
-            resultleft = leftPoseDetector.detectLandmarks(copy)
-            if resultleft:
-                self.transfoResults[player] = Transform().getTransformateLandmarks(resultleft)
-        del leftPoseDetector
+            results = poseDetector.detectLandmarks(copy)
+            if results:
+                self.results[player] = results
+        del poseDetector
 
     def startMultiMediaPipe(self):
         # For webcam input:
@@ -90,8 +90,8 @@ class GameMultiPlayer(Game):
 
     def setPlayerPosition(self, player):
         while self.continueGame:
-            if self.transfoResults[player]:
-                landmarks = self.transfoResults[player].landmark
+            if self.results[player]:
+                landmarks = self.results[player].landmark
                 self.setPlayerLandmarks(player, landmarks, mp_pose.PoseLandmark.LEFT_WRIST, 3)
                 self.setPlayerLandmarks(player, landmarks, mp_pose.PoseLandmark.RIGHT_WRIST, 3)
                 self.setPlayerLandmarks(player, landmarks, mp_pose.PoseLandmark.LEFT_ANKLE, 3)
@@ -111,5 +111,9 @@ class GameMultiPlayer(Game):
 
             moyX /= nbLandmarks
             moyY /= nbLandmarks
-            
-            player.landmarks[root] = (moyX * 1920, moyY * 1080)
+
+            tabMoy = [moyX, moyY]
+
+            Transform().getTransformatedPoint(tabMoy)
+
+            player.landmarks[root] = (int(tabMoy[0] * 1920), int(tabMoy[1] * 1080))
