@@ -72,6 +72,12 @@ class Transform(metaclass=Singleton):
             point.x = (tmp[0] / tmp[2]) / self.cam.w
             point.y = (tmp[1] / tmp[2]) / self.cam.h
         return tabPoints
+
+    def getTransformatedPoint(self, point):
+        tmp = np.dot(self.projectiveMatrix, [[point[0] * self.cam.w], [point[1] * self.cam.h], [1]])
+        point[0] = (tmp[0] / tmp[2]) / self.cam.w
+        point[1] = (tmp[1] / tmp[2]) / self.cam.h
+        return point
     def getTransformateKeypoints(self, tabKeyPoints):
         a = []
 
