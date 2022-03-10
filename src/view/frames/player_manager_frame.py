@@ -32,7 +32,7 @@ class PlayerManagerFrame(AbstractManagerFrame, EditTextListener):
         self.list.items.append(ListItem(self.list, player))
 
     def editT(self):
-        if not self.editText:
+        if not [e for e in self.items if isinstance(e, EditTextInternalFrame)]:
             pseudo = self.list.selectedItem.obj.pseudo
             self.editText = EditTextInternalFrame(self, (800, 400), pseudo)
             self.editText.addEditTextListener(self)
