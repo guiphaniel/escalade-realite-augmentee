@@ -4,6 +4,7 @@ import pygame
 
 from src.controllers.switch_frame_controller import SwitchFrameController
 from src.model.database import Database
+from src.utils.events.keyboard_listener import KeyboardListener
 from src.utils.events.wheel_listener import WheelListener
 from src.view.frames.abstract_frame import AbstractFrame
 from src.view.items.button import Button
@@ -11,12 +12,13 @@ from src.view.items.text import Text
 from src.view.listeners.action_listener import ActionListener
 
 
-class ScoresFrame(AbstractFrame, ActionListener, WheelListener):
+class ScoresFrame(AbstractFrame, ActionListener, WheelListener, KeyboardListener):
 
     def __init__(self):
         AbstractFrame.__init__(self)
         ActionListener.__init__(self)
         WheelListener.__init__(self)
+        KeyboardListener.__init__(self)
 
         self.padding = 40
         self.minY = 0
@@ -57,8 +59,11 @@ class ScoresFrame(AbstractFrame, ActionListener, WheelListener):
 
     def actionPerformed(self, source):
         if source == self.backBt:
-            from src.view.frames.games_frame import GamesFrame
-            SwitchFrameController().execute(frame=GamesFrame())
+            self.__onBack()
+
+    def __onBack(self):
+        from src.view.frames.games_frame import GamesFrame
+        SwitchFrameController().execute(frame=GamesFrame())
 
     def onWheelEvent(self, e) -> bool:
         if e.button == 4:
@@ -84,3 +89,9 @@ class ScoresFrame(AbstractFrame, ActionListener, WheelListener):
                 if i != self.backBt:
                     i.rect.y -= self.scrollIncrement
 
+    def onKeyboardEvent(self, e) -> bool:
+        if e.type == pygame.KEYDOWN and e.key == pygame.K_ESCAPE:
+            self.__onBack()
+            return True
+
+        return False

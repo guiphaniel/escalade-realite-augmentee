@@ -36,6 +36,8 @@ class EditText(Drawable, KeyboardListener):
         if e.type == pygame.KEYDOWN:
             if e.key == pygame.K_BACKSPACE:
                 self.text = self.text[:-1]
+            elif e.key == pygame.K_RETURN or e.key == pygame.K_KP_ENTER or e.key == pygame.K_ESCAPE:
+                return False
             else:
                 self.text += e.unicode
 

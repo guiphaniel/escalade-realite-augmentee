@@ -1,14 +1,19 @@
+import pygame
+
 from src.utils.events.event_manager import EventManager
+from src.utils.events.keyboard_listener import KeyboardListener
 from src.view.internalframes.AbstractInternalFrame import AbstractInternalFrame
 from src.view.items.button import Button
 from src.view.items.edit_text import EditText
 from src.view.listeners.action_listener import ActionListener
 
 
-class EditTextInternalFrame(AbstractInternalFrame, ActionListener):
+class EditTextInternalFrame(AbstractInternalFrame, ActionListener, KeyboardListener):
 
     def __init__(self, parent, coordinates, text, bgColor = (240, 240, 240), bgImage = None):
-        super().__init__(parent, coordinates, bgColor, bgImage)
+        AbstractInternalFrame.__init__(self, parent, coordinates, bgColor, bgImage)
+        ActionListener.__init__(self)
+        KeyboardListener.__init__(self)
         self.text = text
 
         self.editText = EditText(self, 0, 0, self.text)
@@ -26,19 +31,28 @@ class EditTextInternalFrame(AbstractInternalFrame, ActionListener):
         self.editTextListeners = []
 
     def actionPerformed(self, source):
-        if source == self.backBt or source == self.validBt:
-            EventManager().removeMouseListener(self.backBt)
-            EventManager().removeMouseListener(self.validBt)
-            EventManager().removeMouseListener(self)
-            EventManager().removeMotionListener(self)
-
         if source == self.backBt:
-            self.text = self.editText.initialText
-            self.parent.remove(self)
+            self.__onBack()
         elif source == self.validBt:
-            self.text = self.editText.text
-            self.parent.remove(self)
-            self.notifyAllEditTextListeners()
+            self.__onValid()
+
+    def __clearEventManager(self):
+        EventManager().removeMouseListener(self.backBt)
+        EventManager().removeMouseListener(self.validBt)
+        EventManager().removeMouseListener(self)
+        EventManager().removeMotionListener(self)
+        EventManager().removeKeyboardListener(self)
+
+    def __onBack(self):
+        self.__clearEventManager()
+        self.text = self.editText.initialText
+        self.parent.remove(self)
+
+    def __onValid(self):
+        self.__clearEventManager()
+        self.text = self.editText.text
+        self.parent.remove(self)
+        self.notifyAllEditTextListeners()
 
     def addEditTextListener(self, l):
         self.editTextListeners.append(l)
@@ -49,3 +63,14 @@ class EditTextInternalFrame(AbstractInternalFrame, ActionListener):
     def notifyAllEditTextListeners(self):
         for l in self.editTextListeners:
             l.onEditTextResult(self)
+
+    def onKeyboardEvent(self, e) -> bool:
+        if e.type == pygame.KEYDOWN:
+            if e.key == pygame.K_RETURN or e.key == pygame.K_KP_ENTER:
+                self.__onValid()
+                return True
+            elif e.key == pygame.K_ESCAPE:
+                self.__onBack()
+                return True
+
+        return False

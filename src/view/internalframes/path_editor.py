@@ -8,6 +8,7 @@ from src.controllers.switch_frame_controller import SwitchFrameController
 from src.model.components.handle import Handle
 from src.model.components.player import Player
 from src.model.database import Database
+from src.utils.events.keyboard_listener import KeyboardListener
 from src.view.frames.path_frame import PathFrame
 from src.view.internalframes.AbstractInternalFrame import AbstractInternalFrame
 from src.view.items.button import Button
@@ -15,14 +16,17 @@ from src.view.items.edit_text import EditText
 from src.view.listeners.action_listener import ActionListener
 
 
-class PathEditor(AbstractInternalFrame, ActionListener):
+class PathEditor(AbstractInternalFrame, ActionListener, KeyboardListener):
+
     class EditorMode(Enum):
         ADD = 0
         REMOVE = 1
         EDIT = 2
 
     def __init__(self, path, parent, coordinates, bgColor = (50, 50, 50), bgImage = None):
-        super().__init__(parent, coordinates, bgColor, bgImage)
+        AbstractInternalFrame.__init__(self, parent, coordinates, bgColor, bgImage)
+        ActionListener.__init__(self)
+        KeyboardListener.__init__(self)
         self.path = path
         self.handles = Database().getHandlesInPath(path)
         for h in self.handles:
@@ -69,14 +73,15 @@ class PathEditor(AbstractInternalFrame, ActionListener):
             from src.view.frames.path_manager_frame import PathManagerFrame
             SwitchFrameController().execute(frame=PathManagerFrame())
         elif source == self.validBt:
-            self.path.setHandles(self.handles)
-            Database().setHandlesInPath(self.handles, self.path)
+            self.__onValid()
 
-            self.path.name = self.editText.text
-            Database().updatePath(self.path)
-
-            from src.view.frames.path_manager_frame import PathManagerFrame
-            SwitchFrameController().execute(frame=PathManagerFrame())
+    def __onValid(self):
+        self.path.setHandles(self.handles)
+        Database().setHandlesInPath(self.handles, self.path)
+        self.path.name = self.editText.text
+        Database().updatePath(self.path)
+        from src.view.frames.path_manager_frame import PathManagerFrame
+        SwitchFrameController().execute(frame=PathManagerFrame())
 
     def onMouse(self, e) -> bool:
         pos = pygame.mouse.get_pos()
@@ -124,6 +129,13 @@ class PathEditor(AbstractInternalFrame, ActionListener):
             self.lastMousePosX, self.lastMousePosY = x, y
 
             self.editedHandle.move(newX, newY)
+            return True
+
+        return False
+
+    def onKeyboardEvent(self, e) -> bool:
+        if e.type == pygame.KEYDOWN and (e.key == pygame.K_RETURN or e.key == pygame.K_KP_ENTER):
+            self.__onValid()
             return True
 
         return False
