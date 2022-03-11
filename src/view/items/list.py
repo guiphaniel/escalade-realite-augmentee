@@ -20,17 +20,23 @@ class List(Drawable):
         if len(self.items) <= 0:
             return
 
-        self.shrinkToFit()
-        pygame.draw.rect(self.win, self.bgColor, self.rect)
-
+        # init pos
         firstItem = self.items[0]
         firstItem.rect.y = self.rect.y + self.padding
-        firstItem.draw()
-
+        maxW = firstItem.w
         for index, item in enumerate(self.items[1:]):
             prevItem = self.items[index]  # only use index and not index - 1, as enumerate already makes it start at 0
             item.rect.y = prevItem.rect.y + prevItem.rect.h + self.padding
-            item.draw()
+            if item.w > maxW:
+                maxW = item.w
+        for i in self.items:
+            i.rect.w = maxW
+
+        # draw
+        self.shrinkToFit()
+        pygame.draw.rect(self.win, self.bgColor, self.rect)
+        for i in self.items:
+            i.draw()
 
     @property
     def selectedItem(self):
@@ -45,6 +51,8 @@ class List(Drawable):
 
         self._selectedItem = item
         self.notifyAllListListeners()
+        from src.view.window import Window
+        Window().update()
 
     def shrinkToFit(self):
         maxX = 0

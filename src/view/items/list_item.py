@@ -16,6 +16,8 @@ class ListItem(Drawable, MouseListener):
         self.obj = obj
         self.bgColor = self.primaryColor
         self.padding = 5
+        self.w = 0
+        self.h = 0
         self.rect = pygame.rect.Rect(0, 0, 0, 0)
 
         self.setText(obj.toString())
@@ -24,7 +26,7 @@ class ListItem(Drawable, MouseListener):
                 textFont="view/fonts/All the Way to the Sun.otf"):
         font = pygame.font.SysFont(textFont, textSize)
         self.__textSurface = font.render(text, True, textColor)
-        self.rect.w, self.rect.h = self.__textSurface.get_rect().w + self.padding * 2, self.__textSurface.get_rect().h + self.padding * 2
+        self.w, self.h = self.rect.w, self.rect.h = self.__textSurface.get_rect().w + self.padding * 2, self.__textSurface.get_rect().h + self.padding * 2
 
     def draw(self):
         pygame.draw.rect(self.win, self.bgColor, self.rect)

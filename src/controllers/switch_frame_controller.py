@@ -16,4 +16,4 @@ class SwitchFrameController(AbstractController):
         else:
             Window().currentFrame = Frame()
 
-        Window().currentFrame.repaintAll()
+        Window().update()

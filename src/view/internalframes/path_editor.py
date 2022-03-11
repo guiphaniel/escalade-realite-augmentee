@@ -84,10 +84,12 @@ class PathEditor(AbstractInternalFrame, ActionListener, KeyboardListener):
         pos = pygame.mouse.get_pos()
         if e.type == pygame.MOUSEBUTTONDOWN:
             if self.editorMode == self.EditorMode.ADD:
-                handle = Handle(pos[0] - Handle.radius / 2, pos[1] - Handle.radius / 2)
+                handle = Handle(*pos)
                 self.handles.append(handle)
                 self.parent.add(handle)
                 self.__isHandlesEmpty()
+                from src.view.window import Window
+                Window().update()
                 return True
 
             elif self.editorMode == self.EditorMode.REMOVE:
@@ -96,6 +98,8 @@ class PathEditor(AbstractInternalFrame, ActionListener, KeyboardListener):
                     self.handles.remove(handle)
                     self.parent.remove(handle)
                     self.__isHandlesEmpty()
+                    from src.view.window import Window
+                    Window().update()
                     return True
 
         if self.editorMode == self.EditorMode.EDIT:
@@ -126,6 +130,8 @@ class PathEditor(AbstractInternalFrame, ActionListener, KeyboardListener):
             self.lastMousePosX, self.lastMousePosY = x, y
 
             self.editedHandle.move(newX, newY)
+            from src.view.window import Window
+            Window().update()
             return True
 
         return False

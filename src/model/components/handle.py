@@ -14,7 +14,7 @@ class Handle(Drawable):
         self.color = (255, 255, 255)
 
         Drawable.__init__(self)
-        self.rect = pygame.rect.Rect(x, y, self.radius * 2, self.radius * 2)
+        self.rect = pygame.rect.Rect(x - self.radius, y - self.radius, self.radius * 2, self.radius * 2)
 
     def draw(self):
         self.rect = pygame.draw.circle(self.win, self.color, self.rect.center, self.radius)
