@@ -30,6 +30,9 @@ class PongGame(GameMultiPlayer):
         self.scorePlayer2Text = Text(self.area.w / 4 * 3, 50, str(0), (255, 255, 255), 120)
         self.parent.add(self.scorePlayer2Text)
 
+        thUpdateWindow = threading.Thread(target=self.updateWindow)
+        thUpdateWindow.start()
+
     def execute(self):
         lastFrame = pygame.time.get_ticks()
 

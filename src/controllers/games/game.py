@@ -16,8 +16,6 @@ class Game(AbstractController, KeyboardListener):
         self.parent = parent
         self.win = src.view.window.Window().win
         self.continueGame = True
-        thUpdateWindow = threading.Thread(target=self.updateWindow)
-        thUpdateWindow.start()
 
     def onKeyboardEvent(self, e):
         if e.key == pygame.K_ESCAPE or e.type == pygame.QUIT:

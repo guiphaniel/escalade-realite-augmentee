@@ -1,4 +1,5 @@
 import math
+import threading
 
 import pygame
 
@@ -24,7 +25,7 @@ class PathGame(GameSinglePlayer):
         self.handles = iter(path.getHandles())
         self.handlesSucceeded = []
 
-        self.score = pygame.time.get_ticks()
+        self.score = 0
         self.currentHandle = next(self.handles)
 
         cpt = 1
@@ -37,7 +38,11 @@ class PathGame(GameSinglePlayer):
         self.scoreText = Text(self.area.w / 2, 100, str(0), (255, 255, 255), 120)
         self.parent.add(self.scoreText)
 
+        thUpdateWindow = threading.Thread(target=self.updateWindow)
+        thUpdateWindow.start()
+
     def execute(self):
+        self.score = pygame.time.get_ticks()
         while self.continueGame:
             for id, l in self.player.landmarks.items():
                 radius = self.player.limbsRadius[id]

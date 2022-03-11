@@ -1,6 +1,4 @@
 import threading
-
-import src
 from src.controllers.abstract_controller import AbstractController
 
 
