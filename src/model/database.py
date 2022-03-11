@@ -290,7 +290,7 @@ class Database(metaclass=Singleton):
 
         handles = []
         for h in result:
-            handle = src.model.components.handle.Handle(None, h[1], h[2])
+            handle = src.model.components.handle.Handle(h[1], h[2])
             handle.id = h[0]
             handles.append(handle)
 
@@ -338,7 +338,7 @@ class Database(metaclass=Singleton):
 
         players = []
         for p in result:
-            player = src.model.components.player.Player(None, p[1])
+            player = src.model.components.player.Player(p[1])
             player.id = p[0]
             players.append(player)
 
@@ -386,7 +386,7 @@ class Database(metaclass=Singleton):
         p = self.cur.fetchone()
 
         from src.model.components.player import Player
-        player = Player(None, p[1])
+        player = Player(p[1])
         player.id = p[0]
         return player
 

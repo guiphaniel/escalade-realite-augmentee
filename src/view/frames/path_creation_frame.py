@@ -23,7 +23,7 @@ class PathCreationFrame(AbstractFrame, MouseListener, MotionListener, KeyboardLi
         AbstractFrame.__init__(self)
         KeyboardListener.__init__(self)
 
-        self.editorFrame = PathEditor(path, self, (10, 10))
+        self.editorFrame = PathEditor(path, (10, 10))
         self.add(self.editorFrame)
 
     def repaintAll(self):

@@ -13,8 +13,8 @@ mp_pose = mp.solutions.pose
 class Player(Drawable):
 
     # Initializing
-    def __init__(self, parent, pseudo=None):
-        Drawable.__init__(self, parent)
+    def __init__(self, pseudo=None):
+        Drawable.__init__(self)
         self.id = None
         self.pseudo = pseudo
         self.limbsRadius = {mp_pose.PoseLandmark.LEFT_WRIST: 50,

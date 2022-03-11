@@ -6,8 +6,8 @@ from src.view.items.drawable import Drawable
 
 # TODO: rajouter la gestion d'une bgImage
 class Button(Drawable, MouseListener):
-    def __init__(self, parent, x, y, w=40, h=20, text=None):
-        Drawable.__init__(self, parent)
+    def __init__(self, x, y, w=40, h=20, text=None):
+        Drawable.__init__(self)
         MouseListener.__init__(self)
 
         # init textures
@@ -18,7 +18,9 @@ class Button(Drawable, MouseListener):
         self.borderRadius = 10
 
         # self.rect is equivalent to the outer rect of the button (margin + borders included)
-        self.rect = pygame.rect.Rect(x + parent.rect.x + parent.padding, y + parent.rect.y + parent.padding, w, h)
+        self.x = x
+        self.y = y
+        self.rect = pygame.rect.Rect(0, 0, w, h)
         self.rect.w += self.padding * 2 + self.borderWidth * 2
         self.rect.h += self.padding * 2 + self.borderWidth * 2
 
@@ -98,3 +100,12 @@ class Button(Drawable, MouseListener):
         for l in self.actionListeners:
             l.actionPerformed(self)
 
+    @property
+    def parent(self):
+        return self._parent
+
+    @parent.setter
+    def parent(self, newParent):
+        self._parent = newParent
+
+        self.rect.x, self.rect.y = self.x + newParent.rect.x + newParent.padding, self.y + newParent.rect.y + newParent.padding

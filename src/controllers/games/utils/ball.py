@@ -7,8 +7,8 @@ from src.view.items.drawable import Drawable
 
 
 class Ball(Drawable):
-    def __init__(self, parent):
-        Drawable.__init__(self, parent)
+    def __init__(self):
+        Drawable.__init__(self)
         self.area = self.win.get_rect()
         self.radius = 25
         self.rect = pygame.rect.Rect(self.area.w / 2 - self.radius, self.area.h / 2 - self.radius, self.radius * 2, self.radius * 2)

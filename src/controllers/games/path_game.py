@@ -31,11 +31,11 @@ class PathGame(GameSinglePlayer):
         cpt = 1
         for h in path.getHandles():
             self.parent.add(h)
-            self.parent.add(Text(self.parent, *h.rect.bottomright, str(cpt), (255, 255, 255)))
+            self.parent.add(Text(*h.rect.bottomright, str(cpt), (255, 255, 255)))
             cpt += 1
 
         self.area = self.win.get_rect()
-        self.scoreText = Text(self.parent, self.area.w / 2, 100, str(0), (255, 255, 255), 120)
+        self.scoreText = Text(self.area.w / 2, 100, str(0), (255, 255, 255), 120)
         self.parent.add(self.scoreText)
 
     def execute(self):

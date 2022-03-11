@@ -19,9 +19,9 @@ class TargetsGame(GameSinglePlayer):
         self.waitTimeTarget = random.randint(2000, 5000)
         self.targets = []
         self.targetsDispawned = []
-        self.touchedText = Text(self.parent, self.area.w / 2 - 400, 100, "Touchées : 0", (255, 255, 255), 60)
+        self.touchedText = Text(self.area.w / 2 - 400, 100, "Touchées : 0", (255, 255, 255), 60)
         self.parent.add(self.touchedText)
-        self.missedText = Text(self.parent, self.area.w / 2 + 150, 100, "Manquées : 0", (255, 255, 255), 60)
+        self.missedText = Text(self.area.w / 2 + 150, 100, "Manquées : 0", (255, 255, 255), 60)
         self.parent.add(self.missedText)
 
     def execute(self):

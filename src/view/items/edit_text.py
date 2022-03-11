@@ -7,12 +7,12 @@ from src.view.items.text import Text
 
 class EditText(Drawable, KeyboardListener):
 
-    def __init__(self, parent, x, y, text):
-        Drawable.__init__(self, parent)
+    def __init__(self, x, y, text):
+        Drawable.__init__(self)
         KeyboardListener.__init__(self)
         self.bgColor = (255, 255, 255)
         self.padding = 5
-        self.rect = pygame.rect.Rect(parent.rect.x + parent.padding, parent.rect.y + parent.padding, 0, 0)
+        self.rect = pygame.rect.Rect(0, 0, 0, 0)
 
         self.initialText = text
         self.text = text
@@ -46,3 +46,12 @@ class EditText(Drawable, KeyboardListener):
             return True
 
         return False
+
+    @property
+    def parent(self):
+        return self._parent
+
+    @parent.setter
+    def parent(self, newParent):
+        self._parent = newParent
+        self.rect.x, self.rect.y = newParent.rect.x + newParent.padding, newParent.rect.y + newParent.padding

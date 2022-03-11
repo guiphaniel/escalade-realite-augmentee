@@ -22,8 +22,8 @@ class PlayerManagerFrame(AbstractManagerFrame, EditTextListener, KeyboardListene
         AbstractManagerFrame.__init__(self)
         EditTextListener.__init__(self)
         KeyboardListener.__init__(self)
-        self.add(Text(self, 40, 50, "Selectionnez un grimpeur", (0, 0, 0), 120))
-        self.list.items = [ListItem(self.list, p) for p in Database().getPlayers()]
+        self.add(Text(40, 50, "Selectionnez un grimpeur", (0, 0, 0), 120))
+        self.list.items = [ListItem(p) for p in Database().getPlayers()]
         self.editText = None
         self.path = path
 
@@ -34,12 +34,14 @@ class PlayerManagerFrame(AbstractManagerFrame, EditTextListener, KeyboardListene
     def addT(self):
         player = Player(None)
         Database().setPlayers(self.players + [player])
-        self.list.items.append(ListItem(self.list, player))
+        listItem = ListItem(player)
+        listItem.parent = self.list
+        self.list.items.append(listItem)
 
     def editT(self):
         if not [e for e in self.items if isinstance(e, EditTextInternalFrame)]:
             pseudo = self.list.selectedItem.obj.pseudo
-            self.editText = EditTextInternalFrame(self, (800, 400), pseudo)
+            self.editText = EditTextInternalFrame((800, 400), pseudo)
             self.editText.addEditTextListener(self)
             self.add(self.editText)
 

@@ -7,13 +7,13 @@ from src.view.items.item_display_type import ItemDisplayType
 
 
 class Text(Drawable):
-    def __init__(self, parent, x, y, text, textColor=(255, 255, 255), textSize=40,
+    def __init__(self, x, y, text, textColor=(255, 255, 255), textSize=40,
                  textFont="view/fonts/All the Way to the Sun.otf", displayType=ItemDisplayType.TOP_LEFT):
-        Drawable.__init__(self, parent, displayType)
+        Drawable.__init__(self, displayType)
 
         self.x = x
         self.y = y
-        self.rect = pygame.rect.Rect(x + parent.rect.x + parent.padding, y + parent.rect.y + parent.padding, 0, 0)
+        self.rect = pygame.rect.Rect(0, 0, 0, 0)
 
         self.setText(text, textColor, textSize, textFont)
 
@@ -31,3 +31,12 @@ class Text(Drawable):
 
     def update(self):
         pygame.display.update(self.rect)
+
+    @property
+    def parent(self):
+        return self._parent
+
+    @parent.setter
+    def parent(self, newParent):
+        self._parent = newParent
+        self.rect.x, self.rect.y = self.x + newParent.rect.x + newParent.padding, self.y + newParent.rect.y + newParent.padding

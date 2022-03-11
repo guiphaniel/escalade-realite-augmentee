@@ -26,7 +26,7 @@ class ScoresFrame(AbstractFrame, ActionListener, WheelListener, KeyboardListener
         self.currentY = 0
         self.scrollIncrement = 10
 
-        self.backBt = Button(self, 1551, 919, text="RETOUR")
+        self.backBt = Button(1551, 919, text="RETOUR")
         self.add(self.backBt)
 
         self.backBt.addActionListener(self)
@@ -37,20 +37,20 @@ class ScoresFrame(AbstractFrame, ActionListener, WheelListener, KeyboardListener
         padding = self.padding
         y = 0
         for path in self.scores.keys():
-            pathText = Text(self, 0, y, path.name)
+            pathText = Text(0, y, path.name)
             self.add(pathText)
             y += pathText.rect.h + padding
             for score in self.scores[path]:
                 x = padding * 2
-                playerText = Text(self, x, y, score.player.pseudo)
+                playerText = Text(x, y, score.player.pseudo)
                 self.add(playerText)
                 x += playerText.rect.w + padding
 
-                scoreText = Text(self, x, y, str(score.score))
+                scoreText = Text(x, y, str(score.score))
                 self.add(scoreText)
                 x += scoreText.rect.w + padding
 
-                dateText = Text(self, x, y, score.date)
+                dateText = Text(x, y, score.date)
                 self.add(dateText)
 
                 y += max(playerText.rect.h, scoreText.rect.h, dateText.rect.h) + padding

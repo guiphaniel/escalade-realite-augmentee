@@ -23,34 +23,31 @@ class PathEditor(AbstractInternalFrame, ActionListener, KeyboardListener):
         REMOVE = 1
         EDIT = 2
 
-    def __init__(self, path, parent, coordinates, bgColor = (50, 50, 50), bgImage = None):
-        AbstractInternalFrame.__init__(self, parent, coordinates, bgColor, bgImage)
+    def __init__(self, path, coordinates, bgColor = (50, 50, 50), bgImage = None):
+        AbstractInternalFrame.__init__(self, coordinates, bgColor, bgImage)
         ActionListener.__init__(self)
         KeyboardListener.__init__(self)
         self.path = path
         self.handles = Database().getHandlesInPath(path)
-        for h in self.handles:
-            h.parent = self.parent
-            self.parent.add(h)
         self.editorMode = self.EditorMode.ADD
         self.lastMousePosX = None
         self.lastMousePosY = None
         self.editedHandle = None
 
-        self.editText = EditText(self, 0, 0, self.path.name)
+        self.editText = EditText(0, 0, self.path.name)
         self.add(self.editText)
-        self.addBt = Button(self, 0, self.editText.rect.h + 20, 10, 10, text=" + ")
+        self.addBt = Button(0, self.editText.rect.h + 20, 10, 10, text=" + ")
         self.addBt.setStyle(borderRadius=100)
         self.add(self.addBt)
-        self.removeBt = Button(self, self.addBt.rect.x + self.addBt.rect.w + 40, self.editText.rect.h + 20, text=" - ")
+        self.removeBt = Button(self.addBt.rect.x + self.addBt.rect.w + 40, self.editText.rect.h + 20, text=" - ")
         self.removeBt.setStyle(borderRadius=100)
         self.add(self.removeBt)
-        self.editBt = Button(self, self.removeBt.rect.x + self.removeBt.rect.w + 40, self.editText.rect.h + 20, text=" / ")
+        self.editBt = Button(self.removeBt.rect.x + self.removeBt.rect.w + 40, self.editText.rect.h + 20, text=" / ")
         self.editBt.setStyle(borderRadius=100)
         self.add(self.editBt)
-        self.backBt = Button(self, 0, self.editBt.rect.y + self.editBt.rect.h + 20, text="RETOUR")
+        self.backBt = Button(0, self.editBt.rect.y + self.editBt.rect.h + 20, text="RETOUR")
         self.add(self.backBt)
-        self.validBt = Button(self, self.backBt.rect.w + 20, self.editBt.rect.y + self.editBt.rect.h + 20, text="VALIDER")
+        self.validBt = Button(self.backBt.rect.w + 20, self.editBt.rect.y + self.editBt.rect.h + 20, text="VALIDER")
         self.__isHandlesEmpty()
         self.add(self.validBt)
 
@@ -87,7 +84,7 @@ class PathEditor(AbstractInternalFrame, ActionListener, KeyboardListener):
         pos = pygame.mouse.get_pos()
         if e.type == pygame.MOUSEBUTTONDOWN:
             if self.editorMode == self.EditorMode.ADD:
-                handle = Handle(self.parent, pos[0] - Handle.radius / 2, pos[1] - Handle.radius / 2)
+                handle = Handle(pos[0] - Handle.radius / 2, pos[1] - Handle.radius / 2)
                 self.handles.append(handle)
                 self.parent.add(handle)
                 self.__isHandlesEmpty()
@@ -139,3 +136,14 @@ class PathEditor(AbstractInternalFrame, ActionListener, KeyboardListener):
             return True
 
         return False
+
+    @property
+    def parent(self):
+        return self._parent
+
+    @parent.setter
+    def parent(self, newParent):
+        self._parent = newParent
+        for h in self.handles:
+            h.parent = self.parent
+            self.parent.add(h)

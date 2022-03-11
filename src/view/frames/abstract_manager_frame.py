@@ -14,20 +14,20 @@ class AbstractManagerFrame(AbstractFrame, ListListener, ActionListener):
         ListListener.__init__(self)
         ActionListener.__init__(self)
 
-        self.list = List(self, 200, 200)
+        self.list = List(200, 200)
         self.add(self.list)
-        self.addBt = Button(self, 600, 200, text="Ajouter")
+        self.addBt = Button(600, 200, text="Ajouter")
         self.add(self.addBt)
-        self.editBt = Button(self, 600, 400, text="Modifier")
+        self.editBt = Button(600, 400, text="Modifier")
         self.editBt.active = False
         self.add(self.editBt)
-        self.removeBt = Button(self, 600, 600, text="Supprimer")
+        self.removeBt = Button(600, 600, text="Supprimer")
         self.removeBt.active = False
         self.add(self.removeBt)
-        self.selectBt = Button(self, 600, 800, text="Selectionner")
+        self.selectBt = Button(600, 800, text="Selectionner")
         self.selectBt.active = False
         self.add(self.selectBt)
-        self.backBt = Button(self, 1551, 919, text="RETOUR")
+        self.backBt = Button(1551, 919, text="RETOUR")
         self.add(self.backBt)
 
         self.addBt.addActionListener(self)

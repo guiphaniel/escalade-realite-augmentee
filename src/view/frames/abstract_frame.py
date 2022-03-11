@@ -18,12 +18,16 @@ class AbstractFrame:
         self.items = []
 
     def add(self, item):
+        item.parent = self
         self.items.append(item)
 
     def remove(self, item):
+        item.parent = None
         self.items.remove(item)
 
     def removeAll(self):
+        for i in self.items:
+            i.parent = None
         self.items.clear()
 
     def repaint(self, item):

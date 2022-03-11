@@ -23,11 +23,11 @@ class PongGame(GameMultiPlayer):
 
         self.ball = Ball()
         self.parent.add(self.ball)
-        self.net = Rectangle(self.parent, self.area.centerx - 1, 0, 3, self.area.height)
+        self.net = Rectangle(self.area.centerx - 1, 0, 3, self.area.height)
         self.parent.add(self.net)
-        self.scorePlayer1Text = Text(self.parent, self.area.w / 4, 50, str(0), (255, 255, 255), 120)
+        self.scorePlayer1Text = Text(self.area.w / 4, 50, str(0), (255, 255, 255), 120)
         self.parent.add(self.scorePlayer1Text)
-        self.scorePlayer2Text = Text(self.parent, self.area.w / 4 * 3, 50, str(0), (255, 255, 255), 120)
+        self.scorePlayer2Text = Text(self.area.w / 4 * 3, 50, str(0), (255, 255, 255), 120)
         self.parent.add(self.scorePlayer2Text)
 
     def execute(self):

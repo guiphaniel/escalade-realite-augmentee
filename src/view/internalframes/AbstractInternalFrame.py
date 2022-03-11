@@ -8,8 +8,8 @@ from src.view.items.drawable import Drawable
 
 
 class AbstractInternalFrame(Drawable, MouseListener, MotionListener):
-    def __init__(self, parent, coordinates, bgColor = (50, 50, 50), bgImage = None):
-        Drawable.__init__(self, parent)
+    def __init__(self, coordinates, bgColor = (50, 50, 50), bgImage = None):
+        Drawable.__init__(self)
         MouseListener.__init__(self)
         MotionListener.__init__(self)
 
@@ -31,9 +31,11 @@ class AbstractInternalFrame(Drawable, MouseListener, MotionListener):
         self.items = []
 
     def add(self, item):
+        item.parent = self
         self.items.append(item)
 
     def remove(self, item):
+        item.parent = None
         self.items.remove(item)
 
     def removeAll(self):

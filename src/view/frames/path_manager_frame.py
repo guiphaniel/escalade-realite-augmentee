@@ -20,13 +20,16 @@ class PathManagerFrame(AbstractManagerFrame, KeyboardListener):
     def __init__(self):
         AbstractManagerFrame.__init__(self)
         KeyboardListener.__init__(self)
-        self.add(Text(self, 40, 50, "Selectionnez un parcours", (0, 0, 0), 120))
-        self.list.items = [ListItem(self.list, p) for p in Database().getPathsInWall(None)]
+        self.add(Text(40, 50, "Selectionnez un parcours", (0, 0, 0), 120))
+        self.list.items = [ListItem(p) for p in Database().getPathsInWall(None)]
 
     def addT(self):
         path = Path()
         Database().setPathsInWall(self.paths + [path], None)
-        self.list.items.append(ListItem(self.list, path))
+        listItem = ListItem(path)
+        listItem.parent = self.list
+        self.list.items.append(listItem)
+
 
     def editT(self):
         Database().setPathsInWall(self.paths, None)

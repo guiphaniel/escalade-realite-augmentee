@@ -3,12 +3,13 @@ import pygame
 from src.view.items.drawable import Drawable
 from src.view.items.list_item import ListItem
 
+
 class List(Drawable):
 
-    def __init__(self, parent, x, y):
-        Drawable.__init__(self, parent)
+    def __init__(self, x, y):
+        Drawable.__init__(self)
         self._selectedItem = None
-        self.items = []
+        self._items = []
         self.bgColor = (200, 200, 200)
         self.padding = 5
         self.rect = pygame.rect.Rect(x, y, 0, 0)
@@ -27,7 +28,7 @@ class List(Drawable):
         firstItem.draw()
 
         for index, item in enumerate(self.items[1:]):
-            prevItem = self.items[index] # only use index and not index - 1, as enumerate already makes it start at 0
+            prevItem = self.items[index]  # only use index and not index - 1, as enumerate already makes it start at 0
             item.rect.y = prevItem.rect.y + prevItem.rect.h + self.padding
             item.draw()
 
@@ -41,7 +42,6 @@ class List(Drawable):
             item.bgColor = ListItem.secondaryColor
             if self._selectedItem:
                 self._selectedItem.bgColor = ListItem.primaryColor
-
 
         self._selectedItem = item
         self.notifyAllListListeners()
@@ -70,3 +70,13 @@ class List(Drawable):
     def notifyAllListListeners(self):
         for l in self.listListeners:
             l.valueChanged(self)
+
+    @property
+    def items(self):
+        return self._items
+
+    @items.setter
+    def items(self, newItems):
+        self._items = newItems
+        for i in newItems:
+            i.parent = self

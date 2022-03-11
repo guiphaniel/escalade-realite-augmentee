@@ -9,14 +9,14 @@ class ListItem(Drawable, MouseListener):
     primaryColor = (255, 255, 255)
     secondaryColor = (240, 240, 240)
 
-    def __init__(self, parent, obj):
-        Drawable.__init__(self, parent)
+    def __init__(self, obj):
+        Drawable.__init__(self)
         MouseListener.__init__(self)
 
         self.obj = obj
         self.bgColor = self.primaryColor
         self.padding = 5
-        self.rect = pygame.rect.Rect(parent.rect.x + parent.padding, parent.rect.y + parent.padding, 0, 0)
+        self.rect = pygame.rect.Rect(0, 0, 0, 0)
 
         self.setText(obj.toString())
 
@@ -38,3 +38,12 @@ class ListItem(Drawable, MouseListener):
                     return True
 
         return False
+
+    @property
+    def parent(self):
+        return self._parent
+
+    @parent.setter
+    def parent(self, newParent):
+        self._parent = newParent
+        self.rect.x, self.rect.y = newParent.rect.x + newParent.padding, newParent.rect.y + newParent.padding
