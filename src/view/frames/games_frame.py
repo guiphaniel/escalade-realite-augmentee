@@ -44,24 +44,22 @@ class GamesFrame(AbstractFrame, ActionListener, KeyboardListener):
     # TODO: use controllers, having window imbedded
     def actionPerformed(self, source):
         if source == self.pongButton:
-            pongFrame = PongFrame()
-            SwitchFrameController().execute(frame=pongFrame)
-            StartGameController().execute(game=PongGame(pongFrame))
+            SwitchFrameController().execute(frame=PongFrame)
+            StartGameController().execute(game=PongGame())
         elif source == self.targetButton:
-            targetFrame = TargetsFrame()
-            SwitchFrameController().execute(frame=targetFrame)
-            StartGameController().execute(game=TargetsGame(targetFrame))
+            SwitchFrameController().execute(frame=TargetsFrame)
+            StartGameController().execute(game=TargetsGame())
         elif source == self.pathButton:
-            SwitchFrameController().execute(frame=PathManagerFrame())
+            SwitchFrameController().execute(frame=PathManagerFrame)
         elif source == self.returnButton:
             self.__onBack()
         elif source == self.scoresButton:
             from src.view.frames.scores_frame import ScoresFrame
-            SwitchFrameController().execute(frame=ScoresFrame())
+            SwitchFrameController().execute(frame=ScoresFrame)
 
     def __onBack(self):
         from src.view.frames.home_frame import HomeFrame
-        SwitchFrameController().execute(frame=HomeFrame())
+        SwitchFrameController().execute(frame=HomeFrame)
 
     def onKeyboardEvent(self, e) -> bool:
         if e.type == pygame.KEYDOWN and e.key == pygame.K_ESCAPE:

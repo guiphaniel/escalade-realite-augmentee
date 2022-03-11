@@ -66,7 +66,7 @@ class GameMultiPlayer(Game):
         except:
             #TODO: afficher un popup demandant de recalibrer
             self.continueGame=False
-            SwitchFrameController().execute(frame=src.view.frames.games_frame.GamesFrame())
+            SwitchFrameController().execute(frame=src.view.frames.games_frame.GamesFrame)
             return
 
         self.multiMediapipeWidth = int((tmp[0] // tmp[2])[0])

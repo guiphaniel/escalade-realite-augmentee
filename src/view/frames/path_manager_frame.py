@@ -30,8 +30,7 @@ class PathManagerFrame(AbstractManagerFrame, KeyboardListener):
 
     def editT(self):
         Database().setPathsInWall(self.paths, None)
-        pathCreationFrame = PathCreationFrame(self.list.selectedItem.obj)
-        SwitchFrameController().execute(frame=pathCreationFrame)
+        SwitchFrameController().execute(frame=PathCreationFrame, frameArgs={"path": self.list.selectedItem.obj})
 
     def removeT(self):
         self.list.items.remove(self.list.selectedItem)
@@ -41,15 +40,14 @@ class PathManagerFrame(AbstractManagerFrame, KeyboardListener):
     def selectT(self):
         # check if the path has handles in it. TODO: display warning
         if self.list.selectedItem.obj.getHandles():
-            playerManagerFrame = PlayerManagerFrame(self.list.selectedItem.obj)
-            SwitchFrameController().execute(frame=playerManagerFrame)
+            SwitchFrameController().execute(frame=PlayerManagerFrame, frameArgs={"path": self.list.selectedItem.obj})
 
     def onBackBt(self):
         self.__onBack()
 
     def __onBack(self):
         from src.view.frames.games_frame import GamesFrame
-        SwitchFrameController().execute(frame=GamesFrame())
+        SwitchFrameController().execute(frame=GamesFrame)
 
     @property
     def paths(self):

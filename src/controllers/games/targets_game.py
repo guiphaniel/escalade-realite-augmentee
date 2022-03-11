@@ -9,8 +9,9 @@ from src.view.items.text import Text
 
 class TargetsGame(GameSinglePlayer):
 
-    def __init__(self, parent):
-        super().__init__(parent, Player(parent))
+    def __init__(self):
+        from src.view.window import Window
+        super().__init__(Window().currentFrame, Player())
         self.area = self.win.get_rect()
         self.touched = 0
         self.missed = 0
@@ -18,10 +19,10 @@ class TargetsGame(GameSinglePlayer):
         self.waitTimeTarget = random.randint(2000, 5000)
         self.targets = []
         self.targetsDispawned = []
-        self.touchedText = Text(parent, self.area.w / 2 - 400, 100, "Touchées : 0", (255, 255, 255), 60)
-        parent.add(self.touchedText)
-        self.missedText = Text(parent, self.area.w / 2 + 150, 100, "Manquées : 0", (255, 255, 255), 60)
-        parent.add(self.missedText)
+        self.touchedText = Text(self.parent, self.area.w / 2 - 400, 100, "Touchées : 0", (255, 255, 255), 60)
+        self.parent.add(self.touchedText)
+        self.missedText = Text(self.parent, self.area.w / 2 + 150, 100, "Manquées : 0", (255, 255, 255), 60)
+        self.parent.add(self.missedText)
 
     def execute(self):
         while self.continueGame:

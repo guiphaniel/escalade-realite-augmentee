@@ -44,7 +44,7 @@ class PathCreationFrame(AbstractFrame, MouseListener, MotionListener, KeyboardLi
     def onKeyboardEvent(self, e):
         if e.key == pygame.K_ESCAPE or e.type == pygame.QUIT:
             from src.view.frames.path_manager_frame import PathManagerFrame
-            SwitchFrameController().execute(frame=PathManagerFrame())
+            SwitchFrameController().execute(frame=PathManagerFrame)
             return True
 
         return False

@@ -19,7 +19,7 @@ class Game(AbstractController, KeyboardListener):
     def onKeyboardEvent(self, e):
         if e.key == pygame.K_ESCAPE or e.type == pygame.QUIT:
             self.continueGame = False
-            SwitchFrameController().execute(frame=src.view.frames.games_frame.GamesFrame())
+            SwitchFrameController().execute(frame=src.view.frames.games_frame.GamesFrame)
             return True
 
         return False

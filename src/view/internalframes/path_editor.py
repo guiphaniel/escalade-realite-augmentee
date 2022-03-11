@@ -71,7 +71,7 @@ class PathEditor(AbstractInternalFrame, ActionListener, KeyboardListener):
             self.editorMode = self.EditorMode.EDIT
         elif source == self.backBt:
             from src.view.frames.path_manager_frame import PathManagerFrame
-            SwitchFrameController().execute(frame=PathManagerFrame())
+            SwitchFrameController().execute(frame=PathManagerFrame)
         elif source == self.validBt:
             self.__onValid()
 
@@ -81,7 +81,7 @@ class PathEditor(AbstractInternalFrame, ActionListener, KeyboardListener):
         self.path.name = self.editText.text
         Database().updatePath(self.path)
         from src.view.frames.path_manager_frame import PathManagerFrame
-        SwitchFrameController().execute(frame=PathManagerFrame())
+        SwitchFrameController().execute(frame=PathManagerFrame)
 
     def onMouse(self, e) -> bool:
         pos = pygame.mouse.get_pos()

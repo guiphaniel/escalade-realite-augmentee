@@ -3,8 +3,6 @@ import random
 import threading
 
 import pygame
-from pygame.examples.playmus import Window
-
 from src.controllers.games.game import Game
 from src.controllers.games.utils.ball import Ball
 
@@ -16,20 +14,21 @@ from src.view.items.text import Text
 
 class PongGame(GameMultiPlayer):
 
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self):
+        from src.view.window import Window
+        super().__init__(Window().currentFrame)
         self.scorePlayer1 = 0
         self.scorePlayer2 = 0
         self.area = self.win.get_rect()
 
-        self.ball = Ball(parent)
-        parent.add(self.ball)
-        self.net = Rectangle(parent, self.area.centerx - 1, 0, 3, self.area.height)
-        parent.add(self.net)
-        self.scorePlayer1Text = Text(parent, self.area.w / 4, 50, str(0), (255, 255, 255), 120)
-        parent.add(self.scorePlayer1Text)
-        self.scorePlayer2Text = Text(parent, self.area.w / 4 * 3, 50, str(0), (255, 255, 255), 120)
-        parent.add(self.scorePlayer2Text)
+        self.ball = Ball()
+        self.parent.add(self.ball)
+        self.net = Rectangle(self.parent, self.area.centerx - 1, 0, 3, self.area.height)
+        self.parent.add(self.net)
+        self.scorePlayer1Text = Text(self.parent, self.area.w / 4, 50, str(0), (255, 255, 255), 120)
+        self.parent.add(self.scorePlayer1Text)
+        self.scorePlayer2Text = Text(self.parent, self.area.w / 4 * 3, 50, str(0), (255, 255, 255), 120)
+        self.parent.add(self.scorePlayer2Text)
 
     def execute(self):
         lastFrame = pygame.time.get_ticks()

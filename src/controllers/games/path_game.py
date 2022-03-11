@@ -17,8 +17,9 @@ from src.view.items.text import Text
 
 class PathGame(GameSinglePlayer):
 
-    def __init__(self, parent, path, player):
-        GameSinglePlayer.__init__(self, parent, player)
+    def __init__(self, path, player):
+        from src.view.window import Window
+        GameSinglePlayer.__init__(self, Window().currentFrame, player)
 
         self.path = path
         self.handles = iter(path.getHandles())
@@ -29,13 +30,13 @@ class PathGame(GameSinglePlayer):
 
         cpt = 1
         for h in path.getHandles():
-            parent.add(h)
-            parent.add(Text(parent, *h.rect.bottomright, str(cpt), (255, 255, 255)))
+            self.parent.add(h)
+            self.parent.add(Text(self.parent, *h.rect.bottomright, str(cpt), (255, 255, 255)))
             cpt += 1
 
         self.area = self.win.get_rect()
-        self.scoreText = Text(parent, self.area.w / 2, 100, str(0), (255, 255, 255), 120)
-        parent.add(self.scoreText)
+        self.scoreText = Text(self.parent, self.area.w / 2, 100, str(0), (255, 255, 255), 120)
+        self.parent.add(self.scoreText)
 
     def execute(self):
         while self.continueGame:
@@ -53,7 +54,7 @@ class PathGame(GameSinglePlayer):
                     except:  # no more handles
                         self.continueGame = False
                         Database().saveScore(self.path, self.player, (pygame.time.get_ticks() - self.score) / 1000)
-                        SwitchFrameController().execute(frame=src.view.frames.games_frame.GamesFrame())
+                        SwitchFrameController().execute(frame=src.view.frames.games_frame.GamesFrame)
 
                     break
 

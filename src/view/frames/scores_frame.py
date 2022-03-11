@@ -63,7 +63,7 @@ class ScoresFrame(AbstractFrame, ActionListener, WheelListener, KeyboardListener
 
     def __onBack(self):
         from src.view.frames.games_frame import GamesFrame
-        SwitchFrameController().execute(frame=GamesFrame())
+        SwitchFrameController().execute(frame=GamesFrame)
 
     def onWheelEvent(self, e) -> bool:
         if e.button == 4:

@@ -30,9 +30,9 @@ class HomeFrame(AbstractFrame, ActionListener, KeyboardListener):
     # TODO: use controllers, having window imbedded
     def actionPerformed(self, source):
         if source == self.startButton:
-            SwitchFrameController().execute(frame=src.view.frames.home_frame.GamesFrame())
+            SwitchFrameController().execute(frame=src.view.frames.home_frame.GamesFrame)
         elif source == self.calibrationButton:
-            SwitchFrameController().execute(frame=src.view.frames.home_frame.CalibrationFrame())
+            SwitchFrameController().execute(frame=src.view.frames.home_frame.CalibrationFrame)
             StartCalibrationController().execute()
         elif source == self.quitButton:
             self.__onQuit()

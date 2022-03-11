@@ -49,16 +49,15 @@ class PlayerManagerFrame(AbstractManagerFrame, EditTextListener, KeyboardListene
         Database().setPlayers(self.players)
 
     def selectT(self):
-        pathFrame = PathFrame()
-        SwitchFrameController().execute(frame=pathFrame)
-        StartGameController().execute(game=PathGame(pathFrame, self.path, self.list.selectedItem.obj))
+        SwitchFrameController().execute(frame=PathFrame)
+        StartGameController().execute(game=PathGame(self.path, self.list.selectedItem.obj))
 
     def onBackBt(self):
         self.__onBack()
 
     def __onBack(self):
         from src.view.frames.path_manager_frame import PathManagerFrame
-        SwitchFrameController().execute(frame=PathManagerFrame())
+        SwitchFrameController().execute(frame=PathManagerFrame)
 
     def onEditTextResult(self, source):
         if source == self.editText:
