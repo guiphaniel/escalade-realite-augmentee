@@ -1,3 +1,5 @@
+from abc import abstractmethod
+
 import pygame.draw
 
 import src
@@ -21,3 +23,7 @@ class Game(AbstractController, KeyboardListener):
             return True
 
         return False
+
+    @abstractmethod
+    def execute(self):
+        pass
