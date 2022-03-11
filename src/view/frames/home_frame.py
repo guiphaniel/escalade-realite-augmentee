@@ -27,7 +27,6 @@ class HomeFrame(AbstractFrame, ActionListener, KeyboardListener):
         self.startButton.addActionListener(self)
         self.quitButton.addActionListener(self)
 
-    # TODO: use controllers, having window imbedded
     def actionPerformed(self, source):
         if source == self.startButton:
             SwitchFrameController().execute(frame=src.view.frames.home_frame.GamesFrame)

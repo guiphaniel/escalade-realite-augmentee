@@ -1,4 +1,3 @@
-# TODO: generer (et retourner) une matrice de transformation a partir des 4 coordonnees passees en parametres
 import cv2
 import numpy as np
 import math

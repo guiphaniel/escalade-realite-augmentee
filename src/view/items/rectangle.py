@@ -4,7 +4,6 @@ from src.utils.events.mouse_listener import MouseListener
 from src.view.items.drawable import Drawable
 
 
-# TODO: rajouter la gestion d'une bgImage
 class Rectangle(Drawable):
     def __init__(self, x, y, w=40, h=20, bgColor = (255, 255, 255)):
         Drawable.__init__(self)

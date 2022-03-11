@@ -1,7 +1,4 @@
-#TODO: gestion des joueurs + historique des parties
-
 # assumes that other devs won't put a handle in a path that is not in the same wall than path is
-# /!\ est un singleton
 import logging
 import sqlite3
 from collections import namedtuple, defaultdict

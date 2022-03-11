@@ -2,7 +2,6 @@ import pygame
 
 from src.view.items.drawable import Drawable
 
-# TODO: rajouter la gestion d'une bgImage
 from src.view.items.item_display_type import ItemDisplayType
 
 

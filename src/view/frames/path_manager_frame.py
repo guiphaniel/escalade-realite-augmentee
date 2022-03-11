@@ -30,7 +30,6 @@ class PathManagerFrame(AbstractManagerFrame, KeyboardListener):
         listItem.parent = self.list
         self.list.items.append(listItem)
 
-
     def editT(self):
         Database().setPathsInWall(self.paths, None)
         SwitchFrameController().execute(frame=PathCreationFrame, frameArgs={"path": self.list.selectedItem.obj})
@@ -41,7 +40,6 @@ class PathManagerFrame(AbstractManagerFrame, KeyboardListener):
         Database().setPathsInWall(self.paths, None)
 
     def selectT(self):
-        # check if the path has handles in it. TODO: display warning
         if self.list.selectedItem.obj.getHandles():
             SwitchFrameController().execute(frame=PlayerManagerFrame, frameArgs={"path": self.list.selectedItem.obj})
 

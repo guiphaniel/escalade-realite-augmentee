@@ -41,7 +41,6 @@ class GamesFrame(AbstractFrame, ActionListener, KeyboardListener):
         self.scoresButton.addActionListener(self)
         self.returnButton.addActionListener(self)
 
-    # TODO: use controllers, having window imbedded
     def actionPerformed(self, source):
         if source == self.pongButton:
             SwitchFrameController().execute(frame=PongFrame)

@@ -64,7 +64,6 @@ class GameMultiPlayer(Game):
         try:
             tmp = np.dot(np.linalg.inv(Transform().projectiveMatrix), [[1920 // 2], [0], [1]])
         except:
-            #TODO: afficher un popup demandant de recalibrer
             self.continueGame=False
             SwitchFrameController().execute(frame=src.view.frames.games_frame.GamesFrame)
             return
