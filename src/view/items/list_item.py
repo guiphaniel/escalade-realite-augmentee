@@ -48,4 +48,5 @@ class ListItem(Drawable, MouseListener):
     @parent.setter
     def parent(self, newParent):
         self._parent = newParent
-        self.rect.x, self.rect.y = newParent.rect.x + newParent.padding, newParent.rect.y + newParent.padding
+        if newParent:
+            self.rect.x, self.rect.y = newParent.rect.x + newParent.padding, newParent.rect.y + newParent.padding

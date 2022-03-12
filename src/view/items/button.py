@@ -107,5 +107,5 @@ class Button(Drawable, MouseListener):
     @parent.setter
     def parent(self, newParent):
         self._parent = newParent
-
-        self.rect.x, self.rect.y = self.x + newParent.rect.x + newParent.padding, self.y + newParent.rect.y + newParent.padding
+        if newParent:
+            self.rect.x, self.rect.y = self.x + newParent.rect.x + newParent.padding, self.y + newParent.rect.y + newParent.padding

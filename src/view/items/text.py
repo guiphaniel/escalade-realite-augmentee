@@ -16,7 +16,7 @@ class Text(Drawable):
 
         self.setText(text, textColor, textSize, textFont)
 
-    def setText(self, text, textColor=(0, 0, 0), textSize=40,
+    def setText(self, text, textColor=(255, 255, 255), textSize=40,
                 textFont="view/fonts/All the Way to the Sun.otf"):
         font = pygame.font.SysFont(textFont, textSize)
         self.__textSurface = font.render(text, True, textColor)
@@ -38,4 +38,5 @@ class Text(Drawable):
     @parent.setter
     def parent(self, newParent):
         self._parent = newParent
-        self.rect.x, self.rect.y = self.x + newParent.rect.x + newParent.padding, self.y + newParent.rect.y + newParent.padding
+        if newParent:
+            self.rect.x, self.rect.y = self.x + newParent.rect.x + newParent.padding, self.y + newParent.rect.y + newParent.padding
