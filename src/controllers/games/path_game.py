@@ -1,5 +1,6 @@
 import math
 import threading
+import time
 
 import pygame
 
@@ -11,6 +12,7 @@ from src.model.components.path import Path
 from src.model.database import Database
 from src.utils.events.event_manager import EventManager
 from src.utils.events.mouse_listener import MouseListener
+from src.view.items.item_display_type import ItemDisplayType
 
 from src.view.items.text import Text
 
@@ -42,6 +44,15 @@ class PathGame(GameSinglePlayer):
         thUpdateWindow.start()
 
     def execute(self):
+        initTimer = 3
+        timer = Text(self.area.w / 2, self.area.h / 2, str(initTimer), textSize=200, displayType=ItemDisplayType.CENTER)
+        self.parent.add(timer)
+        while initTimer > 0:
+            timer.setText(str(initTimer), textSize=200)
+            time.sleep(1)
+            initTimer -= 1
+        self.parent.remove(timer)
+
         self.score = pygame.time.get_ticks()
         while self.continueGame:
             for id, l in self.player.landmarks.items():
