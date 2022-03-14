@@ -30,7 +30,7 @@ class PathManagerFrame(AbstractManagerFrame, KeyboardListener):
         listItem.parent = self.list
         self.list.items.append(listItem)
         from src.view.window import Window
-        Window().update()
+        # Window().update()
 
     def editT(self):
         Database().setPathsInWall(self.paths, None)
@@ -41,7 +41,7 @@ class PathManagerFrame(AbstractManagerFrame, KeyboardListener):
         self.list.selectedItem = None
         Database().setPathsInWall(self.paths, None)
         from src.view.window import Window
-        Window().update()
+        # Window().update()
 
     def selectT(self):
         if self.list.selectedItem.obj.getHandles():

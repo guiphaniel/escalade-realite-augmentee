@@ -14,4 +14,4 @@ class StartCalibrationController(AbstractController):
             SwitchFrameController().execute(frame=src.view.frames.home_frame.HomeFrame)
             from src.view.window import Window
             Window().currentFrame.startButton.active = False
-            Window().update()
+            # Window().update()

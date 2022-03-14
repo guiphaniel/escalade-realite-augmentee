@@ -88,8 +88,8 @@ class PathEditor(AbstractInternalFrame, ActionListener, KeyboardListener):
                 self.handles.append(handle)
                 self.parent.add(handle)
                 self.__isHandlesEmpty()
-                from src.view.window import Window
-                Window().update()
+                # from src.view.window import Window
+                # Window().update()
                 return True
 
             elif self.editorMode == self.EditorMode.REMOVE:
@@ -98,8 +98,8 @@ class PathEditor(AbstractInternalFrame, ActionListener, KeyboardListener):
                     self.handles.remove(handle)
                     self.parent.remove(handle)
                     self.__isHandlesEmpty()
-                    from src.view.window import Window
-                    Window().update()
+                    # from src.view.window import Window
+                    # Window().update()
                     return True
 
         if self.editorMode == self.EditorMode.EDIT:
@@ -130,8 +130,8 @@ class PathEditor(AbstractInternalFrame, ActionListener, KeyboardListener):
             self.lastMousePosX, self.lastMousePosY = x, y
 
             self.editedHandle.move(newX, newY)
-            from src.view.window import Window
-            Window().update()
+            # from src.view.window import Window
+            # Window().update()
             return True
 
         return False

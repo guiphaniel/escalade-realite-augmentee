@@ -40,8 +40,8 @@ class PathGame(GameSinglePlayer):
         self.scoreText = Text(self.area.w / 2, 100, str(0), (255, 255, 255), 120)
         self.parent.add(self.scoreText)
 
-        thUpdateWindow = threading.Thread(target=self.updateWindow)
-        thUpdateWindow.start()
+        # thUpdateWindow = threading.Thread(target=self.updateWindow)
+        # thUpdateWindow.start()
 
     def execute(self):
         initTimer = 3

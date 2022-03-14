@@ -37,8 +37,8 @@ class PlayerManagerFrame(AbstractManagerFrame, EditTextListener, KeyboardListene
         listItem = ListItem(player)
         listItem.parent = self.list
         self.list.items.append(listItem)
-        from src.view.window import Window
-        Window().update()
+        # from src.view.window import Window
+        # Window().update()
 
     def editT(self):
         if not [e for e in self.items if isinstance(e, EditTextInternalFrame)]:
@@ -51,8 +51,8 @@ class PlayerManagerFrame(AbstractManagerFrame, EditTextListener, KeyboardListene
         self.list.items.remove(self.list.selectedItem)
         self.list.selectedItem = None
         Database().setPlayers(self.players)
-        from src.view.window import Window
-        Window().update()
+        # from src.view.window import Window
+        # Window().update()
 
     def selectT(self):
         SwitchFrameController().execute(frame=PathFrame)
@@ -70,8 +70,8 @@ class PlayerManagerFrame(AbstractManagerFrame, EditTextListener, KeyboardListene
             self.list.selectedItem.setText(source.text)
             self.list.selectedItem.obj.pseudo = source.text
             Database().setPlayers(self.players)
-            from src.view.window import Window
-            Window().update()
+            # from src.view.window import Window
+            # Window().update()
 
     def onKeyboardEvent(self, e) -> bool:
         if e.type == pygame.KEYDOWN and e.key == pygame.K_ESCAPE:

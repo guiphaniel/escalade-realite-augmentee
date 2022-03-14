@@ -26,8 +26,8 @@ class TargetsGame(GameSinglePlayer):
         self.missedText = Text(self.area.w / 2 + 150, 100, "Manquées : 0", (255, 255, 255), 60)
         self.parent.add(self.missedText)
 
-        thUpdateWindow = threading.Thread(target=self.updateWindow)
-        thUpdateWindow.start()
+        # thUpdateWindow = threading.Thread(target=self.updateWindow)
+        # thUpdateWindow.start()
 
     def execute(self):
         while self.continueGame:

@@ -42,16 +42,16 @@ class AbstractManagerFrame(AbstractFrame, ListListener, ActionListener):
         from src.view.window import Window
         if source == self.addBt:
             self.addT()
-            Window().update()
+            # Window().update()
         elif source == self.editBt:
             self.editT()
-            Window().update()
+            # Window().update()
         elif source == self.removeBt:
             self.removeT()
-            Window().update()
+            # Window().update()
         elif source == self.selectBt:
             self.selectT()
-            Window().update()
+            # Window().update()
         elif source == self.backBt:
             self.onBackBt()
 
@@ -88,7 +88,7 @@ class AbstractManagerFrame(AbstractFrame, ListListener, ActionListener):
             self.selectBt.active = False
         self.onListValueChanged()
         from src.view.window import Window
-        Window().update()
+        # Window().update()
 
     @abstractmethod
     def onListValueChanged(self):

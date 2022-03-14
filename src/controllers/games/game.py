@@ -30,6 +30,7 @@ class Game(AbstractController, KeyboardListener):
         pass
 
     def updateWindow(self):
+        from src.view.window import Window
+        win = Window()
         while self.continueGame:
-            from src.view.window import Window
-            Window().update()
+            win.currentFrame.repaintAll()

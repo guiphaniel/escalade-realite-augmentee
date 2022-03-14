@@ -51,8 +51,8 @@ class List(Drawable):
 
         self._selectedItem = item
         self.notifyAllListListeners()
-        from src.view.window import Window
-        Window().update()
+        # from src.view.window import Window
+        # Window().update()
 
     def shrinkToFit(self):
         maxX = 0

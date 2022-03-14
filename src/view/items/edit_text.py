@@ -43,8 +43,8 @@ class EditText(Drawable, KeyboardListener):
 
             self.setText(self.text)
             self.parent.shrinkToFit()
-            from src.view.window import Window
-            Window().update()
+            # from src.view.window import Window
+            # Window().update()
             return True
 
         return False
