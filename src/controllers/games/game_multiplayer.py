@@ -28,6 +28,9 @@ class GameMultiPlayer(Game):
         self.player2 = Player(parent)  # right player
         parent.add(self.player2)
 
+        self.player1.pseudo="Joueur 1"
+        self.player2.pseudo="Joueur 2"
+
         self.results = {self.player1: None, self.player2: None}
         self.cap = None
         self.multiMediapipeWidth = None
@@ -52,6 +55,8 @@ class GameMultiPlayer(Game):
                 continue
             copy = self.image.copy()
             cv2.rectangle(copy, topLeft, bottomRight, (0, 0, 0), -1)
+            cv2.imshow(player.pseudo,copy)
+            cv2.waitKey(0)
             results = poseDetector.detectLandmarks(copy)
             if results:
                 self.results[player] = results
@@ -68,7 +73,7 @@ class GameMultiPlayer(Game):
             SwitchFrameController().execute(frame=src.view.frames.games_frame.GamesFrame)
             return
 
-        self.multiMediapipeWidth = int((tmp[0] // tmp[2])[0])
+        self.multiMediapipeWidth = int((((tmp[0]//tmp[2])[0])/self.win.get_rect().width)*self.cap.w)
 
         thLeft = threading.Thread(target=self.startResult, args=[self.player1, (self.multiMediapipeWidth + 30, 0), (1920, 1080)])
         thLeft.start()
