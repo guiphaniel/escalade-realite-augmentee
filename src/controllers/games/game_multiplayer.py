@@ -55,8 +55,8 @@ class GameMultiPlayer(Game):
                 continue
             copy = self.image.copy()
             cv2.rectangle(copy, topLeft, bottomRight, (0, 0, 0), -1)
-            cv2.imshow(player.pseudo,copy)
-            cv2.waitKey(1)
+            # cv2.imshow(player.pseudo,copy)
+            # cv2.waitKey(1)
             results = poseDetector.detectLandmarks(copy)
             if results:
                 self.results[player] = results
