@@ -353,7 +353,7 @@ class Database(metaclass=Singleton):
 
     # assumes that all fields are set (not any Null)
     def getScores(self):
-        self.cur.execute("select * from history join paths as pa on pathId = pa.id join players as pl on playerId = pl.id order by pa.name, score desc, date desc, pl.pseudo")
+        self.cur.execute("select * from history join paths as pa on pathId = pa.id join players as pl on playerId = pl.id order by pa.name, score, date desc, pl.pseudo")
 
         result = self.cur.fetchall()
 
