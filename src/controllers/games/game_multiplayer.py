@@ -28,6 +28,9 @@ class GameMultiPlayer(Game):
         self.player2 = Player(parent)  # right player
         parent.add(self.player2)
 
+        self.player1.pseudo="Joueur 1"
+        self.player2.pseudo="Joueur 2"
+
         self.results = {self.player1: None, self.player2: None}
         self.cap = None
         self.multiMediapipeWidth = None
@@ -46,6 +49,8 @@ class GameMultiPlayer(Game):
         pass
 
     def startResult(self, player, topLeft, bottomRight):
+        print(topLeft)
+        print(bottomRight)
         poseDetector = pose_detector.PoseDetector()
         while self.continueGame:
             if self.image is None:
@@ -62,17 +67,18 @@ class GameMultiPlayer(Game):
         self.cap = Camera()
 
         try:
-            tmp = np.dot(np.linalg.inv(Transform().projectiveMatrix), [[1920 // 2], [0], [1]])
+            tmp = np.dot(np.linalg.inv(Transform().projectiveMatrix), [[self.cap.w // 2], [0], [1]])
         except:
             self.continueGame=False
             SwitchFrameController().execute(frame=src.view.frames.games_frame.GamesFrame)
             return
 
-        self.multiMediapipeWidth = int((tmp[0] // tmp[2])[0])
+        self.multiMediapipeWidth = int((tmp[0]//tmp[2])[0])
+        print(self.multiMediapipeWidth)
 
-        thLeft = threading.Thread(target=self.startResult, args=[self.player1, (self.multiMediapipeWidth + 30, 0), (1920, 1080)])
+        thLeft = threading.Thread(target=self.startResult, args=[self.player1, (self.multiMediapipeWidth + 60, 0), (int(self.cap.w), int(self.cap.h))])
         thLeft.start()
-        thRight = threading.Thread(target=self.startResult, args=[self.player2, (0, 0), (self.multiMediapipeWidth - 30, 1080)])
+        thRight = threading.Thread(target=self.startResult, args=[self.player2, (0, 0), (self.multiMediapipeWidth - 60, int(self.cap.h))])
         thRight.start()
 
 
