@@ -1,4 +1,4 @@
-import ctypes
+import platform
 
 import pygame
 
@@ -10,7 +10,9 @@ from src.view.frames.home_frame import HomeFrame
 
 class Window(metaclass=Singleton):
     def __init__(self):
-        ctypes.windll.user32.SetProcessDPIAware()
+        if "windows" in platform.system().lower():
+            import ctypes
+            ctypes.windll.user32.SetProcessDPIAware()
         pygame.init()
         pygame.display.set_caption("Escalade en Réalité Augmentée")
         self.win = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN, 32)
