@@ -24,7 +24,7 @@ class Window(metaclass=Singleton):
 
     def run(self):
         SwitchFrameController().execute(frame=HomeFrame)
-        # self.currentFrame.startButton.active = False
+        self.currentFrame.startButton.active = False
         self.currentFrame.repaintAll()
         # self.update()
         while self.isVisible:
