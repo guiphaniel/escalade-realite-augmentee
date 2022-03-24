@@ -10,7 +10,7 @@ from src.view.listeners.list_listener import ListListener
 class AbstractManagerFrame(AbstractFrame, ListListener, ActionListener):
 
     def __init__(self):
-        AbstractFrame.__init__(self, bgImage="view/images/background.png")
+        AbstractFrame.__init__(self, bgImage="./src/view/images/background.png")
         ListListener.__init__(self)
         ActionListener.__init__(self)
 

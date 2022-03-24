@@ -21,7 +21,7 @@ from src.view.frames.pong_frame import PongFrame
 
 class GamesFrame(AbstractFrame, ActionListener, KeyboardListener):
     def __init__(self):
-        AbstractFrame.__init__(self, bgImage="view/images/background.png")
+        AbstractFrame.__init__(self, bgImage="./src/view/images/background.png")
         ActionListener.__init__(self)
         KeyboardListener.__init__(self)
         self.pongButton = Button(300, 100, text="PONG")
