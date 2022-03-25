@@ -15,7 +15,7 @@ class Window(metaclass=Singleton):
             ctypes.windll.user32.SetProcessDPIAware()
         pygame.init()
         pygame.display.set_caption("Escalade en Réalité Augmentée")
-        self.win = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN, 32)
+        self.win = self.win = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.eventManager = EventManager()
         self.currentFrame = None
 
