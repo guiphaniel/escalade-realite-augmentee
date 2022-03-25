@@ -12,7 +12,7 @@ class EditText(Drawable, KeyboardListener):
         KeyboardListener.__init__(self)
         self.bgColor = (255, 255, 255)
         self.padding = 5
-        self.rect = pygame.rect.Rect(0, 0, 0, 0)
+        self.rect = pygame.rect.Rect(x, y, 0, 0)
 
         self.initialText = text
         self.text = text
