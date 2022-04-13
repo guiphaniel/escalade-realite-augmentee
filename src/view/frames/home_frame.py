@@ -13,7 +13,7 @@ from src.view.listeners.action_listener import ActionListener
 
 class HomeFrame(AbstractFrame, ActionListener, KeyboardListener):
     def __init__(self):
-        AbstractFrame.__init__(self, bgImage="./src/view/images/background.png")
+        AbstractFrame.__init__(self, bgImage="src/view/images/background.png")
         ActionListener.__init__(self)
         KeyboardListener.__init__(self)
         self.calibrationButton = Button(300, 100, text="CALIBRER")

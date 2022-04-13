@@ -7,7 +7,7 @@ from src.view.items.item_display_type import ItemDisplayType
 
 class Text(Drawable):
     def __init__(self, x, y, text, textColor=(255, 255, 255), textSize=40,
-                 textFont="view/fonts/All the Way to the Sun.otf", displayType=ItemDisplayType.TOP_LEFT):
+                 textFont="src/view/fonts/All the Way to the Sun.otf", displayType=ItemDisplayType.TOP_LEFT):
         Drawable.__init__(self, displayType)
 
         self.x = x
@@ -17,7 +17,7 @@ class Text(Drawable):
         self.setText(text, textColor, textSize, textFont)
 
     def setText(self, text, textColor=(255, 255, 255), textSize=40,
-                textFont="view/fonts/All the Way to the Sun.otf"):
+                textFont="src/view/fonts/All the Way to the Sun.otf"):
         font = pygame.font.SysFont(textFont, textSize)
         self.__textSurface = font.render(text, True, textColor)
         self.rect.w, self.rect.h = self.__textSurface.get_rect().w, self.__textSurface.get_rect().h

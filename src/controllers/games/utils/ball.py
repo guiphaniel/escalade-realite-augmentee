@@ -12,7 +12,7 @@ class Ball(Drawable):
         self.area = self.win.get_rect()
         self.radius = 25
         self.rect = pygame.rect.Rect(self.area.w / 2 - self.radius, self.area.h / 2 - self.radius, self.radius * 2, self.radius * 2)
-        self.image= pygame.transform.scale(pygame.image.load("view/images/sprites/ball.png"), (self.rect.w, self.rect.h))
+        self.image= pygame.transform.scale(pygame.image.load("src/view/images/sprites/ball.png"), (self.rect.w, self.rect.h))
 
         self.vector = []
         self.velocity = None

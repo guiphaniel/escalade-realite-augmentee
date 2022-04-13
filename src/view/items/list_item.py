@@ -23,7 +23,7 @@ class ListItem(Drawable, MouseListener):
         self.setText(obj.toString())
 
     def setText(self, text, textColor=(0, 0, 0), textSize=40,
-                textFont="view/fonts/All the Way to the Sun.otf"):
+                textFont="src/view/fonts/All the Way to the Sun.otf"):
         font = pygame.font.SysFont(textFont, textSize)
         self.__textSurface = font.render(text, True, textColor)
         self.w, self.h = self.rect.w, self.rect.h = self.__textSurface.get_rect().w + self.padding * 2, self.__textSurface.get_rect().h + self.padding * 2

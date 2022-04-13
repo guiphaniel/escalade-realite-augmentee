@@ -30,7 +30,7 @@ class Button(Drawable, MouseListener):
         self.active = True
         self.actionListeners = []
 
-    def setText(self, text, textColor=(0, 0, 0), textSize=40, textFont="view/fonts/All the Way to the Sun.otf"):
+    def setText(self, text, textColor=(0, 0, 0), textSize=40, textFont="src/view/fonts/All the Way to the Sun.otf"):
         self.__textSurface = None
         if not text:
             return
