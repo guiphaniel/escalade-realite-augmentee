@@ -9,7 +9,7 @@ class Surface:
 
     def findCornerPoints(self):
         MIN_MATCH_COUNT = 20
-        img1 = cv2.imread("view/images/charucoboard.jpg", 0)
+        img1 = cv2.imread("src/view/images/charucoboard.jpg", 0)
         cv2.waitKey(1000)
         validCapRead=False
 

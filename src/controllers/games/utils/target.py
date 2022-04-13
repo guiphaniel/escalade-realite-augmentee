@@ -12,7 +12,7 @@ class Target(Drawable):
         super().__init__(parent)
         self.size = (50, 50)
         self.rect = pygame.rect.Rect(random.randint(0, self.win.get_rect().width - self.size[0]), random.randint(0, self.win.get_rect().height - self.size[1]), 50, 50)
-        self.sprite = pygame.transform.scale(pygame.image.load("view/images/sprites/target.png"), self.size)
+        self.sprite = pygame.transform.scale(pygame.image.load("src/view/images/sprites/target.png"), self.size)
         self.center = (self.rect.x + self.rect.width / 2.0, self.rect.y + self.rect.height / 2.0)
         self.radius = self.size[0] / 2
         self.ticks = pygame.time.get_ticks()
@@ -22,9 +22,9 @@ class Target(Drawable):
 
     def collide(self, point, radius):
         if (radius+self.radius) > math.sqrt((point[0]-self.rect.centerx)**2 + (point[1]-self.rect.centery)**2):
-            self.sprite = pygame.transform.scale(pygame.image.load("view/images/sprites/success.png"), self.size)
+            self.sprite = pygame.transform.scale(pygame.image.load("src/view/images/sprites/success.png"), self.size)
             return True
         return False
 
     def failed(self):
-        self.sprite = pygame.transform.scale(pygame.image.load("view/images/sprites/fail.png"), self.size)
+        self.sprite = pygame.transform.scale(pygame.image.load("src/view/images/sprites/fail.png"), self.size)

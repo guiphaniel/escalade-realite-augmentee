@@ -35,7 +35,7 @@ class PathCreationFrame(AbstractFrame, MouseListener, MotionListener, KeyboardLi
         for i in self.items:
             i.draw()
             if isinstance(i, Handle):
-                font = pygame.font.SysFont("view/fonts/All the Way to the Sun.otf", 40)
+                font = pygame.font.SysFont("src/view/fonts/All the Way to the Sun.otf", 40)
                 textSurface = font.render(str(cpt), True, (255, 255, 255))
                 self.win.blit(textSurface, i.rect.bottomright)
                 cpt += 1
