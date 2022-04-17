@@ -28,7 +28,7 @@ Ce projet nécessite : une caméra, un ordinateur, un vidéoprojecteur
 3. Activer l'environnement virtuel : 
 * Linux : `source venv/bin/activate`
 * Windows : `.\venv\Scripts\activate`
-4. S'assurer que la variable `venv/pyvenv.cfg:home` soit correcte (doit correspondre à l'emplacement de python3 votre la machine. (Tip : `which python3`))
+4. S'assurer que la variable `venv/pyvenv.cfg:home` soit correcte (doit correspondre à l'emplacement de python3 sur votre la machine. (Tip : `which python3`))
 5. Installer les packages nécessaires 
 * automatiquement : 
     * `pip3 install -r requirements.txt`
