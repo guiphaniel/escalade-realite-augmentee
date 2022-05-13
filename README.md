@@ -17,7 +17,7 @@ Le jeux disponibles sont :
 * Les Cibles
 * Le Parcours (gestion de parcours, de joueurs, et de scores pour les compétitions)
 
-Ce projet nécessite : une caméra, un ordinateur, un vidéoprojecteur
+Ce projet nécessite : une **caméra**, un **ordinateur**, un **vidéoprojecteur**
 
 ## Guide d'installation
 
